@@ -49,3 +49,12 @@ jobs:
       - run:
         type: run
         command: npm test
+
+      # Publish
+      - run:
+        type: run
+        command: |
+          if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            npm run compile;
+            npm run release;
+          fi

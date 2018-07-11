@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
-    "compile": "node_modules/.bin/tsc"
+    "compile": "node_modules/.bin/tsc",
+    "release": "node_modules/.bin/publish"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "@types/jest": "^22",
     "jest": "^22",
+    "publish": "^0.6.0",
     "ramda": "^0.25.0",
     "react": "^16.4.1",
     "react-functional-lifecycle": "^3.0.0",
@@ -30,5 +32,15 @@
     "redux": "^4.0.0",
     "redux-actions": "^2.4.0",
     "typescript": "^2.9.2"
+  },
+  "peerDependencies": {
+    "ramda": "*",
+    "react": "*",
+    "react-functional-lifecycle": "*",
+    "react-native": "*",
+    "react-redux": "*",
+    "recompose": "*",
+    "redux": "*",
+    "redux-actions": "*"
   }
 }
