@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
     "compile": "node_modules/.bin/tsc"
   },
   "repository": {
@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/Aloompa/react-universal-router#readme",
   "devDependencies": {
+    "@types/jest": "^22",
+    "jest": "^22",
     "ramda": "^0.25.0",
     "react": "^16.4.1",
     "react-functional-lifecycle": "^3.0.0",
