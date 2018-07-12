@@ -107,6 +107,7 @@ const Router = (props: any) => (
                         bottom
                     }}>
                         <ComponentContainer style={{
+                            backgroundColor: '#FFFFFF',
                             height: (routeConfig.mode === 'modal') ? 
                                 '100vh' : 
                                 `calc(100vh - ${props.topNavHeight}px)`
