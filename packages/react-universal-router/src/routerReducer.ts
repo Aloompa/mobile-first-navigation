@@ -8,13 +8,12 @@ const NAVIGATE_BACK_COMPLETE = 'NAVIGATE_BACK_COMPLETE';
 const SET_TITLE_CACHE = 'SET_TITLE_CACHE';
 const RESET_NAVIGATION = 'RESET_NAVIGATION';
 
-
 export const { 
     setRoute,
     navigateBack,
     navigateBackComplete,
     setTitleCache,
-    resetNavigtion
+    resetNavigation
 } = createActions({}, SET_ROUTE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION);
 
 const routerReducer = (config: {
