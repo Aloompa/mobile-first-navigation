@@ -102,7 +102,7 @@ const Router = (props: any) => (
 
                 return (
                     <Animated.View key={key} style={{
-                        position: 'fixed',
+                        position: 'absolute',
                         right,
                         bottom
                     }}>
