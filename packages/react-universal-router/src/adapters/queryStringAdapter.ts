@@ -28,9 +28,11 @@ const getUrlState = ({ route, params }) => {
 };
 
 const setRoute = action => {
-    window.history.replaceState(null, 'Router', getUrlState(
-        action
-    ));
+    try {
+        window.history.replaceState(null, 'Router', getUrlState(
+            action
+        ));
+    } catch (_e) {}
 };
 
 const urldecode = str =>
