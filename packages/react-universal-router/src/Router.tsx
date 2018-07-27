@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Animated, Dimensions, Easing } from 'react-native';
+import { Animated, Dimensions, Easing, View } from 'react-native';
 import { always, curry, equals, ifElse, negate } from 'ramda';
 import { componentDidMount, componentDidUpdate } from 'react-functional-lifecycle';
 import { compose, withProps, withState } from 'recompose';
@@ -9,8 +9,6 @@ import ComponentContainer from './components/ComponentContainer';
 import ContentArea from './components/ContentArea';
 import Wrapper from './components/Wrapper';
 import withRouter from './withRouter';
-
-const isModal = equals('modal');
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
     const cacheKey = JSON.stringify(currentRoute);
@@ -84,42 +82,65 @@ const Router = (props: any) => (
             routeTitle: getTitle(props)
         })}
         <ContentArea>
-            {props.history.map((route, key) => {
+            {props.history.filter(route => {
+                const routeConfig = props.routes[route.route];
+                return routeConfig.mode !== 'modal';
+            }).map((route, key) => {
                 const routeConfig = props.routes[route.route];
                 const { Component } = routeConfig;
 
-                const bottom = ifElse(
-                    isModal,
-                    always(routeConfig.positionAnimation),
-                    always(0)
-                )(routeConfig.mode);
+                const bottom = 0;
 
-                const right = ifElse(
-                    isModal,
-                    always(0),
-                    always(routeConfig.positionAnimation)
-                )(routeConfig.mode);
+                const right = routeConfig.positionAnimation;
+
+                const AnimatedCmp = (right === 0 && bottom === 0) ? View : Animated.View;
+
+                return (
+                    <AnimatedCmp key={key} style={{
+                        position: 'absolute',
+                        right,
+                        bottom,
+                        width: '100%',
+                        height: '100%'
+                    }}>
+                        <ComponentContainer style={{
+                            backgroundColor: '#FFFFFF',
+                            height: '100%'
+                        }}>
+                            {Component ? (
+                                <Component {...props} route={route} />
+                            ) : null}
+                        </ComponentContainer>
+                    </AnimatedCmp>
+                );
+            })}
+        </ContentArea>
+
+        {props.history.filter(route => {
+                const routeConfig = props.routes[route.route];
+                return routeConfig.mode === 'modal';
+            }).map((route, key) => {
+                const routeConfig = props.routes[route.route];
+                const { Component } = routeConfig;
 
                 return (
                     <Animated.View key={key} style={{
                         position: 'absolute',
-                        right,
-                        bottom
+                        right: 0,
+                        bottom: routeConfig.positionAnimation,
+                        width: '100%',
+                        height: '100%'
                     }}>
                         <ComponentContainer style={{
                             backgroundColor: '#FFFFFF',
-                            height: 
-                                (routeConfig.mode === 'modal') ? '100vh' :
-                                `calc(100vh - ${props.topNavHeight}px)`
+                            height: '100%'
                         }}>
-                            {(routeConfig.mode === 'modal') && (
-                                props.renderTopNav({
-                                    ...props,
-                                    mode: 'modal',
-                                    height: props.topNavHeight,
-                                    routeTitle: getTitleFromCache(props, route)
-                                })
-                            )}
+                            {props.renderTopNav({
+                                ...props,
+                                mode: 'modal',
+                                height: props.topNavHeight,
+                                routeTitle: getTitleFromCache(props, route)
+                            })}
                             {Component ? (
                                 <Component {...props} route={route} />
                             ) : null}
@@ -127,7 +148,6 @@ const Router = (props: any) => (
                     </Animated.View>
                 );
             })}
-        </ContentArea>
     </Wrapper>
 );
 
@@ -145,10 +165,11 @@ const initializeRoutes = routes => {
     return Object.keys(routes).reduce((prev, key, index) => {
         const suppliedConfig = (routes[key] || {});
         const offset = getOffset(suppliedConfig);
+        
         const routeConfig = {
             Component: routes[key].route,
             ...suppliedConfig,
-            positionAnimation: index ? new Animated.Value(negate(offset)) : 0
+            positionAnimation: index ? new Animated.Value(negate(offset) || 0) : 0
         };
 
         return {

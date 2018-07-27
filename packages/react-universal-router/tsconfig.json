@@ -19,7 +19,6 @@
         "preserveConstEnums": false,
         "pretty": true,
         "outDir": "./lib",
-        "rootDir": "./src",
         "strictNullChecks": true,
         "suppressExcessPropertyErrors": false,
         "target": "es5",
@@ -37,6 +36,7 @@
     },
     "include": [
         "./src/**/*",
-        "!./src/**/__tests__/*"
+        "!./src/**/__tests__/*",
+        "!./node_modules"
     ]
 }
