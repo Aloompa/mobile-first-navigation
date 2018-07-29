@@ -7,7 +7,9 @@ const Wrapper = props => (
         flex: 1,
         position: 'fixed',
         height: '100%',
-        width: '100%'
+        width: '101%',
+        left: '-1px',
+        right: '-1px'
     }}>{props.children}</View>
 );
 
