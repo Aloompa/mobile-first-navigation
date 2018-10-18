@@ -1,6 +1,6 @@
 {
   "name": "@aloompa/react-universal-router",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,6 +13,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aloompa/react-universal-router.git"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost"
   },
   "author": "Aloompa",
   "license": "MIT",
