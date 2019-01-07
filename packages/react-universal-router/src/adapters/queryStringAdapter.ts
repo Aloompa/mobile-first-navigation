@@ -45,7 +45,9 @@ const urldecode = str => {
     try {
         return atob(str);
     } catch (_e) {
-        return str;
+        return str
+            .replace(/%7B/g, '{')
+            .replace(/%7D/g, '}');
     }
 };
 
