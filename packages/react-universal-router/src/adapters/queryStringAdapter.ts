@@ -41,8 +41,13 @@ const setRoute = action => {
     } catch (_e) {}
 };
 
-const urldecode = str =>
-    atob(str);
+const urldecode = str => {
+    try {
+        return atob(str);
+    } catch (_e) {
+        return str;
+    }
+};
 
 const getRoute = (initialRoute) => {
     const queryString = getQueryString(
