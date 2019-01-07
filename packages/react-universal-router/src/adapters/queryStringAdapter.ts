@@ -45,9 +45,7 @@ const urldecode = str => {
     try {
         return atob(str);
     } catch (_e) {
-        return str
-            .replace(/%7B/g, '{')
-            .replace(/%7D/g, '}');
+        return str;
     }
 };
 
@@ -60,9 +58,13 @@ const getRoute = (initialRoute) => {
         return [];
     }
 
+    const params = urldecode(queryString.params || '{}')
+        .replace(/%7B/g, '{')
+        .replace(/%7D/g, '}');
+
     return [{
         route: queryString.route,
-        params: JSON.parse(urldecode(queryString.params || '{}'))
+        params: JSON.parse(params)
     }];
 };
 
