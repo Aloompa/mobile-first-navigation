@@ -59,6 +59,7 @@ const getRoute = (initialRoute) => {
     }
 
     const params = urldecode(queryString.params || '{}')
+        .replace(/%22/g, '"')
         .replace(/%7B/g, '{')
         .replace(/%7D/g, '}');
 
