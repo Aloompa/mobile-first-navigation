@@ -1,6 +1,6 @@
 {
   "name": "@aloompa/react-universal-router",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,7 +26,7 @@
   "homepage": "https://github.com/Aloompa/react-universal-router#readme",
   "devDependencies": {
     "@types/jest": "^22",
-    "express": "^4.16.3",
+    "express": "^4.16.4",
     "jest": "^22",
     "publish": "^0.6.0",
     "ramda": "^0.25.0",

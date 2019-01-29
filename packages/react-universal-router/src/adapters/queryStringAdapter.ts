@@ -63,9 +63,15 @@ const getRoute = (initialRoute) => {
         .replace(/%7B/g, '{')
         .replace(/%7D/g, '}');
 
+    let queryParams = {};
+
+    try {
+        queryParams = JSON.parse(params);
+    } catch (_err) {}
+
     return [{
         route: queryString.route,
-        params: JSON.parse(params)
+        params: queryParams
     }];
 };
 
