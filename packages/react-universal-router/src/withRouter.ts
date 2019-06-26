@@ -1,5 +1,5 @@
 import { compose, last, path } from 'ramda';
-import { navigateBack, navigateBackComplete, resetNavigation, setRoute, setTitleCache } from './routerReducer';
+import { navigateBack, navigateBackComplete, navigateComplete, resetNavigation, setRoute, setTitleCache } from './routerReducer';
 
 import bindActionCreators from './util/bindActionCreators';
 import { connect } from 'react-redux';
@@ -17,6 +17,7 @@ export const mapStateToProps = state => ({
 export const mapDispatchToProps =
     bindActionCreators({
         resetNavigation,
+        navigateComplete,
         setRoute,
         navigateBack,
         navigateBackComplete,

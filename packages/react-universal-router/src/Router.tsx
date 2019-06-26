@@ -189,7 +189,7 @@ const doUpdate = (props, prevProps) => {
             toValue: 0,
             duration: 350,
             easing: Easing.out(Easing.exp)
-        }).start();
+        }).start(props.navigateComplete);
     }
 
     // Pop Current Route

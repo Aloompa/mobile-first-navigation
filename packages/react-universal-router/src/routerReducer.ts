@@ -3,6 +3,7 @@ import { createActions, handleActions } from 'redux-actions';
 import { last } from 'ramda';
 
 const SET_ROUTE = 'SET_ROUTE';
+const NAVIGATE_COMPLETE = 'NAVIGATE_COMPLETE';
 const NAVIGATE_BACK = 'NAVIGATE_BACK';
 const NAVIGATE_BACK_COMPLETE = 'NAVIGATE_BACK_COMPLETE';
 const SET_TITLE_CACHE = 'SET_TITLE_CACHE';
@@ -10,11 +11,12 @@ const RESET_NAVIGATION = 'RESET_NAVIGATION';
 
 export const { 
     setRoute,
+    navigateComplete,
     navigateBack,
     navigateBackComplete,
     setTitleCache,
     resetNavigation
-} = createActions({}, SET_ROUTE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION);
+} = createActions({}, SET_ROUTE, NAVIGATE_COMPLETE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION);
 
 const routerReducer = (config: {
     initialRoute: string,
@@ -33,6 +35,7 @@ const routerReducer = (config: {
         [initialRoute];
 
     const initialState = {
+        isNavigating: false,
         isNavigatingBack: false,
         titleCache: {},
         history: historyState
@@ -41,17 +44,27 @@ const routerReducer = (config: {
     return handleActions({
 
         [SET_ROUTE]: (state, { payload }) => {
+            if(state.isNavigating){
+                return;
+            }
+
             const history = [...state.history, payload];
 
             if (config.adapter) {
                 config.adapter.setRoute(payload);
             }
-
+            
             return {
                 ...state,
-                history
+                isNavigating: true,
+                history,
             };
         },
+
+        [NAVIGATE_COMPLETE]: (state) => ({
+            ...state,
+            isNavigating: false
+        }),
 
         [RESET_NAVIGATION]: (state) => ({
             ...state,
