@@ -11,6 +11,7 @@ export const mapStateToProps = state => ({
     history: historyPath(state),
     route: currentPath(state),
     isNavigatingBack: path(['router', 'isNavigatingBack'], state),
+    isNavigating: path(['router', 'isNavigating'], state),
     titleCache: path(['router', 'titleCache'], state)
 });
 
