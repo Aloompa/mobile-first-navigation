@@ -45,7 +45,7 @@ const routerReducer = (config: {
 
         [SET_ROUTE]: (state, { payload }) => {
             if(state.isNavigating){
-                return;
+                return state;
             }
 
             const history = [...state.history, payload];
