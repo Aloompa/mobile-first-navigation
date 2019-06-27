@@ -45,9 +45,9 @@ const routerReducer = (config: {
     return handleActions({
 
         [SET_ROUTE]: (state, { payload }) => {
-            if(state.isNavigating){
+            if (state.isNavigating) {
                 return (
-                    state.destinations.find(({route}) => route == payload.route) === undefined
+                    state.destinations.find(({ route }) => route == payload.route) === undefined
                     ? { ...state, destinations: [...state.destinations, payload] }
                     : state
                 );
@@ -69,16 +69,15 @@ const routerReducer = (config: {
 
         [NAVIGATE_COMPLETE]: (state) => {
             const newDestinations = state.destinations.slice(1);
-
-            if(state.destinations.length > 1 && config.adapter) {
+            if (state.destinations.length > 1 && config.adapter) {
                 config.adapter.setRoute(newDestinations[0]);
 
                 return ({
                     ...state,
-                    isNavigating: true,
+                    isNavigating: false,
                     history: [...state.history, newDestinations[0]],
                     destinations: newDestinations
-                })
+                });
             }
 
             return ({
