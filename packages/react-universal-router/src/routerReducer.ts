@@ -36,6 +36,7 @@ const routerReducer = (config: {
 
     const initialState = {
         isNavigating: false,
+        destinations: [],
         isNavigatingBack: false,
         titleCache: {},
         history: historyState
@@ -45,7 +46,11 @@ const routerReducer = (config: {
 
         [SET_ROUTE]: (state, { payload }) => {
             if(state.isNavigating){
-                return state;
+                return (
+                    state.destinations.find(({route}) => route == payload.route) === undefined
+                    ? { ...state, destinations: [...state.destinations, payload] }
+                    : state
+                );
             }
 
             const history = [...state.history, payload];
@@ -58,13 +63,30 @@ const routerReducer = (config: {
                 ...state,
                 isNavigating: true,
                 history,
+                destinations: [payload]
             };
         },
 
-        [NAVIGATE_COMPLETE]: (state) => ({
-            ...state,
-            isNavigating: false
-        }),
+        [NAVIGATE_COMPLETE]: (state) => {
+            const newDestinations = state.destinations.slice(1);
+
+            if(state.destinations.length > 1 && config.adapter) {
+                config.adapter.setRoute(newDestinations[0]);
+
+                return ({
+                    ...state,
+                    isNavigating: true,
+                    history: [...state.history, newDestinations[0]],
+                    destinations: newDestinations
+                })
+            }
+
+            return ({
+                ...state,
+                isNavigating: false,
+                destinations: newDestinations
+            });
+        },
 
         [RESET_NAVIGATION]: (state) => ({
             ...state,
