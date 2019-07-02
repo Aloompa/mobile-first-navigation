@@ -222,6 +222,16 @@ const setInitialPositions = props => {
 
 const createRoutes = config => {
     
+    Object.keys(config.routes).forEach(key => {
+        const title = config.routes[key].getTitle();
+        if(!title){
+            config.routes[key] = {
+                ...config.routes[key],
+                getTitle: always(' ')
+            };
+        }
+    });
+
     return compose(
         withRouter,
         withProps({

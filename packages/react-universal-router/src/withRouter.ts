@@ -1,5 +1,5 @@
 import { compose, last, path } from 'ramda';
-import { navigateBack, navigateBackComplete, navigateComplete, resetNavigation, setRoute, setTitleCache } from './routerReducer';
+import { navigateBack, navigateBackComplete, navigateComplete, resetNavigation, setNavbarHidden, setRoute, setTitleCache  } from './routerReducer';
 
 import bindActionCreators from './util/bindActionCreators';
 import { connect } from 'react-redux';
@@ -12,7 +12,8 @@ export const mapStateToProps = state => ({
     route: currentPath(state),
     isNavigatingBack: path(['router', 'isNavigatingBack'], state),
     isNavigating: path(['router', 'isNavigating'], state),
-    titleCache: path(['router', 'titleCache'], state)
+    titleCache: path(['router', 'titleCache'], state),
+    navbarHidden: path(['router', 'navbarHidden'], state)
 });
 
 export const mapDispatchToProps =
@@ -22,7 +23,8 @@ export const mapDispatchToProps =
         setRoute,
         navigateBack,
         navigateBackComplete,
-        setTitleCache
+        setTitleCache,
+        setNavbarHidden
     });
 
 const withRouter = connect(
