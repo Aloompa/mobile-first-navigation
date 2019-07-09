@@ -7,7 +7,7 @@
     "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
     "compile": "node_modules/.bin/tsc",
     "watch": "node_modules/.bin/tsc --watch",
-    "release": "npm version patch && npm publish",
+    "release": "npm version patch && npm run compile && npm publish",
     "server": "node ./server"
   },
   "repository": {
@@ -30,7 +30,7 @@
     "jest": "^24.8.0",
     "ramda": "^0.25.0",
     "react": "16.2.0",
-    "react-dom": "16.2.0",
+    "react-dom": "16.2.1",
     "react-functional-lifecycle": "^3.0.0",
     "react-native": "^0.60.0",
     "react-native-web": "0.4.0",
