@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Animated, Dimensions, Easing, View } from 'react-native';
-import { always, curry, equals, ifElse, negate } from 'ramda';
+import { always, curry, equals, ifElse, negate, path } from 'ramda';
 import { componentDidMount, componentDidUpdate } from 'react-functional-lifecycle';
 import { compose, withProps, withState } from 'recompose';
 
@@ -12,6 +12,12 @@ import withRouter from './withRouter';
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
     const cacheKey = JSON.stringify(currentRoute);
+
+    const dynamicTitle = path(['route', 'navigationTitle'], props)
+
+    if (dynamicTitle) {
+        return dynamicTitle;
+    }
 
     if (props.titleCache[cacheKey]) {
         return props.titleCache[cacheKey];
@@ -31,7 +37,6 @@ const getTitleFromCache = curry((props: any, currentRoute: any) => {
                 ...props.titleCache,
                 [cacheKey]: titleResponse
             });
-
         // Set the title asyncronously
         } else {
             props.setTitleCache({
@@ -220,11 +225,10 @@ const setInitialPositions = props => {
     });
 };
 
-const createRoutes = config => {
+const createRoutes = (config) => {
     
     Object.keys(config.routes).forEach(key => {
-        const title = config.routes[key].getTitle();
-        if(!title){
+        if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
             config.routes[key] = {
                 ...config.routes[key],
                 getTitle: always(' ')

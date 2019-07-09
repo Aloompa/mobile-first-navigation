@@ -39,7 +39,8 @@ export default compose(
     withHandlers({
         nextPage: props => _e => {
             props.setRoute({
-                route: 'Page3'
+                route: 'Page3',
+                navigationTitle: "Page 3"
             });
         }
     })

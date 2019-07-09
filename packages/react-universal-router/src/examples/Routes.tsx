@@ -17,8 +17,7 @@ const Routes = createRoutes({
             getTitle: always('Page 2')
         },
         Page3: {
-            route: Page3,
-            getTitle: always('Page 3')
+            route: Page3
         },
         Modal: {
             route: Modal,
