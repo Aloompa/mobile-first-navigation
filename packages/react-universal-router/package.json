@@ -56,9 +56,5 @@
     "redux": "*",
     "redux-actions": "*"
   },
-  "release-it": {
-    "github": {
-      "release": true
-    }
-  }
+  "release-it": {}
 }
