@@ -56,5 +56,5 @@ jobs:
         command: |
           if [ "${CIRCLE_BRANCH}" == "master" ]; then
             npm run compile;
-            npm run release;
+            npm run release -- minor;
           fi
