@@ -7,7 +7,7 @@
     "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
     "compile": "node_modules/.bin/tsc",
     "watch": "node_modules/.bin/tsc --watch",
-    "release": "npm run publish",
+    "release": "npm publish",
     "server": "node ./server"
   },
   "repository": {
