@@ -7,7 +7,7 @@
     "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
     "compile": "node_modules/.bin/tsc",
     "watch": "node_modules/.bin/tsc --watch",
-    "release": "node_modules/.bin/publish",
+    "release": "npm version patch && npm publish",
     "server": "node ./server"
   },
   "repository": {
@@ -27,13 +27,12 @@
   "devDependencies": {
     "@types/jest": "^22",
     "express": "^4.16.4",
-    "jest": "^22",
-    "publish": "^0.6.0",
+    "jest": "^24.8.0",
     "ramda": "^0.25.0",
     "react": "16.2.0",
     "react-dom": "16.2.0",
     "react-functional-lifecycle": "^3.0.0",
-    "react-native": "0.50.0",
+    "react-native": "^0.60.0",
     "react-native-web": "0.4.0",
     "react-redux": "^5.0.7",
     "recompose": "^0.27.1",
