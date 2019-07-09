@@ -1,13 +1,13 @@
 {
   "name": "@aloompa/react-universal-router",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
     "compile": "node_modules/.bin/tsc",
     "watch": "node_modules/.bin/tsc --watch",
-    "release": "npm version patch && npm run compile && npm publish",
+    "release": "npm run release -- minor",
     "server": "node ./server"
   },
   "repository": {
@@ -38,6 +38,7 @@
     "recompose": "^0.27.1",
     "redux": "^4.0.0",
     "redux-actions": "^2.4.0",
+    "release-it": "^12.3.2",
     "styled-components": "^3.3.3",
     "ts-loader": "^4.4.2",
     "typescript": "^2.9.2",
@@ -54,5 +55,10 @@
     "recompose": "*",
     "redux": "*",
     "redux-actions": "*"
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    }
   }
 }
