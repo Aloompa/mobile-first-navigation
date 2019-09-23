@@ -1,29 +1,45 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "declaration": true,
-    "lib": [
-      "es5",
-      "es6",
-      "dom"
+    "compilerOptions": {
+        "allowUnreachableCode": false,
+        "allowUnusedLabels": false,
+        "allowJs": false,
+        "allowSyntheticDefaultImports": false,
+        "alwaysStrict": true,
+        "experimentalDecorators": false,
+        "forceConsistentCasingInFileNames": true,
+        "jsx": "react",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noEmitOnError": false,
+        "noFallthroughCasesInSwitch": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noImplicitReturns": true,
+        "noImplicitThis": true,
+        "preserveConstEnums": false,
+        "pretty": true,
+        "outDir": "./lib",
+        "strictNullChecks": true,
+        "suppressExcessPropertyErrors": false,
+        "target": "es5",
+        "skipLibCheck": true,
+        "typeRoots": [
+            "./node_modules/@types",
+            "../../node_modules/@types",
+            "./typings"
+        ],
+        "lib": [
+            "dom",
+            "es2015",
+            "es5",
+            "es6"
+        ]
+    },
+    "include": [
+        "./src/**/*",
+        "!./src/**/__tests__/*"
     ],
-    "jsx": "react",
-    "types": [
-      "node"
-    ],
-    "sourceRoot": "src",
-    "declarationDir": "dist",
-    "outDir": "dist",
-    "typeRoots": [
-      "./node_modules/@types"
+    "exclude": [
+        "../../node_modules/@types/ramda"
     ]
-  },
-  "exclude": [
-    "node_modules"
-  ]
 }

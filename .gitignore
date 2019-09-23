@@ -22,3 +22,6 @@ environmentvariables.config
 .vscode
 .vscode/
 **/*/.vscode/
+dist
+dist/
+**/*/dist/
