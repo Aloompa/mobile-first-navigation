@@ -1,0 +1,49 @@
+{
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "jsxSingleQuote": true,
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "always",
+    "parser": "typescript",
+    "tabWidth": 2,
+    "overrides": [
+        {
+            "files": ["*.json", "*/*/*.json", "**/**/*.json"],
+            "options": {
+                "parser": "json"
+            }
+        },
+        {
+            "files": ["*.yaml", "**/*/*.yaml", "**/**/*.yaml"],
+            "options": {
+                "parser": "yaml"
+            }
+        },
+        {
+            "files": ["*.html", "**/*/*.html", "**/**/*.html"],
+            "options": {
+                "parser": "html"
+            }
+        },
+        {
+            "files": ["*.gql", "**/*/*.gql", "**/**/*.gql"],
+            "options": {
+                "parser": "graphql"
+            }
+        },
+        {
+            "files": ["*.md", "**/*/*.md", "**/**/*.md"],
+            "options": {
+                "parser": "markdown"
+            }
+        },
+        {
+            "files": ["*.hbs", "**/*/*.hbs", "**/**/*.hbs"],
+            "options": {
+                "parser": "glimmer"
+            }
+        }
+    ]
+}
