@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Mobile First Navigation Monorepo",
   "private": true,
+  "scripts": {
+    "storybook": "npm run storybook --prefix ./packages/mobile-first-storybook"
+  },
   "devDependencies": {
     "lerna": "^3.13.1",
     "prettier": "1.18.2",
