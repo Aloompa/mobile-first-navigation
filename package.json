@@ -4,7 +4,10 @@
   "description": "Mobile First Navigation Monorepo",
   "private": true,
   "scripts": {
-    "storybook": "npm run storybook --prefix ./packages/mobile-first-storybook"
+    "storybook": "npm run storybook --prefix ./packages/mobile-first-storybook",
+    "build": "lerna run build & lerna bootstrap",
+    "test": "lerna run test",
+    "example": "npm run start --prefix ./packages/mobile-first-router"
   },
   "devDependencies": {
     "lerna": "^3.13.1",

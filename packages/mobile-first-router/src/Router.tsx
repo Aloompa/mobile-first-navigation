@@ -15,6 +15,7 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
+import { MFNTab, MFNRoute } from './MFNTypes';
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
   const cacheKey = JSON.stringify(currentRoute);
@@ -268,7 +269,13 @@ const setInitialPositions = (props) => {
   });
 };
 
-const createRoutes = (config) => {
+const createRoutes = (config: {
+  tabs?: Array<MFNTab>;
+  routes: Record<string, MFNRoute>;
+  renderTopNav: React.ReactNode;
+  topNavHeight?: number;
+}) => {
+  console.log(config, ':::CONFIG');
   Object.keys(config.routes).forEach((key) => {
     if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
       config.routes[key] = {

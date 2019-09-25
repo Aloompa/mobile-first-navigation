@@ -8,7 +8,8 @@
   "main": "lib/mobile-first-storybook.js",
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "tsc --watch",
+    "build": "tsc",
+    "watch": "tsc --watch",
     "storybook": "start-storybook -p 3000"
   },
   "directories": {

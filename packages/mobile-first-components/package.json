@@ -22,7 +22,8 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "tsc --watch"
+    "build": "tsc",
+    "watch": "tsc --watch"
   },
   "bugs": {
     "url": "https://github.com/Aloompa/mobile-first-navigation/issues"
