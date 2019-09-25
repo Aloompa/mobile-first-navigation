@@ -1,22 +1,20 @@
 import * as React from 'react';
-// import { Image } from 'react-native';
 import Home from './routes/Home';
 import Modal from './routes/Modal';
 import Page2 from './routes/Page2';
 import Page2b from './routes/Page2b';
 import Page3 from './routes/Page3';
-import TopNav from './components/TopNav';
 import { always } from 'ramda';
 import { createRoutes } from '../index';
-// import SvgIcon from '../components/SVGImage';
-import TabButton from '../components/TabButton';
+import { TabButton, TopNav } from '@aloompa/mobile-first-components';
 
 const Routes = createRoutes({
   tabs: [
     {
-      button: (isSelected: boolean) => (
+      button: (isSelected: boolean, onPress: Function) => (
         <TabButton
           selected={isSelected}
+          onPress={onPress}
           iconUnselectedColor={'#ccc'}
           iconHeight={18}
           iconWidth={20}
@@ -30,9 +28,10 @@ const Routes = createRoutes({
       initial: 'Home'
     },
     {
-      button: (isSelected: boolean) => (
+      button: (isSelected: boolean, onPress: Function) => (
         <TabButton
           selected={isSelected}
+          onPress={onPress}
           iconUnselectedColor={'#ccc'}
           iconHeight={18}
           iconWidth={22}
@@ -46,9 +45,10 @@ const Routes = createRoutes({
       initial: 'Page2'
     },
     {
-      button: (isSelected: boolean) => (
+      button: (isSelected: boolean, onPress: Function) => (
         <TabButton
           selected={isSelected}
+          onPress={onPress}
           iconUnselectedColor={'#ccc'}
           iconHeight={22}
           iconWidth={22}

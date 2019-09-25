@@ -1,12 +1,12 @@
-## React Universal Router
+## Mobile First Router
 
 ### Create Route Redux Store
 
 ```
 import { combineReducers } from 'redux';
 import { createStore } from 'redux';
-import queryStringAdapter from '@aloompa/react-universal-router/lib/adapters/queryStringAdapter';
-import { routerReducer } from '@aloompa/react-universal-router/lib';
+import queryStringAdapter from '@aloompa/mobile-first-router/lib/adapters/queryStringAdapter';
+import { routerReducer } from '@aloompa/mobile-first-router/lib';
 
 const combinedReducers = combineReducers({
     router: routerReducer({
@@ -23,7 +23,7 @@ export default store;
 ### Define your routes
 
 ```
-import { createRoutes, withRouter } from '@aloompa/react-universal-router/lib';
+import { createRoutes, withRouter } from '@aloompa/mobile-first-router/lib';
 
 const Routes = createRoutes({
     routes: {
@@ -46,6 +46,87 @@ const Routes = createRoutes({
 });
 
 export default withRouter(Routes);
+```
+
+### Tab controller
+
+```
+const Routes = createRoutes({
+  tabs: [
+    {
+      button: (isSelected: boolean) => (
+        <TabButton
+          selected={isSelected}
+          iconUnselectedColor={'#ccc'}
+          iconHeight={18}
+          iconWidth={20}
+          iconSelectedColor={'#FF00FF'}
+          title={'Browse'}
+          iconUrl={
+            'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-browse.svg'
+          }
+        />
+      ),
+      initial: 'Home'
+    },
+    {
+      button: (isSelected: boolean) => (
+        <TabButton
+          selected={isSelected}
+          iconUnselectedColor={'#ccc'}
+          iconHeight={18}
+          iconWidth={22}
+          iconSelectedColor={'#FF00FF'}
+          title={'Home 2'}
+          iconUrl={
+            'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-tickets.svg'
+          }
+        />
+      ),
+      initial: 'Page2'
+    },
+    {
+      button: (isSelected: boolean) => (
+        <TabButton
+          selected={isSelected}
+          iconUnselectedColor={'#ccc'}
+          iconHeight={22}
+          iconWidth={22}
+          iconSelectedColor={'#FF00FF'}
+          title={'Home 3'}
+          iconUrl={
+            'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-account.svg'
+          }
+        />
+      ),
+      initial: 'Page3'
+    }
+  ],
+  routes: {
+    Home: {
+      route: Home,
+      getTitle: always('Home')
+    },
+    Page2: {
+      route: Page2,
+      getTitle: always('Page 2')
+    },
+    Page2b: {
+      route: Page2b,
+      getTitle: always('Page 2B')
+    },
+    Page3: {
+      route: Page3,
+      getTitle: always('Page 3 Home')
+    },
+    Modal: {
+      route: Modal,
+      getTitle: always('Modal'),
+      mode: 'modal'
+    }
+  },
+  renderTopNav: TopNav
+});
 ```
 
 ### Add them to your root
@@ -90,21 +171,21 @@ props.setRoute({
 
 ### Example
 
-> - `clone git@github.com:Aloompa/react-universal-router.git`
+> - `clone git@github.com:Aloompa/mobile-first-router.git`
 
 > - `yarn run server`
 
 > - navigate to http://localhost:3001
 
-[Open example project](https://github.com/Aloompa/react-universal-router/tree/master/src/examples)
+[Open example project](https://github.com/Aloompa/mobile-first-router/tree/master/src/examples)
 
 ## Contributing
 
-We encourage you to contribute to React Universal Router by submitting bug reports and pull requests through [Github](http//github.com).
+We encourage you to contribute to Mobile First Router by submitting bug reports and pull requests through [Github](http//github.com).
 
 ## License
 
-React Universal Router is released under The [MIT License](http://www.opensource.org/licenses/MIT) (MIT)
+Mobile First Router is released under The [MIT License](http://www.opensource.org/licenses/MIT) (MIT)
 
 Copyright (c) [2015][aloompa llc]
 

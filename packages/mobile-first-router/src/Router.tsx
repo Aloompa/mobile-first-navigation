@@ -7,12 +7,15 @@ import {
   componentDidUpdate
 } from 'react-functional-lifecycle';
 import { compose, withProps, withState } from 'recompose';
+import {
+  Wrapper,
+  TabRouter,
+  ContentArea,
+  ComponentContainer
+} from '@aloompa/mobile-first-components';
 
-import ComponentContainer from './components/ComponentContainer';
-import ContentArea from './components/ContentArea';
-import Wrapper from './components/Wrapper';
-import TabRouter from './components/TabRouter';
 import withRouter from './withRouter';
+import { MFNTab, MFNRoute } from './MFNTypes';
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
   const cacheKey = JSON.stringify(currentRoute);
@@ -266,7 +269,13 @@ const setInitialPositions = (props) => {
   });
 };
 
-const createRoutes = (config) => {
+const createRoutes = (config: {
+  tabs?: Array<MFNTab>;
+  routes: Record<string, MFNRoute>;
+  renderTopNav: React.ReactNode;
+  topNavHeight?: number;
+}) => {
+  console.log(config, ':::CONFIG');
   Object.keys(config.routes).forEach((key) => {
     if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
       config.routes[key] = {

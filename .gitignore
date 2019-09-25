@@ -25,3 +25,4 @@ environmentvariables.config
 dist
 dist/
 **/*/dist/
+**/*/lib/
