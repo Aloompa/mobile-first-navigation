@@ -97,7 +97,7 @@ const Router = (props: any) => (
       setActiveTab={props.setActiveTab}
       bottomTab={true}
       viewHeightReduction={102}
-      tabButtons={props.tabs && props.tabs.map((tab) => tab.button)}
+      tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
       tabViews={props.tabRoutes.map(() => (
         <ContentArea>
           {props.history
