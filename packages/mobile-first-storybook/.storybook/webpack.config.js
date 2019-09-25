@@ -1,22 +1,27 @@
 const path = require('path');
-const SRC_PATH = path.join(__dirname, '../src');
-const STORIES_PATH = path.join(__dirname, '../stories');
-//dont need stories path if you have your stories inside your //components folder
-module.exports = ({ config }) => {
-  console.log(SRC_PATH, STORIES_PATH, ':::SOURCE');
-  config.module.rules.push({
-    test: /\.(ts|tsx)$/,
-    include: [SRC_PATH, STORIES_PATH],
-    use: [
+const webpack = require('webpack');
+
+module.exports = {
+  mode: 'development',
+  entry: ['webpack-hot-middleware/client', './src/examples/index.tsx'],
+  module: {
+    rules: [
       {
-        loader: require.resolve('awesome-typescript-loader'),
-        options: {
-          configFileName: './.storybook/tsconfig.json'
-        }
-      },
-      { loader: require.resolve('react-docgen-typescript-loader') }
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
+      }
     ]
-  });
-  config.resolve.extensions.push('.ts', '.tsx');
-  return config;
+  },
+  resolve: {
+    extensions: ['.tsx', '.ts', '.js'],
+    alias: {
+      'react-native': 'react-native-web'
+    }
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 };

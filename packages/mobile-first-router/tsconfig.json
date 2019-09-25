@@ -1,5 +1,6 @@
 {
     "compilerOptions": {
+        "types": ["jest", "node"],
         "jsx": "react",
         "allowUnreachableCode": false,
         "allowUnusedLabels": false,

@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "storybook": "npm run storybook --prefix ./packages/mobile-first-storybook",
-    "build": "lerna run build & lerna bootstrap",
+    "build": "lerna run build && lerna bootstrap",
     "test": "lerna run test",
     "example": "npm run start --prefix ./packages/mobile-first-router"
   },
