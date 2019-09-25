@@ -97,5 +97,8 @@
     "lib": true,
     "npm-debug*": true,
     "src/env/env.secrets.js": true
+    },
+    "workbench.colorCustomizations": {
+        "tab.unfocusedActiveBorder": "#fff0"
     }
     }

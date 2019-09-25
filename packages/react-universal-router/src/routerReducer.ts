@@ -9,6 +9,7 @@ const NAVIGATE_BACK_COMPLETE = 'NAVIGATE_BACK_COMPLETE';
 const SET_TITLE_CACHE = 'SET_TITLE_CACHE';
 const RESET_NAVIGATION = 'RESET_NAVIGATION';
 const SET_NAVBAR_HIDDEN = 'SET_NAVBAR_HIDDEN';
+const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
 
 export const { 
     setRoute,
@@ -17,10 +18,14 @@ export const {
     navigateBackComplete,
     setTitleCache,
     resetNavigation,
-    setNavbarHidden
-} = createActions({}, SET_ROUTE, NAVIGATE_COMPLETE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION, SET_NAVBAR_HIDDEN);
+    setNavbarHidden,
+    setActiveTab,
+    routeActiveTab
+} = createActions({}, SET_ROUTE, NAVIGATE_COMPLETE, NAVIGATE_BACK, NAVIGATE_BACK_COMPLETE, SET_TITLE_CACHE, RESET_NAVIGATION, SET_NAVBAR_HIDDEN, SET_ACTIVE_TAB);
 
 const routerReducer = (config: {
+    activeTab?: number,
+    initialTabRoutes?: string[],
     initialRoute: string,
     adapter?: {
         getRoute: Function,
@@ -32,9 +37,8 @@ const routerReducer = (config: {
         route: config.initialRoute
     };
 
-    const historyState = (config.adapter) ? 
-        [initialRoute, ...config.adapter.getRoute(config.initialRoute)] :
-        [initialRoute];
+    const activeTab = config.activeTab || 0;
+    const tabRoutes = config.initialTabRoutes ? config.initialTabRoutes.map(route => [{route}]) : [[initialRoute]];
 
     const initialState = {
         navbarHidden: false,
@@ -42,7 +46,9 @@ const routerReducer = (config: {
         destinations: [],
         isNavigatingBack: false,
         titleCache: {},
-        history: historyState
+        history: tabRoutes[activeTab],
+        activeTab,
+        tabRoutes
     };
 
     return handleActions({
@@ -57,7 +63,7 @@ const routerReducer = (config: {
             }
 
             const history = [...state.history, payload];
-
+            const tabRoute = [...state.tabRoutes[state.activeTab], payload];
             if (config.adapter) {
                 config.adapter.setRoute(payload);
             }
@@ -66,7 +72,8 @@ const routerReducer = (config: {
                 ...state,
                 isNavigating: true,
                 history,
-                destinations: [...state.destinations, payload]
+                destinations: [...state.destinations, payload],
+                tabRoutes: state.tabRoutes.map((route, index) => (index === state.activeTab) ? tabRoute : route )
             };
         },
 
@@ -93,6 +100,7 @@ const routerReducer = (config: {
         [RESET_NAVIGATION]: (state) => ({
             ...state,
             history: [state.history[0], last(state.history)],
+            tabRoutes: state.tabRoutes.map((route, index) => (index === state.activeTab) ? [route[0], last(route)] : route),
             isNavigatingBack: true
         }),
 
@@ -102,9 +110,14 @@ const routerReducer = (config: {
         }),
 
         [NAVIGATE_BACK_COMPLETE]: (state) => {
-            const history = [...state.history];
+            const history = [...state.tabRoutes[state.activeTab]];
             
             history.pop();
+
+            const updatedTabRoutes = state.tabRoutes.reduce((current, route, index) => [
+              ...current,
+              (index === state.activeTab ? history : route)
+            ], [])
 
             if (config.adapter) {
                 const currentRoute = history[history.length - 1];
@@ -114,7 +127,8 @@ const routerReducer = (config: {
             return {
                 ...state,
                 isNavigatingBack: false,
-                history: history.slice()
+                history: history.slice(),
+                tabRoutes: updatedTabRoutes
             };
         },
 
@@ -129,8 +143,20 @@ const routerReducer = (config: {
         [SET_NAVBAR_HIDDEN]: (state, { payload }) => ({
             ...state,
             navbarHidden: payload
-        })
+        }),
         
+        [SET_ACTIVE_TAB]: (state, {payload}) => {
+        if (state.isNavigating || state.isNavigatingBack) {
+          return state;
+        }
+
+        return {
+          ...state,
+          activeTab: payload,
+          history: state.tabRoutes[payload]
+        }
+      }
+
     }, initialState);
 
 };

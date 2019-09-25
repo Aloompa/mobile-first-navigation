@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { compose, withHandlers } from 'recompose';
 
-const Page2 = props => (
+const Page2b = props => (
     <View style={{
         display: 'flex',
         flex: 1,
@@ -11,12 +11,12 @@ const Page2 = props => (
     }}>
        <View style={{
             flex: 1,
-            backgroundColor: '#333',
+            backgroundColor: '#272727',
             padding: 12
         }}>
             <Text style={{
                 color: '#FFFFFF'
-            }}>Page 2</Text>
+            }}>Page 2B</Text>
         </View>
         <View style={{
             height: '50px',
@@ -28,7 +28,7 @@ const Page2 = props => (
         }}>
             <TouchableOpacity onPress={props.nextPage}>
                 <View>
-                    <Text>Page 2B</Text>
+                    <Text>Page 3</Text>
                 </View>
             </TouchableOpacity>
         </View>
@@ -39,8 +39,9 @@ export default compose(
     withHandlers({
         nextPage: props => _e => {
             props.setRoute({
-                route: 'Page2b'
+                route: 'Page3',
+                navigationTitle: "Page 3A"
             });
         }
     })
-)(Page2);
+)(Page2b);

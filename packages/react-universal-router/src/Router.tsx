@@ -1,13 +1,14 @@
 import * as React from 'react';
 
 import { Animated, Dimensions, Easing, View } from 'react-native';
-import { always, curry, equals, ifElse, negate, path } from 'ramda';
+import { always, curry, defaultTo, equals, ifElse, negate, path } from 'ramda';
 import { componentDidMount, componentDidUpdate } from 'react-functional-lifecycle';
 import { compose, withProps, withState } from 'recompose';
 
 import ComponentContainer from './components/ComponentContainer';
 import ContentArea from './components/ContentArea';
 import Wrapper from './components/Wrapper';
+import TabRouter from './components/TabRouter';
 import withRouter from './withRouter';
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
@@ -86,7 +87,13 @@ const Router = (props: any) => (
             height: props.topNavHeight,
             routeTitle: getTitle(props)
         })}
-        <ContentArea>
+        <TabRouter
+            activeTabIndex={props.activeTabIndex}
+            setActiveTab={props.setActiveTab}
+            bottomTab={true}
+            viewHeightReduction={102}
+            tabButtons={props.tabs && props.tabs.map((tab) => tab.button)}
+            tabViews={props.tabRoutes.map(() => <ContentArea>
             {props.history.filter(route => {
                 const routeConfig = props.routes[route.route];
                 return routeConfig.mode !== 'modal';
@@ -95,8 +102,7 @@ const Router = (props: any) => (
                 const { Component } = routeConfig;
 
                 const bottom = 0;
-
-                const right = routeConfig.positionAnimation;
+                const right = routeConfig.positionAnimation[props.activeTabIndex];
 
                 const AnimatedCmp = (right === 0 && bottom === 0) ? View : Animated.View;
 
@@ -119,13 +125,13 @@ const Router = (props: any) => (
                     </AnimatedCmp>
                 );
             })}
-        </ContentArea>
-
+        </ContentArea>)}
+          />
         {props.history.filter(route => {
                 const routeConfig = props.routes[route.route];
                 return routeConfig.mode === 'modal';
             }).map((route, key) => {
-                const routeConfig = props.routes[route.route];
+              const routeConfig = props.routes[route.route];
                 const { Component } = routeConfig;
 
                 return (
@@ -166,15 +172,21 @@ const getOffset = routeConfig => {
     )(routeConfig.mode);
 };
 
-const initializeRoutes = routes => {
+const initializeRoutes = (routes, tabs) => {
     return Object.keys(routes).reduce((prev, key, index) => {
         const suppliedConfig = (routes[key] || {});
-        const offset = getOffset(suppliedConfig);
-        
+        const offset = getOffset(suppliedConfig);        
+        let positionAnimation = (index ? new Animated.Value(negate(offset) || 0) : 0);
+        if(routes[key].mode !== 'modal')
+        {
+          const tabIndexInitial = tabs.length > 1 ? tabs.findIndex(tab => tab.initial === key) : index;
+          positionAnimation = Array(tabs.length).fill(0).map((_, index) => index === tabIndexInitial ? 0 : new Animated.Value(negate(offset) || 0));
+        }
+
         const routeConfig = {
             Component: routes[key].route,
             ...suppliedConfig,
-            positionAnimation: index ? new Animated.Value(negate(offset) || 0) : 0
+            positionAnimation
         };
 
         return {
@@ -189,8 +201,8 @@ const doUpdate = (props, prevProps) => {
     // Push New Route
     if (props.history.length > prevProps.history.length) {
         const currentRoute = props.routes[props.route.route];
-        
-        return Animated.timing(currentRoute.positionAnimation, {
+        const positionAnimation = currentRoute.mode === 'modal' ? currentRoute.positionAnimation : currentRoute.positionAnimation[props.activeTabIndex];
+        return Animated.timing(positionAnimation, {
             toValue: 0,
             duration: 350,
             easing: Easing.out(Easing.exp)
@@ -201,8 +213,9 @@ const doUpdate = (props, prevProps) => {
     if (props.isNavigatingBack && !prevProps.isNavigatingBack) {
         const currentRoute = props.routes[props.route.route];
         const offset = getOffset(currentRoute);
+        const positionAnimation = currentRoute.mode === 'modal' ? currentRoute.positionAnimation : currentRoute.positionAnimation[props.activeTabIndex];
 
-        return Animated.timing(currentRoute.positionAnimation, {
+        return Animated.timing(positionAnimation, {
             toValue: negate(offset),
             duration: 350,
             easing: Easing.out(Easing.exp)
@@ -215,9 +228,10 @@ const renderTopNav = always(null);
 const setInitialPositions = props => {
     props.history.map(route => {
         const currentRoute = props.routes[route.route];
+        const positionAnimation = currentRoute.mode === 'modal' ? currentRoute.positionAnimation : currentRoute.positionAnimation[props.activeTabIndex];
 
-        if (typeof currentRoute.positionAnimation !== 'number') {
-            Animated.timing(currentRoute.positionAnimation, {
+        if (typeof positionAnimation !== 'number') {
+            Animated.timing(positionAnimation, {
                 toValue: 0,
                 duration: 0
             }).start();
@@ -226,24 +240,26 @@ const setInitialPositions = props => {
 };
 
 const createRoutes = (config) => {
-    
-    Object.keys(config.routes).forEach(key => {
-        if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
-            config.routes[key] = {
-                ...config.routes[key],
-                getTitle: always(' ')
-            };
-        }
-    });
 
-    return compose(
+  Object.keys(config.routes).forEach(key => {
+    if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
+        config.routes[key] = {
+            ...config.routes[key],
+            getTitle: always(' ')
+        };
+    }
+  });
+
+  const tabs = defaultTo([{}], config.tabs);
+
+  return compose(
         withRouter,
         withProps({
             topNavHeight: config.topNavHeight || 50,
             renderTopNav,
             ...config
         }),
-        withState('routes', 'setRoutes', initializeRoutes(config.routes)),
+        withState('routes', 'setRoutes', initializeRoutes(config.routes, tabs)),
         componentDidUpdate(doUpdate),
         componentDidMount(setInitialPositions)
     )(Router);

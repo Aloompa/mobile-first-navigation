@@ -5,6 +5,8 @@ import { routerReducer } from '../index';
 
 const combinedReducers = combineReducers({
     router: routerReducer({
+        activeTab: 1,
+        initialTabRoutes: ['Home', 'Page2', 'Page3'],
         initialRoute: 'Home',
         adapter: queryStringAdapter
     })
