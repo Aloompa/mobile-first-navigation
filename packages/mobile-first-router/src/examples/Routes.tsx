@@ -11,9 +11,10 @@ import { TabButton, TopNav } from '@aloompa/mobile-first-components';
 const Routes = createRoutes({
   tabs: [
     {
-      button: (isSelected: boolean) => (
+      button: (isSelected: boolean, onPress: Function) => (
         <TabButton
           selected={isSelected}
+          onPress={onPress}
           iconUnselectedColor={'#ccc'}
           iconHeight={18}
           iconWidth={20}
@@ -27,9 +28,10 @@ const Routes = createRoutes({
       initial: 'Home'
     },
     {
-      button: (isSelected: boolean) => (
+      button: (isSelected: boolean, onPress: Function) => (
         <TabButton
           selected={isSelected}
+          onPress={onPress}
           iconUnselectedColor={'#ccc'}
           iconHeight={18}
           iconWidth={22}
@@ -43,9 +45,10 @@ const Routes = createRoutes({
       initial: 'Page2'
     },
     {
-      button: (isSelected: boolean) => (
+      button: (isSelected: boolean, onPress: Function) => (
         <TabButton
           selected={isSelected}
+          onPress={onPress}
           iconUnselectedColor={'#ccc'}
           iconHeight={22}
           iconWidth={22}

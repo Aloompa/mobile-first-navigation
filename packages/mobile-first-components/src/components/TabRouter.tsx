@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { View } from 'react-native';
 
 const TabRouter = (props: {
   activeTabIndex: number;
@@ -22,14 +22,9 @@ const TabRouter = (props: {
         height: 52
       }}
     >
-      {props.tabButtons.map((button, index) => (
-        <TouchableOpacity
-          onPress={() => props.setActiveTab(index)}
-          style={{ flex: 1 }}
-        >
-          {button(props.activeTabIndex === index)}
-        </TouchableOpacity>
-      ))}
+      {props.tabButtons.map((button, index) =>
+        button(props.activeTabIndex === index, () => props.setActiveTab(index))
+      )}
     </View>
   );
 

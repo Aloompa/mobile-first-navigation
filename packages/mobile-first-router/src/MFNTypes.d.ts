@@ -1,5 +1,5 @@
 export interface MFNTab {
-  button: (isSelected: boolean) => React.ReactNode;
+  button: (isSelected: boolean, onPress: Function) => React.ReactNode;
   initial: string;
 }
 
