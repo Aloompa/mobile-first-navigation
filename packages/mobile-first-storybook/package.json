@@ -1,6 +1,6 @@
 {
-  "name": "mobile-first-storybook",
-  "version": "0.0.0",
+  "name": "@aloompa/mobile-first-storybook",
+  "version": "0.0.1",
   "description": "> TODO: description",
   "author": "johno <johno@aloompa.com>",
   "homepage": "https://github.com/Aloompa/mobile-first-navigation#readme",
@@ -8,7 +8,7 @@
   "main": "lib/mobile-first-storybook.js",
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "tsc --watch --jsx react",
+    "build": "tsc --watch",
     "storybook": "start-storybook -p 3000"
   },
   "directories": {

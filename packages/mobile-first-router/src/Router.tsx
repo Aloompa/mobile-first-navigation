@@ -7,11 +7,13 @@ import {
   componentDidUpdate
 } from 'react-functional-lifecycle';
 import { compose, withProps, withState } from 'recompose';
+import {
+  Wrapper,
+  TabRouter,
+  ContentArea,
+  ComponentContainer
+} from '@aloompa/mobile-first-components';
 
-import ComponentContainer from './components/ComponentContainer';
-import ContentArea from './components/ContentArea';
-import Wrapper from './components/Wrapper';
-import TabRouter from './components/TabRouter';
 import withRouter from './withRouter';
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {

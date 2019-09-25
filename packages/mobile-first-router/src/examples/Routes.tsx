@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import { Image } from 'react-native';
 import Home from './routes/Home';
 import Modal from './routes/Modal';
 import Page2 from './routes/Page2';
@@ -8,8 +7,7 @@ import Page3 from './routes/Page3';
 import TopNav from './components/TopNav';
 import { always } from 'ramda';
 import { createRoutes } from '../index';
-// import SvgIcon from '../components/SVGImage';
-import TabButton from '../components/TabButton';
+import { TabButton } from '@aloompa/mobile-first-components';
 
 const Routes = createRoutes({
   tabs: [
