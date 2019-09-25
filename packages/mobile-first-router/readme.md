@@ -5,8 +5,8 @@
 ```
 import { combineReducers } from 'redux';
 import { createStore } from 'redux';
-import queryStringAdapter from '@aloompa/react-universal-router/lib/adapters/queryStringAdapter';
-import { routerReducer } from '@aloompa/react-universal-router/lib';
+import queryStringAdapter from '@aloompa/mobile-first-router/lib/adapters/queryStringAdapter';
+import { routerReducer } from '@aloompa/mobile-first-router/lib';
 
 const combinedReducers = combineReducers({
     router: routerReducer({
@@ -23,7 +23,7 @@ export default store;
 ### Define your routes
 
 ```
-import { createRoutes, withRouter } from '@aloompa/react-universal-router/lib';
+import { createRoutes, withRouter } from '@aloompa/mobile-first-router/lib';
 
 const Routes = createRoutes({
     routes: {
@@ -171,21 +171,21 @@ props.setRoute({
 
 ### Example
 
-> - `clone git@github.com:Aloompa/react-universal-router.git`
+> - `clone git@github.com:Aloompa/mobile-first-router.git`
 
 > - `yarn run server`
 
 > - navigate to http://localhost:3001
 
-[Open example project](https://github.com/Aloompa/react-universal-router/tree/master/src/examples)
+[Open example project](https://github.com/Aloompa/mobile-first-router/tree/master/src/examples)
 
 ## Contributing
 
-We encourage you to contribute to React Universal Router by submitting bug reports and pull requests through [Github](http//github.com).
+We encourage you to contribute to Mobile First Router by submitting bug reports and pull requests through [Github](http//github.com).
 
 ## License
 
-React Universal Router is released under The [MIT License](http://www.opensource.org/licenses/MIT) (MIT)
+Mobile First Router is released under The [MIT License](http://www.opensource.org/licenses/MIT) (MIT)
 
 Copyright (c) [2015][aloompa llc]
 
