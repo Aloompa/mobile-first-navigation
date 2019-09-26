@@ -35,7 +35,6 @@
     "ramda": "^0.25.0",
     "react": "16.9.0",
     "react-dom": "16.9.0",
-    "react-functional-lifecycle": "^3.0.0",
     "react-native": "0.61.1",
     "react-native-web": "0.11.7",
     "react-redux": "^5.0.7",
@@ -51,7 +50,6 @@
   "peerDependencies": {
     "ramda": "*",
     "react": "*",
-    "react-functional-lifecycle": "*",
     "react-native": "*",
     "react-redux": "*",
     "redux": "*",
