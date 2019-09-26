@@ -7,7 +7,8 @@ const Modal = (props) => (
     style={{
       display: 'flex',
       flex: 1,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      height: '100%'
     }}
   >
     <View

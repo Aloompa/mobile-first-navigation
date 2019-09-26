@@ -6,6 +6,7 @@ const Home = (props) => (
     style={{
       display: 'flex',
       flex: 1,
+      height: '100%',
       flexDirection: 'column'
     }}
   >

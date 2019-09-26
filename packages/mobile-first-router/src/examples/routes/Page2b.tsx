@@ -7,7 +7,8 @@ const Page2b = (props) => (
     style={{
       display: 'flex',
       flex: 1,
-      flexDirection: 'column'
+      flexDirection: 'column',
+      height: '100%'
     }}
   >
     <View

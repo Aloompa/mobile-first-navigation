@@ -22,7 +22,7 @@ const TabButton = (props: {
         position: 'relative',
         paddingTop: 8,
         flex: 1,
-        height: 100
+        height: 52
       }}
     >
       <SvgIcon
