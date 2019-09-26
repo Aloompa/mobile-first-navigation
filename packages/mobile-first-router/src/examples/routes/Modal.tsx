@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { Text, TouchableOpacity, View } from 'react-native';
-import { compose, withHandlers } from 'recompose';
 
 const Modal = (props) => (
   <View
@@ -45,10 +44,11 @@ const Modal = (props) => (
   </View>
 );
 
-export default compose(
-  withHandlers({
-    prevPage: (props) => (_e) => {
+export default (props) =>
+  Modal({
+    ...props,
+    prevPage: (e) => {
+      e.preventDefault();
       props.navigateBack();
     }
-  })
-)(Modal);
+  });

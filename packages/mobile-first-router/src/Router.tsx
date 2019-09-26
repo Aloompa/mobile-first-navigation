@@ -1,12 +1,18 @@
 import * as React from 'react';
 
 import { Animated, Dimensions, Easing, View } from 'react-native';
-import { always, curry, defaultTo, equals, ifElse, negate, path } from 'ramda';
+
 import {
-  componentDidMount,
-  componentDidUpdate
-} from 'react-functional-lifecycle';
-import { compose, withProps, withState } from 'recompose';
+  always,
+  curry,
+  equals,
+  ifElse,
+  negate,
+  path,
+  compose,
+  defaultTo
+} from 'ramda';
+
 import {
   Wrapper,
   TabRouter,
@@ -16,6 +22,8 @@ import {
 
 import withRouter from './withRouter';
 import { MFNTab, MFNRoute } from './MFNTypes';
+
+const { useState } = React;
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
   const cacheKey = JSON.stringify(currentRoute);
@@ -84,101 +92,119 @@ const getTitle = (props) => {
   return getTitleFromCache(props, currentRoute);
 };
 
-const Router = (props: any) => (
-  <Wrapper>
-    {props.renderTopNav({
-      ...props,
-      mode: 'screen',
-      height: props.topNavHeight,
-      routeTitle: getTitle(props)
-    })}
-    <TabRouter
-      activeTabIndex={props.activeTabIndex}
-      setActiveTab={props.setActiveTab}
-      bottomTab={true}
-      viewHeightReduction={102}
-      tabButtons={props.tabs && props.tabs.map((tab) => tab.button)}
-      tabViews={props.tabRoutes.map(() => (
-        <ContentArea>
-          {props.history
-            .filter((route) => {
-              const routeConfig = props.routes[route.route];
-              return routeConfig.mode !== 'modal';
-            })
-            .map((route, key) => {
-              const routeConfig = props.routes[route.route];
-              const { Component } = routeConfig;
+const Router = (props: any) => {
+  const tabs = defaultTo([{}], props.tabs);
+  const [routes] = useState(initializeRoutes(props.routes, tabs));
+  React.useEffect(() => {
+    setInitialPositions({ ...props, routes });
+  }, []);
 
-              const bottom = 0;
-              const right = routeConfig.positionAnimation[props.activeTabIndex];
+  React.useEffect(() => {
+    pushNewRoute({ ...props, routes });
+  }, [props.history.length]);
 
-              const AnimatedCmp =
-                right === 0 && bottom === 0 ? View : Animated.View;
+  React.useEffect(() => {
+    popCurrentRoute({ ...props, routes });
+  }, [props.isNavigatingBack]);
 
-              return (
-                <AnimatedCmp
-                  key={key}
-                  style={{
-                    position: 'absolute',
-                    right,
-                    bottom,
-                    width: '100%',
-                    height: '100%'
-                  }}
-                >
-                  <ComponentContainer
+  return (
+    <Wrapper>
+      {props.renderTopNav({
+        ...props,
+        mode: 'screen',
+        height: props.topNavHeight,
+        routeTitle: getTitle(props)
+      })}
+      <TabRouter
+        activeTabIndex={props.activeTabIndex}
+        setActiveTab={props.setActiveTab}
+        bottomTab={true}
+        viewHeightReduction={102}
+        tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
+        tabViews={props.tabRoutes.map(() => (
+          <ContentArea>
+            {props.history
+              .filter((route) => {
+                const routeConfig = routes[route.route];
+                return routeConfig.mode !== 'modal';
+              })
+              .map((route, key) => {
+                const routeConfig = routes[route.route];
+                const { Component } = routeConfig;
+                const bottom = 0;
+                const right =
+                  routeConfig.positionAnimation[props.activeTabIndex];
+
+                const AnimatedCmp =
+                  right === 0 && bottom === 0 ? View : Animated.View;
+
+                return (
+                  <AnimatedCmp
+                    key={key}
                     style={{
-                      backgroundColor: '#FFFFFF',
+                      position: 'absolute',
+                      right,
+                      bottom,
+                      width: '100%',
                       height: '100%'
                     }}
                   >
-                    {Component ? <Component {...props} route={route} /> : null}
-                  </ComponentContainer>
-                </AnimatedCmp>
-              );
-            })}
-        </ContentArea>
-      ))}
-    />
-    {props.history
-      .filter((route) => {
-        const routeConfig = props.routes[route.route];
-        return routeConfig.mode === 'modal';
-      })
-      .map((route, key) => {
-        const routeConfig = props.routes[route.route];
-        const { Component } = routeConfig;
+                    <ComponentContainer
+                      style={{
+                        backgroundColor: '#FFFFFF',
+                        height: '100%'
+                      }}
+                    >
+                      {Component ? (
+                        <Component {...props} route={route} />
+                      ) : null}
+                    </ComponentContainer>
+                  </AnimatedCmp>
+                );
+              })}
+          </ContentArea>
+        ))}
+      />
+      {props.history
+        .filter((route) => {
+          const routeConfig = routes[route.route];
+          return routeConfig.mode === 'modal';
+        })
+        .map((route, key) => {
+          const routeConfig = routes[route.route];
+          const { Component } = routeConfig;
 
-        return (
-          <Animated.View
-            key={key}
-            style={{
-              position: 'absolute',
-              right: 0,
-              bottom: routeConfig.positionAnimation,
-              width: '100%',
-              height: '100%'
-            }}
-          >
-            <ComponentContainer
+          return (
+            <Animated.View
+              key={key}
               style={{
-                backgroundColor: '#FFFFFF',
+                position: 'absolute',
+                right: 0,
+                bottom: routeConfig.positionAnimation,
+                width: '100%',
                 height: '100%'
               }}
             >
-              {props.renderTopNav({
-                ...props,
-                mode: 'modal',
-                height: props.topNavHeight,
-                routeTitle: getTitleFromCache(props, route)
-              })}
-              {Component ? <Component {...props} route={route} /> : null}
-            </ComponentContainer>
-          </Animated.View>
-        );
-      })}
-  </Wrapper>
-);
+              <ComponentContainer
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  height: '100%'
+                }}
+              >
+                {props.renderTopNav({
+                  ...props,
+                  mode: 'modal',
+                  height: props.topNavHeight,
+                  routeTitle: getTitleFromCache(props, route)
+                })}
+                {Component ? <Component {...props} route={route} /> : null}
+              </ComponentContainer>
+            </Animated.View>
+          );
+        })}
+    </Wrapper>
+  );
+};
 
 const getOffset = (routeConfig) => {
   const { height, width } = Dimensions.get('window');
@@ -193,6 +219,7 @@ const initializeRoutes = (routes, tabs) => {
     const suppliedConfig = routes[key] || {};
     const offset = getOffset(suppliedConfig);
     let positionAnimation = index ? new Animated.Value(negate(offset) || 0) : 0;
+
     if (routes[key].mode !== 'modal') {
       const tabIndexInitial =
         tabs.length > 1 ? tabs.findIndex((tab) => tab.initial === key) : index;
@@ -218,9 +245,8 @@ const initializeRoutes = (routes, tabs) => {
   }, {});
 };
 
-const doUpdate = (props, prevProps) => {
-  // Push New Route
-  if (props.history.length > prevProps.history.length) {
+const pushNewRoute = (props) => {
+  if (props.history.length > 1) {
     const currentRoute = props.routes[props.route.route];
     const positionAnimation =
       currentRoute.mode === 'modal'
@@ -232,9 +258,10 @@ const doUpdate = (props, prevProps) => {
       easing: Easing.out(Easing.exp)
     }).start(props.navigateComplete);
   }
+};
 
-  // Pop Current Route
-  if (props.isNavigatingBack && !prevProps.isNavigatingBack) {
+const popCurrentRoute = (props) => {
+  if (props.history.length > 1 && props.isNavigatingBack) {
     const currentRoute = props.routes[props.route.route];
     const offset = getOffset(currentRoute);
     const positionAnimation =
@@ -275,7 +302,6 @@ const createRoutes = (config: {
   renderTopNav: React.ReactNode;
   topNavHeight?: number;
 }) => {
-  console.log(config, ':::CONFIG');
   Object.keys(config.routes).forEach((key) => {
     if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
       config.routes[key] = {
@@ -285,19 +311,16 @@ const createRoutes = (config: {
     }
   });
 
-  const tabs = defaultTo([{}], config.tabs);
-
-  return compose(
-    withRouter,
-    withProps({
-      topNavHeight: config.topNavHeight || 50,
-      renderTopNav,
-      ...config
-    }),
-    withState('routes', 'setRoutes', initializeRoutes(config.routes, tabs)),
-    componentDidUpdate(doUpdate),
-    componentDidMount(setInitialPositions)
-  )(Router);
+  return compose(withRouter)((props) =>
+    Router({
+      ...props,
+      ...{
+        topNavHeight: config.topNavHeight || 50,
+        renderTopNav,
+        ...config
+      }
+    })
+  );
 };
 
 export default createRoutes;

@@ -33,13 +33,11 @@
     "express": "^4.16.4",
     "jest": "^24.8.0",
     "ramda": "^0.25.0",
-    "react": "16.2.0",
-    "react-dom": "16.2.1",
-    "react-functional-lifecycle": "^3.0.0",
-    "react-native": "^0.60.0",
-    "react-native-web": "0.4.0",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "react-native": "0.61.1",
+    "react-native-web": "0.11.7",
     "react-redux": "^5.0.7",
-    "recompose": "^0.27.1",
     "redux": "^4.0.0",
     "redux-actions": "^2.4.0",
     "styled-components": "^3.3.3",
@@ -52,10 +50,8 @@
   "peerDependencies": {
     "ramda": "*",
     "react": "*",
-    "react-functional-lifecycle": "*",
     "react-native": "*",
     "react-redux": "*",
-    "recompose": "*",
     "redux": "*",
     "redux-actions": "*"
   }
