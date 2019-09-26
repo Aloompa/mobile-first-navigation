@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, Button, View } from '@aloompa/mobile-first-components';
 
 const Page2b = (props) => (
   <View
@@ -36,11 +36,19 @@ const Page2b = (props) => (
         justifyContent: 'center'
       }}
     >
-      <TouchableOpacity onPress={props.nextPage}>
+      <Button
+        style={{
+          height: 50,
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onClick={(e) => props.nextPage(e)}
+      >
         <View>
           <Text>Page 3</Text>
         </View>
-      </TouchableOpacity>
+      </Button>
     </View>
   </View>
 );

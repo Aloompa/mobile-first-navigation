@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, Button, View } from '@aloompa/mobile-first-components';
 
 const Modal = (props) => (
   <View
@@ -33,14 +33,22 @@ const Modal = (props) => (
         backgroundColor: '#CCC',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        bottom: 0,
+        position: 'absolute'
       }}
     >
-      <TouchableOpacity onPress={props.prevPage}>
-        <View>
-          <Text>Close</Text>
-        </View>
-      </TouchableOpacity>
+      <Button
+        style={{
+          width: '100%',
+          padding: 10,
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onClick={(e) => props.prevPage(e)}
+      >
+        <Text>Close</Text>
+      </Button>
     </View>
   </View>
 );
