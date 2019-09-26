@@ -1,5 +1,6 @@
 import * as React from 'react';
 import SvgIcon from './SVGImage';
+import { TouchableOpacity } from 'react-native';
 
 const TabButton = (props: {
   iconUrl: string;
@@ -11,7 +12,7 @@ const TabButton = (props: {
   title: string;
   onPress: Function;
 }) => (
-  <button onClick={() => props.onPress} style={{ flex: 1 }}>
+  <TouchableOpacity onPress={props.onPress} style={{ flex: 1 }}>
     <div
       style={{
         display: 'flex',
@@ -42,7 +43,7 @@ const TabButton = (props: {
         {props.title}
       </span>
     </div>
-  </button>
+  </TouchableOpacity>
 );
 
 export default TabButton;

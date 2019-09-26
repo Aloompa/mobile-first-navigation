@@ -21,9 +21,9 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
-import { MFNTab, MFNRoute, MFNConfig } from './MFNTypes';
+import { MFNConfig } from './MFNTypes';
 
-const { useState } = React;
+const { useState, useEffect } = React;
 
 const getTitleFromCache = curry((props: any, currentRoute: any) => {
   const cacheKey = JSON.stringify(currentRoute);
@@ -95,15 +95,15 @@ const getTitle = (props) => {
 const Router = (props: any) => {
   const tabs = defaultTo([{}], props.tabs);
   const [routes] = useState(initializeRoutes(props.routes, tabs));
-  React.useEffect(() => {
+  useEffect(() => {
     setInitialPositions({ ...props, routes });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     pushNewRoute({ ...props, routes });
   }, [props.history.length]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
 
