@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View } from './Primitives';
 
 const TabRouter = (props: {
   activeTabIndex: number;

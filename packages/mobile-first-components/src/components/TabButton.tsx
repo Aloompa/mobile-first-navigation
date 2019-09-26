@@ -1,7 +1,6 @@
 import * as React from 'react';
 import SvgIcon from './SVGImage';
-// import { TouchableOpacity } from 'react-native';
-import { Button, View, Text } from '..';
+import { Button, View, Text } from './Primitives';
 
 const TabButton = (props: {
   iconUrl: string;
