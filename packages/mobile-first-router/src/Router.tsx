@@ -13,7 +13,6 @@ import {
   defaultTo
 } from 'ramda';
 
-import { withProps } from 'recompose';
 import {
   Wrapper,
   TabRouter,
@@ -94,12 +93,8 @@ const getTitle = (props) => {
 };
 
 const Router = (props: any) => {
-  // console.log(initializeRoutes)
-  // withState('routes', 'setRoutes', initializeRoutes(config.routes, tabs)),
   const tabs = defaultTo([{}], props.tabs);
-
   const [routes, setRoutes] = useState(initializeRoutes(props.routes, tabs));
-
   React.useEffect(() => {
     setInitialPositions({ ...props, routes });
   }, []);
@@ -271,7 +266,7 @@ const pushNewRoute = (props) => {
 };
 
 const popCurrentRoute = (props) => {
-  if (props.history.length > 1) {
+  if (props.history.length > 2) {
     const currentRoute = props.routes[props.route.route];
     const offset = getOffset(currentRoute);
     const positionAnimation =
@@ -322,16 +317,16 @@ const createRoutes = (config: {
     }
   });
 
-  // const tabs = defaultTo([{}], config.tabs);
-
-  return compose(
-    withRouter,
-    withProps({
-      topNavHeight: config.topNavHeight || 50,
-      renderTopNav,
-      ...config
+  return compose(withRouter)((props) =>
+    Router({
+      ...props,
+      ...{
+        topNavHeight: config.topNavHeight || 50,
+        renderTopNav,
+        ...config
+      }
     })
-  )(Router);
+  );
 };
 
 export default createRoutes;
