@@ -65,7 +65,7 @@ const Routes = createRoutes({
   routes: {
     Home: {
       route: Home,
-      getTitle: always('Home')
+      getTitle: always('')
     },
     Page2: {
       route: Page2,

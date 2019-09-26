@@ -21,7 +21,7 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
-import { MFNTab, MFNRoute } from './MFNTypes';
+import { MFNTab, MFNRoute, MFNConfig } from './MFNTypes';
 
 const { useState } = React;
 
@@ -296,28 +296,45 @@ const setInitialPositions = (props) => {
   });
 };
 
-const createRoutes = (config: {
-  tabs?: Array<MFNTab>;
-  routes: Record<string, MFNRoute>;
-  renderTopNav: React.ReactNode;
-  topNavHeight?: number;
-}) => {
-  Object.keys(config.routes).forEach((key) => {
-    if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
-      config.routes[key] = {
-        ...config.routes[key],
-        getTitle: always(' ')
-      };
-    }
-  });
+const fillEmptyTitles = (config: MFNConfig) =>
+  defaultTo(
+    config,
+    Object.keys(config.routes).reduce(
+      (total, key) => {
+        if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
+          return {
+            ...total,
+            routes: {
+              ...total.routes,
+              [key]: {
+                ...config.routes[key],
+                getTitle: always(' ')
+              }
+            }
+          };
+        } else {
+          return {
+            ...total,
+            routes: {
+              ...total.routes,
+              [key]: { ...config.routes[key] }
+            }
+          };
+        }
+      },
+      { ...config, routes: {} }
+    )
+  );
 
+const createRoutes = (config: MFNConfig) => {
+  const configWithTitles = fillEmptyTitles(config);
   return compose(withRouter)((props) =>
     Router({
       ...props,
       ...{
-        topNavHeight: config.topNavHeight || 50,
+        topNavHeight: defaultTo(50, configWithTitles.topNavHeight),
         renderTopNav,
-        ...config
+        ...configWithTitles
       }
     })
   );
