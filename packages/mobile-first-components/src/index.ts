@@ -6,12 +6,17 @@ import TabRouter from './components/TabRouter';
 import TopNav from './components/TopNav';
 import Wrapper from './components/Wrapper';
 
+import { Text, Button, View } from './components/Primitives';
+
 export {
+  Button,
   ComponentContainer,
   ContentArea,
   SVGImage,
   TabButton,
   TabRouter,
+  Text,
   TopNav,
+  View,
   Wrapper
 };

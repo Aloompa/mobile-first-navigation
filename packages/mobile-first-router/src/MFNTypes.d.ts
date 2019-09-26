@@ -8,3 +8,9 @@ export interface MFNRoute {
   getTitle: Function;
   mode?: string;
 }
+export interface MFNConfig {
+  tabs?: Array<MFNTab>;
+  routes: Record<string, MFNRoute>;
+  renderTopNav: React.ReactNode;
+  topNavHeight?: number;
+}
