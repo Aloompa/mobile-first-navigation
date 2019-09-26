@@ -94,7 +94,7 @@ const getTitle = (props) => {
 
 const Router = (props: any) => {
   const tabs = defaultTo([{}], props.tabs);
-  const [routes, setRoutes] = useState(initializeRoutes(props.routes, tabs));
+  const [routes] = useState(initializeRoutes(props.routes, tabs));
   React.useEffect(() => {
     setInitialPositions({ ...props, routes });
   }, []);
@@ -107,8 +107,6 @@ const Router = (props: any) => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
 
-  console.log(setRoutes);
-  console.log(props);
   return (
     <Wrapper>
       {props.renderTopNav({
@@ -133,7 +131,6 @@ const Router = (props: any) => {
               .map((route, key) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                console.log(routeConfig, 'ROUTECONFIG');
                 const bottom = 0;
                 const right =
                   routeConfig.positionAnimation[props.activeTabIndex];
@@ -146,7 +143,7 @@ const Router = (props: any) => {
                     key={key}
                     style={{
                       position: 'absolute',
-                      // right,
+                      right,
                       bottom,
                       width: '100%',
                       height: '100%'
@@ -218,11 +215,11 @@ const getOffset = (routeConfig) => {
 };
 
 const initializeRoutes = (routes, tabs) => {
-  const configs = Object.keys(routes).reduce((prev, key, index) => {
+  return Object.keys(routes).reduce((prev, key, index) => {
     const suppliedConfig = routes[key] || {};
     const offset = getOffset(suppliedConfig);
     let positionAnimation = index ? new Animated.Value(negate(offset) || 0) : 0;
-    console.log(positionAnimation, 'POSITION ANIMATION');
+
     if (routes[key].mode !== 'modal') {
       const tabIndexInitial =
         tabs.length > 1 ? tabs.findIndex((tab) => tab.initial === key) : index;
@@ -246,8 +243,6 @@ const initializeRoutes = (routes, tabs) => {
       [key]: routeConfig
     };
   }, {});
-  console.log(configs, 'CONFIGS');
-  return configs;
 };
 
 const pushNewRoute = (props) => {
@@ -307,7 +302,6 @@ const createRoutes = (config: {
   renderTopNav: React.ReactNode;
   topNavHeight?: number;
 }) => {
-  console.log(config, ':::CONFIG');
   Object.keys(config.routes).forEach((key) => {
     if (!config.routes[key].getTitle || !config.routes[key].getTitle()) {
       config.routes[key] = {
