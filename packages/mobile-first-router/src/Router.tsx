@@ -1,11 +1,18 @@
 import * as React from 'react';
 
 import { Animated, Dimensions, Easing, View } from 'react-native';
-import { always, curry, equals, ifElse, negate, path, compose } from 'ramda';
+
 import {
-  componentDidMount,
-  componentDidUpdate
-} from 'react-functional-lifecycle';
+  always,
+  curry,
+  equals,
+  ifElse,
+  negate,
+  path,
+  compose,
+  defaultTo
+} from 'ramda';
+
 import { withProps } from 'recompose';
 import {
   Wrapper,
@@ -89,9 +96,22 @@ const getTitle = (props) => {
 const Router = (props: any) => {
   // console.log(initializeRoutes)
   // withState('routes', 'setRoutes', initializeRoutes(config.routes, tabs)),
-  const [routes, setRoutes] = useState(
-    initializeRoutes(props.routes, props.tabs)
-  );
+  const tabs = defaultTo([{}], props.tabs);
+
+  const [routes, setRoutes] = useState(initializeRoutes(props.routes, tabs));
+
+  React.useEffect(() => {
+    setInitialPositions({ ...props, routes });
+  }, []);
+
+  React.useEffect(() => {
+    pushNewRoute({ ...props, routes });
+  }, [props.history.length]);
+
+  React.useEffect(() => {
+    popCurrentRoute({ ...props, routes });
+  }, [props.isNavigatingBack]);
+
   console.log(setRoutes);
   console.log(props);
   return (
@@ -112,11 +132,11 @@ const Router = (props: any) => {
           <ContentArea>
             {props.history
               .filter((route) => {
-                const routeConfig = props.routes[route.route];
+                const routeConfig = routes[route.route];
                 return routeConfig.mode !== 'modal';
               })
               .map((route, key) => {
-                const routeConfig = props.routes[route.route];
+                const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
                 console.log(routeConfig, 'ROUTECONFIG');
                 const bottom = 0;
@@ -131,7 +151,7 @@ const Router = (props: any) => {
                     key={key}
                     style={{
                       position: 'absolute',
-                      right,
+                      // right,
                       bottom,
                       width: '100%',
                       height: '100%'
@@ -203,10 +223,11 @@ const getOffset = (routeConfig) => {
 };
 
 const initializeRoutes = (routes, tabs) => {
-  return Object.keys(routes).reduce((prev, key, index) => {
+  const configs = Object.keys(routes).reduce((prev, key, index) => {
     const suppliedConfig = routes[key] || {};
     const offset = getOffset(suppliedConfig);
     let positionAnimation = index ? new Animated.Value(negate(offset) || 0) : 0;
+    console.log(positionAnimation, 'POSITION ANIMATION');
     if (routes[key].mode !== 'modal') {
       const tabIndexInitial =
         tabs.length > 1 ? tabs.findIndex((tab) => tab.initial === key) : index;
@@ -230,11 +251,12 @@ const initializeRoutes = (routes, tabs) => {
       [key]: routeConfig
     };
   }, {});
+  console.log(configs, 'CONFIGS');
+  return configs;
 };
 
-const doUpdate = (props, prevProps) => {
-  // Push New Route
-  if (props.history.length > prevProps.history.length) {
+const pushNewRoute = (props) => {
+  if (props.history.length > 1) {
     const currentRoute = props.routes[props.route.route];
     const positionAnimation =
       currentRoute.mode === 'modal'
@@ -246,9 +268,10 @@ const doUpdate = (props, prevProps) => {
       easing: Easing.out(Easing.exp)
     }).start(props.navigateComplete);
   }
+};
 
-  // Pop Current Route
-  if (props.isNavigatingBack && !prevProps.isNavigatingBack) {
+const popCurrentRoute = (props) => {
+  if (props.history.length > 1) {
     const currentRoute = props.routes[props.route.route];
     const offset = getOffset(currentRoute);
     const positionAnimation =
@@ -307,10 +330,7 @@ const createRoutes = (config: {
       topNavHeight: config.topNavHeight || 50,
       renderTopNav,
       ...config
-    }),
-    // withState('routes', 'setRoutes', initializeRoutes(config.routes, tabs)),
-    componentDidUpdate(doUpdate),
-    componentDidMount(setInitialPositions)
+    })
   )(Router);
 };
 
