@@ -266,7 +266,7 @@ const pushNewRoute = (props) => {
 };
 
 const popCurrentRoute = (props) => {
-  if (props.history.length > 1) {
+  if (props.history.length > 1 && props.isNavigatingBack) {
     const currentRoute = props.routes[props.route.route];
     const offset = getOffset(currentRoute);
     const positionAnimation =
