@@ -1,7 +1,5 @@
 import * as React from 'react';
-
 import { Text, TouchableOpacity, View } from 'react-native';
-import { compose, withHandlers } from 'recompose';
 
 const Home = (props) => (
   <View
@@ -45,13 +43,14 @@ const Home = (props) => (
   </View>
 );
 
-export default compose(
-  withHandlers({
-    nextPage: (props) => (_e) => {
+export default (props) =>
+  Home({
+    ...props,
+    nextPage: (e) => {
+      e.preventDefault();
       props.setRoute({
         route: 'Page2',
         params: {}
       });
     }
-  })
-)(Home);
+  });
