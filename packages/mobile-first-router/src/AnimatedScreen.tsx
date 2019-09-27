@@ -4,12 +4,27 @@ import { useSpring, animated } from 'react-spring';
 
 import { ComponentContainer } from '@aloompa/mobile-first-components';
 
-export const AnimatedScreen = (props: { Component: any; route: any }) => {
+export const AnimatedScreen = (props: {
+  Component: any;
+  route: any;
+  history: any;
+  isNavigatingBack: any;
+}) => {
   const Component = props.Component;
-  const spring = useSpring({ right: 0 });
+  console.log(props.history, 'HISTORY', props.isNavigatingBack);
+
+  const spring =
+    props.history.length > 1
+      ? useSpring({
+          to: async (next, _cancel) => {
+            await next({ right: 0 });
+          },
+          from: { right: -414 }
+        })
+      : useSpring({ right: 0 });
+  console.log(props.route, 'this route?');
   return (
     <animated.div
-      //   key={index}
       style={{
         ...spring,
         position: 'absolute',
@@ -19,11 +34,9 @@ export const AnimatedScreen = (props: { Component: any; route: any }) => {
       }}
     >
       <ComponentContainer
-        // key={index}
         style={{
           backgroundColor: '#FFFFFF',
           height: '100%',
-          //   right,
           bottom: 0
         }}
       >

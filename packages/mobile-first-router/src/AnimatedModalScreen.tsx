@@ -16,13 +16,19 @@ export const AnimatedModalScreen = (props: {
   // modalSpring: any
 }) => {
   const Component = props.Component;
-  const modalSpring = useSpring({ bottom: 0 });
+
+  const spring = useSpring({
+    to: async (next, _cancel) => {
+      await next({ bottom: 0 });
+    },
+    from: { bottom: -414 }
+  });
 
   return (
     <animated.div
       // key={key}
       style={{
-        ...modalSpring,
+        ...spring,
         position: 'absolute',
         right: 0,
         // bottom: routeConfig.positionAnimation,
