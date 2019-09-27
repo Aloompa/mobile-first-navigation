@@ -1,7 +1,5 @@
 import * as React from 'react';
 
-import { Animated, Dimensions, Easing, View } from 'react-native';
-
 import {
   always,
   curry,
@@ -13,11 +11,14 @@ import {
   defaultTo
 } from 'ramda';
 
+import { useSpring, animated } from 'react-spring';
+
 import {
   Wrapper,
   TabRouter,
   ContentArea,
   ComponentContainer
+  // View
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
@@ -107,6 +108,9 @@ const Router = (props: any) => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
 
+  const spring = useSpring({ right: 0 });
+  const modalSpring = useSpring({ bottom: 0 });
+
   return (
     <Wrapper>
       {props.renderTopNav({
@@ -128,38 +132,38 @@ const Router = (props: any) => {
                 const routeConfig = routes[route.route];
                 return routeConfig.mode !== 'modal';
               })
-              .map((route, key) => {
+              .map((route, index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
                 const bottom = 0;
                 const right =
                   routeConfig.positionAnimation[props.activeTabIndex];
 
-                const AnimatedCmp =
-                  right === 0 && bottom === 0 ? View : Animated.View;
-
                 return (
-                  <AnimatedCmp
-                    key={key}
+                  <animated.div
+                    key={index}
                     style={{
+                      ...spring,
                       position: 'absolute',
-                      right,
                       bottom,
                       width: '100%',
                       height: '100%'
                     }}
                   >
                     <ComponentContainer
+                      key={index}
                       style={{
                         backgroundColor: '#FFFFFF',
-                        height: '100%'
+                        height: '100%',
+                        right,
+                        bottom
                       }}
                     >
                       {Component ? (
                         <Component {...props} route={route} />
                       ) : null}
                     </ComponentContainer>
-                  </AnimatedCmp>
+                  </animated.div>
                 );
               })}
           </ContentArea>
@@ -175,20 +179,24 @@ const Router = (props: any) => {
           const { Component } = routeConfig;
 
           return (
-            <Animated.View
+            <animated.div
               key={key}
               style={{
+                ...modalSpring,
                 position: 'absolute',
                 right: 0,
-                bottom: routeConfig.positionAnimation,
+                // bottom: routeConfig.positionAnimation,
                 width: '100%',
                 height: '100%'
               }}
             >
               <ComponentContainer
+                key={key}
                 style={{
                   backgroundColor: '#FFFFFF',
-                  height: '100%'
+                  height: '100%',
+                  right: 0
+                  // bottom: routeConfig.positionAnimation,
                 }}
               >
                 {props.renderTopNav({
@@ -199,7 +207,7 @@ const Router = (props: any) => {
                 })}
                 {Component ? <Component {...props} route={route} /> : null}
               </ComponentContainer>
-            </Animated.View>
+            </animated.div>
           );
         })}
     </Wrapper>
@@ -207,8 +215,7 @@ const Router = (props: any) => {
 };
 
 const getOffset = (routeConfig) => {
-  const { height, width } = Dimensions.get('window');
-
+  const { innerWidth: width, innerHeight: height } = window;
   return ifElse(equals('modal'), always(height), always(width))(
     routeConfig.mode
   );
@@ -218,7 +225,7 @@ const initializeRoutes = (routes, tabs) => {
   return Object.keys(routes).reduce((prev, key, index) => {
     const suppliedConfig = routes[key] || {};
     const offset = getOffset(suppliedConfig);
-    let positionAnimation = index ? new Animated.Value(negate(offset) || 0) : 0;
+    let positionAnimation = index ? negate(offset) || 0 : 0;
 
     if (routes[key].mode !== 'modal') {
       const tabIndexInitial =
@@ -226,9 +233,7 @@ const initializeRoutes = (routes, tabs) => {
       positionAnimation = Array(tabs.length)
         .fill(0)
         .map((_, index) =>
-          index === tabIndexInitial
-            ? 0
-            : new Animated.Value(negate(offset) || 0)
+          index === tabIndexInitial ? 0 : negate(offset) || 0
         );
     }
 
@@ -247,52 +252,43 @@ const initializeRoutes = (routes, tabs) => {
 
 const pushNewRoute = (props) => {
   if (props.history.length > 1) {
-    const currentRoute = props.routes[props.route.route];
-    const positionAnimation =
-      currentRoute.mode === 'modal'
-        ? currentRoute.positionAnimation
-        : currentRoute.positionAnimation[props.activeTabIndex];
-    return Animated.timing(positionAnimation, {
-      toValue: 0,
-      duration: 350,
-      easing: Easing.out(Easing.exp)
-    }).start(props.navigateComplete);
+    // const currentRoute = props.routes[props.route.route];
+    // const positionAnimation =
+    //   currentRoute.mode === 'modal'
+    //     ? currentRoute.positionAnimation
+    //     : currentRoute.positionAnimation[props.activeTabIndex];
+    return props.navigateComplete();
   }
 };
 
 const popCurrentRoute = (props) => {
   if (props.history.length > 1 && props.isNavigatingBack) {
-    const currentRoute = props.routes[props.route.route];
-    const offset = getOffset(currentRoute);
-    const positionAnimation =
-      currentRoute.mode === 'modal'
-        ? currentRoute.positionAnimation
-        : currentRoute.positionAnimation[props.activeTabIndex];
+    // const currentRoute = props.routes[props.route.route];
+    // const offset = getOffset(currentRoute);
+    // const positionAnimation =
+    //   currentRoute.mode === 'modal'
+    //     ? currentRoute.positionAnimation
+    //     : currentRoute.positionAnimation[props.activeTabIndex];
 
-    return Animated.timing(positionAnimation, {
-      toValue: negate(offset),
-      duration: 350,
-      easing: Easing.out(Easing.exp)
-    }).start(props.navigateBackComplete);
+    return props.navigateBackComplete();
   }
 };
 
 const renderTopNav = always(null);
 
 const setInitialPositions = (props) => {
-  props.history.map((route) => {
-    const currentRoute = props.routes[route.route];
-    const positionAnimation =
-      currentRoute.mode === 'modal'
-        ? currentRoute.positionAnimation
-        : currentRoute.positionAnimation[props.activeTabIndex];
-
-    if (typeof positionAnimation !== 'number') {
-      Animated.timing(positionAnimation, {
-        toValue: 0,
-        duration: 0
-      }).start();
-    }
+  props.history.map((_route) => {
+    // const currentRoute = props.routes[route.route];
+    // const positionAnimation =
+    //   currentRoute.mode === 'modal'
+    //     ? currentRoute.positionAnimation
+    //     : currentRoute.positionAnimation[props.activeTabIndex];
+    // if (typeof positionAnimation !== 'number') {
+    //   Animated.timing(positionAnimation, {
+    //     toValue: 0,
+    //     duration: 0
+    //   }).start();
+    // }
   });
 };
 
