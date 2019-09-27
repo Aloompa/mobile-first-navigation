@@ -115,16 +115,18 @@ const Router = (props: any) => {
   // const spring = useSpring({ right });
   // const modalSpring = useSpring({ bottom: 0 });
 
-  const tabRouteKeys = props.tabRoutes.flatMap((tab, tabIndex) =>
-    tab.map((route) => `${tabIndex}_${route.route}`)
-  );
-  console.log(tabRouteKeys, 'TAB ROUTE');
+  // const tabRouteKeys = props.tabRoutes.flatMap((tab, tabIndex) =>
+  //   tab.map((route) => `${tabIndex}_${route.route}`)
+  // );
+  // console.log(tabRouteKeys, 'TAB ROUTE');
 
-  const transitions = useTransition(tabRouteKeys, (tab) => tab, {
-    from: { opacity: 0, transform: 'translate3d(100%,0,0)' },
+  const transitions = useTransition(props.route.route, (tab) => tab, {
+    from: { opacity: 1, transform: 'translate3d(100%,0,0)' },
     enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
-    leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' }
+    leave: { opacity: 1, transform: 'translate3d(-100%,0,0)' }
   });
+
+  console.log(transitions, 'transitions');
 
   return (
     <Wrapper>
@@ -140,7 +142,7 @@ const Router = (props: any) => {
         bottomTab={true}
         viewHeightReduction={102}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
-        tabViews={props.tabRoutes.map((_tab, tabIndex) => (
+        tabViews={props.tabRoutes.map((_tab, _tabIndex) => (
           <ContentArea>
             {props.history
               .filter((route) => {
@@ -154,11 +156,8 @@ const Router = (props: any) => {
                 const right =
                   routeConfig.positionAnimation[props.activeTabIndex];
 
-                const transition = transitions.filter(
-                  (transition) =>
-                    transition.item === `${tabIndex}_${route.route}`
-                )[0];
-                console.log(transitions, transition);
+                const transition = transitions[0];
+                // console.log(transitions, transition);
                 return (
                   <animated.div
                     key={index}
@@ -176,8 +175,8 @@ const Router = (props: any) => {
                       style={{
                         backgroundColor: '#FFFFFF',
                         height: '100%',
-                        right,
-                        bottom
+                        right
+                        // bottom
                       }}
                     >
                       {Component ? (
@@ -198,12 +197,13 @@ const Router = (props: any) => {
         .map((route, key) => {
           const routeConfig = routes[route.route];
           const { Component } = routeConfig;
-
+          const transition = transitions[0];
           return (
             <animated.div
               key={key}
               style={{
                 // ...modalSpring,
+                ...transition.props,
                 position: 'absolute',
                 right: 0,
                 width: '100%',
