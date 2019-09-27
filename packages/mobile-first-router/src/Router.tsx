@@ -1,17 +1,6 @@
 import * as React from 'react';
 
-import {
-  always,
-  curry,
-  equals,
-  ifElse,
-  negate,
-  path,
-  compose,
-  defaultTo
-} from 'ramda';
-
-// import { useSpring, animated } from 'react-spring';
+import { always, curry, path, compose, defaultTo } from 'ramda';
 
 import {
   Wrapper,
@@ -94,14 +83,7 @@ const getTitle = (props) => {
 };
 
 const Router = (props: any) => {
-  const tabs = defaultTo([{}], props.tabs);
-  const [routes] = useState(initializeRoutes(props.routes, tabs));
-
-  // const modalSpring = useSpring({ bottom: 0 });
-
-  useEffect(() => {
-    setInitialPositions({ ...props, routes });
-  }, []);
+  const [routes] = useState(initializeRoutes(props.routes));
 
   useEffect(() => {
     pushNewRoute({ ...props, routes });
@@ -135,9 +117,6 @@ const Router = (props: any) => {
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                // const bottom = 0;
-                // const right =
-                //   routeConfig.positionAnimation[props.activeTabIndex];
                 return <AnimatedScreen {...{ ...props, Component, route }} />;
               })}
           </ContentArea>
@@ -167,33 +146,13 @@ const Router = (props: any) => {
   );
 };
 
-const getOffset = (routeConfig) => {
-  const { innerWidth: width, innerHeight: height } = window;
-  return ifElse(equals('modal'), always(height), always(width))(
-    routeConfig.mode
-  );
-};
-
-const initializeRoutes = (routes, tabs) => {
-  return Object.keys(routes).reduce((prev, key, index) => {
+const initializeRoutes = (routes) => {
+  return Object.keys(routes).reduce((prev, key) => {
     const suppliedConfig = routes[key] || {};
-    const offset = getOffset(suppliedConfig);
-    let positionAnimation = index ? negate(offset) || 0 : 0;
-
-    if (routes[key].mode !== 'modal') {
-      const tabIndexInitial =
-        tabs.length > 1 ? tabs.findIndex((tab) => tab.initial === key) : index;
-      positionAnimation = Array(tabs.length)
-        .fill(0)
-        .map((_, index) =>
-          index === tabIndexInitial ? 0 : negate(offset) || 0
-        );
-    }
 
     const routeConfig = {
       Component: routes[key].route,
-      ...suppliedConfig,
-      positionAnimation
+      ...suppliedConfig
     };
 
     return {
@@ -205,45 +164,17 @@ const initializeRoutes = (routes, tabs) => {
 
 const pushNewRoute = (props) => {
   if (props.history.length > 1) {
-    // const currentRoute = props.routes[props.route.route];
-    // const positionAnimation =
-    //   currentRoute.mode === 'modal'
-    //     ? currentRoute.positionAnimation
-    //     : currentRoute.positionAnimation[props.activeTabIndex];
     return props.navigateComplete();
   }
 };
 
 const popCurrentRoute = (props) => {
   if (props.history.length > 1 && props.isNavigatingBack) {
-    // const currentRoute = props.routes[props.route.route];
-    // const offset = getOffset(currentRoute);
-    // const positionAnimation =
-    //   currentRoute.mode === 'modal'
-    //     ? currentRoute.positionAnimation
-    //     : currentRoute.positionAnimation[props.activeTabIndex];
-
     return props.navigateBackComplete();
   }
 };
 
 const renderTopNav = always(null);
-
-const setInitialPositions = (props) => {
-  props.history.map((_route) => {
-    // const currentRoute = props.routes[route.route];
-    // const positionAnimation =
-    //   currentRoute.mode === 'modal'
-    //     ? currentRoute.positionAnimation
-    //     : currentRoute.positionAnimation[props.activeTabIndex];
-    // if (typeof positionAnimation !== 'number') {
-    //   Animated.timing(positionAnimation, {
-    //     toValue: 0,
-    //     duration: 0
-    //   }).start();
-    // }
-  });
-};
 
 const fillEmptyTitles = (config: MFNConfig) =>
   defaultTo(
