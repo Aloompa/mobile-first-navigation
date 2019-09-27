@@ -18,7 +18,6 @@ import {
   TabRouter,
   ContentArea,
   ComponentContainer
-  // View
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
