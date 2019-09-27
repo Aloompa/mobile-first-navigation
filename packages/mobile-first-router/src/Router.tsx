@@ -121,9 +121,10 @@ const Router = (props: any) => {
   // console.log(tabRouteKeys, 'TAB ROUTE');
 
   const transitions = useTransition(props.route.route, (tab) => tab, {
-    from: { opacity: 1, transform: 'translate3d(100%,0,0)' },
-    enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
-    leave: { opacity: 1, transform: 'translate3d(-100%,0,0)' }
+    from: { opacity: 0, right: -414 },
+    enter: { opacity: 1, right: 0 },
+    leave: { opacity: 0, right: 414 },
+    config: { duration: 100 }
   });
 
   console.log(transitions, 'transitions');
