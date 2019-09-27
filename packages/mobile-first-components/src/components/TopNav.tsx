@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, Button, View } from './Primitives';
 
 const TopNav = (props) =>
   !props.navbarHidden && (
@@ -8,24 +8,27 @@ const TopNav = (props) =>
       style={{
         width: '100%',
         height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        flex: 1
       }}
     >
       {props.history.length === 1 ? (
         <View
           style={{
-            padding: 7
+            padding: 7,
+            height: 10,
+            position: 'absolute'
           }}
         />
       ) : (
-        <TouchableOpacity onPress={props.navigateBack}>
-          <View
-            style={{
-              padding: 7
-            }}
-          >
+        <View
+          style={{
+            textAlign: 'left',
+            padding: 7,
+            position: 'absolute'
+          }}
+        >
+          <Button onClick={() => props.navigateBack()}>
             <Text
               style={{
                 fontSize: 18
@@ -33,15 +36,17 @@ const TopNav = (props) =>
             >
               {props.mode === 'modal' ? 'X' : '<'}
             </Text>
-          </View>
-        </TouchableOpacity>
+          </Button>
+        </View>
       )}
-      <Text>{props.routeTitle}</Text>
       <View
         style={{
-          padding: 7
+          padding: 7,
+          textAlign: 'center'
         }}
-      />
+      >
+        <Text>{props.routeTitle}</Text>
+      </View>
     </View>
   );
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { View } from 'react-native';
+import { View } from './Primitives';
 
 const ComponentContainer = (props) => (
   <View
@@ -8,7 +8,8 @@ const ComponentContainer = (props) => (
       ...props.style,
       width: '100%',
       backgroundColor: '#FFFFFF',
-      height: '100%'
+      height: '100%',
+      flex: 1
     }}
   >
     {props.children}
