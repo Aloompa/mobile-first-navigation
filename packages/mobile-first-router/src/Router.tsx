@@ -96,22 +96,24 @@ const Router = (props: any) => {
   const tabs = defaultTo([{}], props.tabs);
   const [routes] = useState(initializeRoutes(props.routes, tabs));
   const [right, setRight] = useState(0);
-  const [spring] = useSpring(() => ({
-    right: right,
-    config: { duration: 100 }
+  const [spring, setSpring] = useSpring(() => ({
+    right: right
+    // reset: true
+    // config: { duration: 100 }
   }));
+  console.log(setSpring);
   const modalSpring = useSpring({ bottom: 0 });
 
   useEffect(() => {
-    setInitialPositions({ ...props, routes, setRight });
+    setInitialPositions({ ...props, routes, setRight, setSpring });
   }, []);
 
   useEffect(() => {
-    pushNewRoute({ ...props, routes, setRight });
+    pushNewRoute({ ...props, routes, setRight, setSpring });
   }, [props.history.length]);
 
   useEffect(() => {
-    popCurrentRoute({ ...props, routes, setRight });
+    popCurrentRoute({ ...props, routes, setRight, setSpring });
   }, [props.isNavigatingBack]);
 
   return (
@@ -261,7 +263,9 @@ const pushNewRoute = (props) => {
         ? currentRoute.positionAnimation
         : currentRoute.positionAnimation[props.activeTabIndex];
     console.log('pushNew Route', positionAnimation);
-    props.setRight(positionAnimation);
+    // props.setRight(positionAnimation);
+    props.setSpring({ right: -positionAnimation });
+
     return props.navigateComplete();
   }
 };
@@ -269,12 +273,13 @@ const pushNewRoute = (props) => {
 const popCurrentRoute = (props) => {
   if (props.history.length > 1 && props.isNavigatingBack) {
     // const currentRoute = props.routes[props.route.route];
-    // const offset = getOffset(currentRoute);
+    // // const offset = getOffset(currentRoute);
     // const positionAnimation =
     //   currentRoute.mode === 'modal'
     //     ? currentRoute.positionAnimation
     //     : currentRoute.positionAnimation[props.activeTabIndex];
-    props.setRight(0);
+    // props.setRight(0);
+    props.setSpring({ right: 0 });
     return props.navigateBackComplete();
   }
 };
