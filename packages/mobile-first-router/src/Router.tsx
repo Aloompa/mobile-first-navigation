@@ -11,7 +11,7 @@ import {
   defaultTo
 } from 'ramda';
 
-import { useSpring, animated } from 'react-spring';
+import { animated, useTransition } from 'react-spring';
 
 import {
   Wrapper,
@@ -106,9 +106,25 @@ const Router = (props: any) => {
   useEffect(() => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
+  console.log(props);
 
-  const spring = useSpring({ right: 0 });
-  const modalSpring = useSpring({ bottom: 0 });
+  // const routeConfig = routes[props.route.route];
+  // const right =
+  //   routeConfig.positionAnimation[props.activeTabIndex];
+
+  // const spring = useSpring({ right });
+  // const modalSpring = useSpring({ bottom: 0 });
+
+  const tabRouteKeys = props.tabRoutes.flatMap((tab, tabIndex) =>
+    tab.map((route) => `${tabIndex}_${route.route}`)
+  );
+  console.log(tabRouteKeys, 'TAB ROUTE');
+
+  const transitions = useTransition(tabRouteKeys, (tab) => tab, {
+    from: { opacity: 0, transform: 'translate3d(100%,0,0)' },
+    enter: { opacity: 1, transform: 'translate3d(0%,0,0)' },
+    leave: { opacity: 0, transform: 'translate3d(-50%,0,0)' }
+  });
 
   return (
     <Wrapper>
@@ -124,7 +140,7 @@ const Router = (props: any) => {
         bottomTab={true}
         viewHeightReduction={102}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
-        tabViews={props.tabRoutes.map(() => (
+        tabViews={props.tabRoutes.map((_tab, tabIndex) => (
           <ContentArea>
             {props.history
               .filter((route) => {
@@ -138,11 +154,17 @@ const Router = (props: any) => {
                 const right =
                   routeConfig.positionAnimation[props.activeTabIndex];
 
+                const transition = transitions.filter(
+                  (transition) =>
+                    transition.item === `${tabIndex}_${route.route}`
+                )[0];
+                console.log(transitions, transition);
                 return (
                   <animated.div
                     key={index}
                     style={{
-                      ...spring,
+                      // ...spring,
+                      ...transition.props,
                       position: 'absolute',
                       bottom,
                       width: '100%',
@@ -181,10 +203,9 @@ const Router = (props: any) => {
             <animated.div
               key={key}
               style={{
-                ...modalSpring,
+                // ...modalSpring,
                 position: 'absolute',
                 right: 0,
-                // bottom: routeConfig.positionAnimation,
                 width: '100%',
                 height: '100%'
               }}
@@ -195,7 +216,6 @@ const Router = (props: any) => {
                   backgroundColor: '#FFFFFF',
                   height: '100%',
                   right: 0
-                  // bottom: routeConfig.positionAnimation,
                 }}
               >
                 {props.renderTopNav({
