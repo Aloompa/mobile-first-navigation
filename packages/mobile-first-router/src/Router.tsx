@@ -95,20 +95,24 @@ const getTitle = (props) => {
 const Router = (props: any) => {
   const tabs = defaultTo([{}], props.tabs);
   const [routes] = useState(initializeRoutes(props.routes, tabs));
+  const [right, setRight] = useState(0);
+  const [spring] = useSpring(() => ({
+    right: right,
+    config: { duration: 100 }
+  }));
+  const modalSpring = useSpring({ bottom: 0 });
+
   useEffect(() => {
-    setInitialPositions({ ...props, routes });
+    setInitialPositions({ ...props, routes, setRight });
   }, []);
 
   useEffect(() => {
-    pushNewRoute({ ...props, routes });
+    pushNewRoute({ ...props, routes, setRight });
   }, [props.history.length]);
 
   useEffect(() => {
-    popCurrentRoute({ ...props, routes });
+    popCurrentRoute({ ...props, routes, setRight });
   }, [props.isNavigatingBack]);
-
-  const spring = useSpring({ right: 0 });
-  const modalSpring = useSpring({ bottom: 0 });
 
   return (
     <Wrapper>
@@ -251,11 +255,13 @@ const initializeRoutes = (routes, tabs) => {
 
 const pushNewRoute = (props) => {
   if (props.history.length > 1) {
-    // const currentRoute = props.routes[props.route.route];
-    // const positionAnimation =
-    //   currentRoute.mode === 'modal'
-    //     ? currentRoute.positionAnimation
-    //     : currentRoute.positionAnimation[props.activeTabIndex];
+    const currentRoute = props.routes[props.route.route];
+    const positionAnimation =
+      currentRoute.mode === 'modal'
+        ? currentRoute.positionAnimation
+        : currentRoute.positionAnimation[props.activeTabIndex];
+    console.log('pushNew Route', positionAnimation);
+    props.setRight(positionAnimation);
     return props.navigateComplete();
   }
 };
@@ -268,7 +274,7 @@ const popCurrentRoute = (props) => {
     //   currentRoute.mode === 'modal'
     //     ? currentRoute.positionAnimation
     //     : currentRoute.positionAnimation[props.activeTabIndex];
-
+    props.setRight(0);
     return props.navigateBackComplete();
   }
 };
@@ -289,6 +295,8 @@ const setInitialPositions = (props) => {
     //   }).start();
     // }
   });
+
+  props.setRight(0);
 };
 
 const fillEmptyTitles = (config: MFNConfig) =>
