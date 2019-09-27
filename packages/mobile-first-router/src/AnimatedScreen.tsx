@@ -11,8 +11,6 @@ export const AnimatedScreen = (props: {
   isNavigatingBack: any;
 }) => {
   const Component = props.Component;
-  console.log(props.history, 'HISTORY', props.isNavigatingBack);
-
   const spring =
     props.history.length > 1
       ? useSpring({
@@ -22,7 +20,6 @@ export const AnimatedScreen = (props: {
           from: { right: -414 }
         })
       : useSpring({ right: 0 });
-  console.log(props.route, 'this route?');
   return (
     <animated.div
       style={{
