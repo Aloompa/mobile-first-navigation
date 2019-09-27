@@ -11,17 +11,18 @@ import {
   defaultTo
 } from 'ramda';
 
-import { useSpring, animated } from 'react-spring';
+// import { useSpring, animated } from 'react-spring';
 
 import {
   Wrapper,
   TabRouter,
-  ContentArea,
-  ComponentContainer
+  ContentArea
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
 import { MFNConfig } from './MFNTypes';
+import { AnimatedModalScreen } from './AnimatedModalScreen';
+import { AnimatedScreen } from './AnimatedScreen';
 
 const { useState, useEffect } = React;
 
@@ -96,8 +97,7 @@ const Router = (props: any) => {
   const tabs = defaultTo([{}], props.tabs);
   const [routes] = useState(initializeRoutes(props.routes, tabs));
 
-  const spring = useSpring({ right: 0 });
-  const modalSpring = useSpring({ bottom: 0 });
+  // const modalSpring = useSpring({ bottom: 0 });
 
   useEffect(() => {
     setInitialPositions({ ...props, routes });
@@ -132,39 +132,13 @@ const Router = (props: any) => {
                 const routeConfig = routes[route.route];
                 return routeConfig.mode !== 'modal';
               })
-              .map((route, index) => {
+              .map((route, _index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                const bottom = 0;
-                const right =
-                  routeConfig.positionAnimation[props.activeTabIndex];
-
-                return (
-                  <animated.div
-                    key={index}
-                    style={{
-                      ...spring,
-                      position: 'absolute',
-                      bottom,
-                      width: '100%',
-                      height: '100%'
-                    }}
-                  >
-                    <ComponentContainer
-                      key={index}
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        height: '100%',
-                        right,
-                        bottom
-                      }}
-                    >
-                      {Component ? (
-                        <Component {...props} route={route} />
-                      ) : null}
-                    </ComponentContainer>
-                  </animated.div>
-                );
+                // const bottom = 0;
+                // const right =
+                //   routeConfig.positionAnimation[props.activeTabIndex];
+                return <AnimatedScreen {...{ ...props, Component, route }} />;
               })}
           </ContentArea>
         ))}
@@ -174,40 +148,19 @@ const Router = (props: any) => {
           const routeConfig = routes[route.route];
           return routeConfig.mode === 'modal';
         })
-        .map((route, key) => {
+        .map((route, _key) => {
           const routeConfig = routes[route.route];
           const { Component } = routeConfig;
-
           return (
-            <animated.div
-              key={key}
-              style={{
-                ...modalSpring,
-                position: 'absolute',
-                right: 0,
-                // bottom: routeConfig.positionAnimation,
-                width: '100%',
-                height: '100%'
+            <AnimatedModalScreen
+              {...{
+                ...props,
+                Component,
+                getTitleFromCache,
+                route,
+                renderTopNav: props.renderTopNav
               }}
-            >
-              <ComponentContainer
-                key={key}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  height: '100%',
-                  right: 0
-                  // bottom: routeConfig.positionAnimation,
-                }}
-              >
-                {props.renderTopNav({
-                  ...props,
-                  mode: 'modal',
-                  height: props.topNavHeight,
-                  routeTitle: getTitleFromCache(props, route)
-                })}
-                {Component ? <Component {...props} route={route} /> : null}
-              </ComponentContainer>
-            </animated.div>
+            />
           );
         })}
     </Wrapper>
