@@ -95,6 +95,10 @@ const getTitle = (props) => {
 const Router = (props: any) => {
   const tabs = defaultTo([{}], props.tabs);
   const [routes] = useState(initializeRoutes(props.routes, tabs));
+
+  const spring = useSpring({ right: 0 });
+  const modalSpring = useSpring({ bottom: 0 });
+
   useEffect(() => {
     setInitialPositions({ ...props, routes });
   }, []);
@@ -106,9 +110,6 @@ const Router = (props: any) => {
   useEffect(() => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
-
-  const spring = useSpring({ right: 0 });
-  const modalSpring = useSpring({ bottom: 0 });
 
   return (
     <Wrapper>
