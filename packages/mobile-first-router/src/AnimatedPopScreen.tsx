@@ -56,7 +56,7 @@ const animateBackwardsNavigate = (props: {
   routes: any;
   poppedRoute: any;
 }) => {
-  if (props.isNavigatingBack) {
+  if (!props.isNavigatingBack && !props.isNavigating) {
     props.setSpring(() => ({
       to: async (next, _cancel) => {
         await next({ zIndex: 100, right: 0, config: { duration: 0 } });
