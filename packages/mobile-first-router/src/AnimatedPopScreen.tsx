@@ -15,6 +15,7 @@ export const AnimatedPopScreen = (props: {
   isNavigating: boolean;
   width: number;
   routeConfig: any;
+  poppedRoute: any;
 }) => {
   const Component = props.Component;
   const [spring, setSpring] = useSpring(() => ({ right: 0, zIndex: -100 }));
@@ -54,15 +55,15 @@ const animateBackwardsNavigate = (props: {
   setSpring: Function;
   history: any;
   routes: any;
-  navigateBackComplete: Function;
+  poppedRoute: any;
 }) => {
-  if (props.history.length > 1 && props.isNavigatingBack) {
+  if (props.isNavigatingBack) {
     console.log(props);
     props.setSpring(() => ({
       to: async (next, _cancel) => {
         await next({ zIndex: 100, right: 0, config: { duration: 0 } });
         await next({ right: -414, config: { duration: 100 } });
-        await next({ zIndex: -100, config: { duration: 100 } });
+        await next({ zIndex: -100, config: { duration: 0 } });
 
         // await next({  zIndex: -100, right: 0, config: { duration: 0 } });
       }

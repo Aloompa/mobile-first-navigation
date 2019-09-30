@@ -33,6 +33,9 @@ const Router = (props: any) => {
 
   console.log(props.poppedRoute, 'poppedRoutepoppedRoutepoppedRoute');
 
+  const poppedRoute = props.poppedRoute.route;
+  const PoppedComponent = path([poppedRoute, 'Component'], routes);
+
   return (
     <Wrapper>
       {props.renderTopNav({
@@ -57,11 +60,7 @@ const Router = (props: any) => {
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                const poppedRoute = props.poppedRoute.route;
-                const PoppedComponent = path(
-                  [poppedRoute, 'Component'],
-                  routes
-                );
+
                 return (
                   <View>
                     <AnimatedScreen
@@ -73,18 +72,19 @@ const Router = (props: any) => {
                         route
                       }}
                     />
-                    <AnimatedPopScreen
-                      {...{
-                        ...props,
-                        width,
-                        routes,
-                        Component: PoppedComponent,
-                        route
-                      }}
-                    />
                   </View>
                 );
               })}
+            <AnimatedPopScreen
+              {...{
+                ...props,
+                width,
+                poppedRoute,
+                routes,
+                Component: PoppedComponent,
+                route: poppedRoute
+              }}
+            />
           </ContentArea>
         ))}
       />
@@ -133,7 +133,7 @@ const initializeRoutes = (routes) => {
 
 const pushNewRoute = (props) => {
   if (props.history.length > 1 && props.isNavigating) {
-    return setTimeout(props.navigateComplete(), 200);
+    return props.navigateComplete();
   } else {
     return;
   }
@@ -141,7 +141,7 @@ const pushNewRoute = (props) => {
 
 const popCurrentRoute = (props) => {
   if (props.history.length > 1 && props.isNavigatingBack) {
-    return setTimeout(props.navigateBackComplete(), 200);
+    return props.navigateBackComplete(), 200;
   } else {
     return;
   }

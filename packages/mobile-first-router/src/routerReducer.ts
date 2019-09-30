@@ -98,6 +98,7 @@ const routerReducer = (config: {
 
           return {
             ...state,
+            poppedRoute: { route: '' },
             isNavigating: false,
             history: [...state.history, newDestinations[0]],
             destinations: newDestinations
