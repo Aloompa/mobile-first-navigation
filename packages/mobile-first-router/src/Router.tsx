@@ -82,8 +82,20 @@ const getTitle = (props) => {
   return getTitleFromCache(props, currentRoute);
 };
 
+const getWidthAndHeight = ({ width, height }) => {
+  if (!window) {
+    throw 'Please provide Width and Height to the router if you are using React-Native';
+  }
+  return {
+    width: width ? width : window.innerWidth,
+    height: height ? height : window.innerHeight
+  };
+};
+
 const Router = (props: any) => {
   const [routes] = useState(initializeRoutes(props.routes));
+
+  const { width, height } = getWidthAndHeight(props);
 
   useEffect(() => {
     pushNewRoute({ ...props, routes });
@@ -115,24 +127,24 @@ const Router = (props: any) => {
                 return routeConfig.mode !== 'modal';
               })
               .map((route, _index) => {
-                const lastRouteHandle =
-                  props.history[props.history.length - 1].route;
-                const lastRoute = routes[lastRouteHandle];
+                // const lastRouteHandle =
+                //   props.history[props.history.length-1].route
+                // const lastRoute = routes[lastRouteHandle];
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                const LastComponent = routes[lastRoute]
-                  ? routes[lastRoute].Component
-                  : Component;
-                console.log(LastComponent);
-
+                // const LastComponent = routes[lastRoute]
+                //   ? routes[lastRoute].Component
+                //   : Component;
                 return (
                   <AnimatedScreen
                     {...{
                       ...props,
-                      LastComponent,
+                      width,
+                      routes,
+                      LastComponent: Component,
                       Component,
-                      route,
-                      lastRoute
+                      route
+                      // lastRoute
                     }}
                   />
                 );
@@ -154,6 +166,7 @@ const Router = (props: any) => {
               {...{
                 ...props,
                 routeConfigs,
+                height,
                 Component,
                 getTitleFromCache,
                 route,
@@ -183,7 +196,7 @@ const initializeRoutes = (routes) => {
 };
 
 const pushNewRoute = (props) => {
-  if (props.history.length > 1) {
+  if (props.history.length > 1 && props.isNavigating) {
     return props.navigateComplete();
   }
 };

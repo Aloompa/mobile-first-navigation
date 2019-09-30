@@ -13,4 +13,6 @@ export interface MFNConfig {
   routes: Record<string, MFNRoute>;
   renderTopNav: React.ReactNode;
   topNavHeight?: number;
+  width?: number;
+  height?: number;
 }

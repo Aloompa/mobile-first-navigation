@@ -12,8 +12,10 @@ export const AnimatedScreen = (props: {
   history: any;
   isNavigatingBack: boolean;
   LastComponent: any;
-  lastRoute: any;
+  // lastRoute: any;
+  navigateBackComplete: Function;
   isNavigating: boolean;
+  width: number;
   routeConfig: any;
 }) => {
   console.log(props);
@@ -25,10 +27,10 @@ export const AnimatedScreen = (props: {
           to: async (next, _cancel) => {
             await next({ right: 0, config: { duration: 140 } });
           },
-          from: { right: -414 }
+          from: { right: -props.width }
         }))
       : useSpring(() => ({ right: 0, config: { duration: 140 } }));
-
+  console.log(setSpring);
   useEffect(() => {
     animateBackwardsNavigate({ ...props, spring, setSpring });
   }, [props.isNavigatingBack]);
@@ -70,9 +72,7 @@ export const AnimatedScreen = (props: {
             bottom: 0
           }}
         >
-          {LastComponent ? (
-            <LastComponent {...props} route={props.lastRoute} />
-          ) : null}
+          {LastComponent ? <LastComponent {...props} /> : null}
         </ComponentContainer>
       </animated.div>
     </View>
@@ -85,13 +85,15 @@ const animateBackwardsNavigate = (props: {
   isNavigating: boolean;
   setSpring: Function;
   history: any;
+  routes: any;
+  navigateBackComplete: Function;
 }) => {
-  if (props.history.length > 0 && props.isNavigatingBack) {
+  if (props.history.length > 1 && props.isNavigatingBack) {
     console.log(props);
     props.setSpring(() => ({
       to: async (next, _cancel) => {
         await next({ right: 0, config: { duration: 0 } });
-        await next({ right: 414, config: { duration: 120 } });
+        await next({ right: -414, config: { duration: 100 } });
         await next({ right: 0, config: { duration: 0 } });
       }
     }));

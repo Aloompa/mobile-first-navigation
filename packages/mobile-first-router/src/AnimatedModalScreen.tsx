@@ -10,6 +10,7 @@ export const AnimatedModalScreen = (props: {
   getTitleFromCache: Function;
   route: any;
   Component: any;
+  height: number;
   isNavigatingBack: boolean;
   history: any;
 }) => {
@@ -19,7 +20,7 @@ export const AnimatedModalScreen = (props: {
     to: async (next, _cancel) => {
       await next({ bottom: 0, config: { duration: 140 } });
     },
-    from: { bottom: -414 }
+    from: { bottom: -props.height }
   }));
 
   useEffect(() => {
@@ -62,9 +63,10 @@ const animateBackwardsNavigate = (props: {
   history: any;
 }) => {
   if (props.isNavigatingBack) {
-    console.log(props);
+    console.log(props, 'ModalClose');
     props.setSpring(() => ({
       to: async (next, _cancel) => {
+        await next({ bottom: 0, config: { duration: 0 } });
         await next({ bottom: -414, config: { duration: 140 } });
       },
       from: { bottom: 0 }
