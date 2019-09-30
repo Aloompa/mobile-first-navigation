@@ -115,9 +115,27 @@ const Router = (props: any) => {
                 return routeConfig.mode !== 'modal';
               })
               .map((route, _index) => {
+                const lastRouteHandle =
+                  props.history[props.history.length - 1].route;
+                const lastRoute = routes[lastRouteHandle];
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                return <AnimatedScreen {...{ ...props, Component, route }} />;
+                const LastComponent = routes[lastRoute]
+                  ? routes[lastRoute].Component
+                  : Component;
+                console.log(LastComponent);
+
+                return (
+                  <AnimatedScreen
+                    {...{
+                      ...props,
+                      LastComponent,
+                      Component,
+                      route,
+                      lastRoute
+                    }}
+                  />
+                );
               })}
           </ContentArea>
         ))}
@@ -129,11 +147,13 @@ const Router = (props: any) => {
         })
         .map((route, _key) => {
           const routeConfig = routes[route.route];
+          const routeConfigs = routes;
           const { Component } = routeConfig;
           return (
             <AnimatedModalScreen
               {...{
                 ...props,
+                routeConfigs,
                 Component,
                 getTitleFromCache,
                 route,
