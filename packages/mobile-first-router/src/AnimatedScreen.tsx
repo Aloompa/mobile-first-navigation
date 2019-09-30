@@ -1,7 +1,12 @@
 import * as React from 'react';
 
 import { useSpring, animated } from 'react-spring';
-import { ComponentContainer, View } from '@aloompa/mobile-first-components';
+import {
+  ComponentContainer,
+  View,
+  Button,
+  Text
+} from '@aloompa/mobile-first-components';
 
 const { useEffect } = React;
 
@@ -11,16 +16,14 @@ export const AnimatedScreen = (props: {
   routes: Array<any>;
   history: any;
   isNavigatingBack: boolean;
-  LastComponent: any;
-  // lastRoute: any;
   navigateBackComplete: Function;
   isNavigating: boolean;
   width: number;
   routeConfig: any;
 }) => {
   console.log(props);
+
   const Component = props.Component;
-  const LastComponent = props.LastComponent;
   const [spring, setSpring] =
     props.isNavigating && !props.isNavigatingBack
       ? useSpring(() => ({
@@ -30,7 +33,7 @@ export const AnimatedScreen = (props: {
           from: { right: -props.width }
         }))
       : useSpring(() => ({ right: 0, config: { duration: 140 } }));
-  console.log(setSpring);
+
   useEffect(() => {
     animateBackwardsNavigate({ ...props, spring, setSpring });
   }, [props.isNavigatingBack]);
@@ -72,7 +75,11 @@ export const AnimatedScreen = (props: {
             bottom: 0
           }}
         >
-          {LastComponent ? <LastComponent {...props} /> : null}
+          {Component ? (
+            <Button>
+              <Text>'HEY</Text>
+            </Button>
+          ) : null}
         </ComponentContainer>
       </animated.div>
     </View>
@@ -87,15 +94,35 @@ const animateBackwardsNavigate = (props: {
   history: any;
   routes: any;
   navigateBackComplete: Function;
+  width: number;
 }) => {
-  if (props.history.length > 1 && props.isNavigatingBack) {
-    console.log(props);
-    props.setSpring(() => ({
-      to: async (next, _cancel) => {
-        await next({ right: 0, config: { duration: 0 } });
-        await next({ right: -414, config: { duration: 100 } });
-        await next({ right: 0, config: { duration: 0 } });
-      }
-    }));
+  if (props.isNavigatingBack) {
+    // props.setSpring(() => ({
+    //   to: async (next, _cancel) => {
+    //     await next({ right: -414, config: { duration: 200 } });
+    //     await next({ right: 0, config: { duration: 0 } });
+    //   }
+    // }));
   }
 };
+
+// const animateBackwardsNavigate = (props: {
+//   spring: any;
+//   isNavigatingBack: boolean;
+//   isNavigating: boolean;
+//   setSpring: Function;
+//   history: any;
+//   routes: any;
+//   navigateBackComplete: Function;
+// }) => {
+//   if (props.history.length > 1 && props.isNavigatingBack) {
+//     console.log(props);
+//     props.setSpring(() => ({
+//       to: async (next, _cancel) => {
+//         await next({ right: 0, config: { duration: 0 } });
+//         await next({ right: -414, config: { duration: 200 } });
+//         await next({ right: 0, config: { duration: 0 } });
+//       }
+//     }));
+//   }
+// };

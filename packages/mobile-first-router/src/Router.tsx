@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { always, curry, path, compose, defaultTo } from 'ramda';
+import { always, compose, defaultTo } from 'ramda';
 
 import {
   Wrapper,
@@ -12,85 +12,9 @@ import withRouter from './withRouter';
 import { MFNConfig } from './MFNTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
-
+import { getWidthAndHeight } from './util/getWidthAndHeight';
+import { getTitle, getTitleFromCache } from './util/getTitle';
 const { useState, useEffect } = React;
-
-const getTitleFromCache = curry((props: any, currentRoute: any) => {
-  const cacheKey = JSON.stringify(currentRoute);
-
-  const dynamicTitle = path(['route', 'navigationTitle'], props);
-
-  if (dynamicTitle) {
-    return dynamicTitle;
-  }
-
-  if (props.titleCache[cacheKey]) {
-    return props.titleCache[cacheKey];
-  }
-
-  const currentRouteConfig = props.routes[currentRoute.route];
-
-  if (currentRouteConfig.getTitle) {
-    const titleResponse = currentRouteConfig.getTitle({
-      ...props,
-      route: currentRoute
-    });
-
-    // Set the title syncronously
-    if (typeof titleResponse === 'string') {
-      props.setTitleCache({
-        ...props.titleCache,
-        [cacheKey]: titleResponse
-      });
-      // Set the title asyncronously
-    } else {
-      props.setTitleCache({
-        ...props.titleCache,
-        [cacheKey]: true
-      });
-
-      titleResponse.then((title) => {
-        props.setTitleCache({
-          ...props.titleCache,
-          [cacheKey]: title
-        });
-      });
-    }
-  }
-
-  return '';
-});
-
-const getTitle = (props) => {
-  if (!props.history.length) {
-    return;
-  }
-
-  const history = props.history.filter(
-    (route) =>
-      props.routes[route.route] && props.routes[route.route].mode !== 'modal'
-  );
-
-  const currentRoute =
-    history[
-      history.length -
-        (history.length === props.history.length && props.isNavigatingBack
-          ? 2
-          : 1)
-    ];
-
-  return getTitleFromCache(props, currentRoute);
-};
-
-const getWidthAndHeight = ({ width, height }) => {
-  if (!window) {
-    throw 'Please provide Width and Height to the router if you are using React-Native';
-  }
-  return {
-    width: width ? width : window.innerWidth,
-    height: height ? height : window.innerHeight
-  };
-};
 
 const Router = (props: any) => {
   const [routes] = useState(initializeRoutes(props.routes));
@@ -127,21 +51,15 @@ const Router = (props: any) => {
                 return routeConfig.mode !== 'modal';
               })
               .map((route, _index) => {
-                // const lastRouteHandle =
-                //   props.history[props.history.length-1].route
-                // const lastRoute = routes[lastRouteHandle];
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                // const LastComponent = routes[lastRoute]
-                //   ? routes[lastRoute].Component
-                //   : Component;
+
                 return (
                   <AnimatedScreen
                     {...{
                       ...props,
                       width,
                       routes,
-                      LastComponent: Component,
                       Component,
                       route
                       // lastRoute
