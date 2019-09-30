@@ -24,7 +24,6 @@ export const AnimatedPopScreen = (props: {
     animateBackwardsNavigate({ ...props, spring, setSpring });
   }, [props.isNavigatingBack]);
 
-  console.log(Component, 'CMP');
   return (
     <animated.div
       style={{
@@ -58,14 +57,11 @@ const animateBackwardsNavigate = (props: {
   poppedRoute: any;
 }) => {
   if (props.isNavigatingBack) {
-    console.log(props);
     props.setSpring(() => ({
       to: async (next, _cancel) => {
         await next({ zIndex: 100, right: 0, config: { duration: 0 } });
         await next({ right: -414, config: { duration: 100 } });
         await next({ zIndex: -100, config: { duration: 0 } });
-
-        // await next({  zIndex: -100, right: 0, config: { duration: 0 } });
       }
     }));
   }

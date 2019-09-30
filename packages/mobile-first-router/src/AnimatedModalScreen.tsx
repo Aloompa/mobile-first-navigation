@@ -63,7 +63,6 @@ const animateBackwardsNavigate = (props: {
   history: any;
 }) => {
   if (props.isNavigatingBack) {
-    console.log(props, 'ModalClose');
     props.setSpring(() => ({
       to: async (next, _cancel) => {
         await next({ bottom: 0, config: { duration: 0 } });

@@ -129,7 +129,6 @@ const routerReducer = (config: {
       [NAVIGATE_BACK_COMPLETE]: (state) => {
         const history = [...state.tabRoutes[state.activeTab]];
 
-        // console.log(history.pop(), 'popped route');
         const poppedRoute = history.pop();
 
         const updatedTabRoutes = state.tabRoutes.reduce(

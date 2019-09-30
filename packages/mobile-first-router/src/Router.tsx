@@ -31,8 +31,6 @@ const Router = (props: any) => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
 
-  console.log(props.poppedRoute, 'poppedRoutepoppedRoutepoppedRoute');
-
   const poppedRoute = props.poppedRoute.route;
   const PoppedComponent = path([poppedRoute, 'Component'], routes);
 

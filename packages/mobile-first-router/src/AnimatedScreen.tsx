@@ -14,8 +14,6 @@ export const AnimatedScreen = (props: {
   width: number;
   routeConfig: any;
 }) => {
-  console.log(props);
-
   const Component = props.Component;
   const [spring] =
     props.isNavigating && !props.isNavigatingBack
