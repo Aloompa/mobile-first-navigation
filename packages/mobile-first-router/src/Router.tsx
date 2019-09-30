@@ -1,16 +1,18 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo } from 'ramda';
+import { always, compose, defaultTo, path } from 'ramda';
 
 import {
   Wrapper,
   TabRouter,
-  ContentArea
+  ContentArea,
+  View
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
 import { MFNConfig } from './MFNTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
+import { AnimatedPopScreen } from './AnimatedPopScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
@@ -28,6 +30,8 @@ const Router = (props: any) => {
   useEffect(() => {
     popCurrentRoute({ ...props, routes });
   }, [props.isNavigatingBack]);
+
+  console.log(props.poppedRoute, 'poppedRoutepoppedRoutepoppedRoute');
 
   return (
     <Wrapper>
@@ -53,18 +57,32 @@ const Router = (props: any) => {
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-
+                const poppedRoute = props.poppedRoute.route;
+                const PoppedComponent = path(
+                  [poppedRoute, 'Component'],
+                  routes
+                );
                 return (
-                  <AnimatedScreen
-                    {...{
-                      ...props,
-                      width,
-                      routes,
-                      Component,
-                      route
-                      // lastRoute
-                    }}
-                  />
+                  <View>
+                    <AnimatedScreen
+                      {...{
+                        ...props,
+                        width,
+                        routes,
+                        Component,
+                        route
+                      }}
+                    />
+                    <AnimatedPopScreen
+                      {...{
+                        ...props,
+                        width,
+                        routes,
+                        Component: PoppedComponent,
+                        route
+                      }}
+                    />
+                  </View>
                 );
               })}
           </ContentArea>
@@ -115,13 +133,17 @@ const initializeRoutes = (routes) => {
 
 const pushNewRoute = (props) => {
   if (props.history.length > 1 && props.isNavigating) {
-    return props.navigateComplete();
+    return setTimeout(props.navigateComplete(), 200);
+  } else {
+    return;
   }
 };
 
 const popCurrentRoute = (props) => {
   if (props.history.length > 1 && props.isNavigatingBack) {
-    return props.navigateBackComplete();
+    return setTimeout(props.navigateBackComplete(), 200);
+  } else {
+    return;
   }
 };
 

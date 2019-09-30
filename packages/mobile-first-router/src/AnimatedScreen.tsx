@@ -1,14 +1,7 @@
 import * as React from 'react';
 
 import { useSpring, animated } from 'react-spring';
-import {
-  ComponentContainer,
-  View,
-  Button,
-  Text
-} from '@aloompa/mobile-first-components';
-
-const { useEffect } = React;
+import { ComponentContainer } from '@aloompa/mobile-first-components';
 
 export const AnimatedScreen = (props: {
   Component: any;
@@ -24,7 +17,7 @@ export const AnimatedScreen = (props: {
   console.log(props);
 
   const Component = props.Component;
-  const [spring, setSpring] =
+  const [spring] =
     props.isNavigating && !props.isNavigatingBack
       ? useSpring(() => ({
           to: async (next, _cancel) => {
@@ -33,96 +26,25 @@ export const AnimatedScreen = (props: {
           from: { right: -props.width }
         }))
       : useSpring(() => ({ right: 0, config: { duration: 140 } }));
-
-  useEffect(() => {
-    animateBackwardsNavigate({ ...props, spring, setSpring });
-  }, [props.isNavigatingBack]);
-
   return (
-    <View>
-      <animated.div
+    <animated.div
+      style={{
+        ...spring,
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: '100%'
+      }}
+    >
+      <ComponentContainer
         style={{
-          ...spring,
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          height: '100%'
-        }}
-      >
-        <ComponentContainer
-          style={{
-            backgroundColor: '#FFFFFF',
-            height: '100%',
-            bottom: 0
-          }}
-        >
-          {Component ? <Component {...props} route={props.route} /> : null}
-        </ComponentContainer>
-      </animated.div>
-      <animated.div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
+          backgroundColor: '#FFFFFF',
           height: '100%',
-          zIndex: -100
+          bottom: 0
         }}
       >
-        <ComponentContainer
-          style={{
-            backgroundColor: '#FFFFFF',
-            height: '100%',
-            bottom: 0
-          }}
-        >
-          {Component ? (
-            <Button>
-              <Text>'HEY</Text>
-            </Button>
-          ) : null}
-        </ComponentContainer>
-      </animated.div>
-    </View>
+        {Component ? <Component {...props} route={props.route} /> : null}
+      </ComponentContainer>
+    </animated.div>
   );
 };
-
-const animateBackwardsNavigate = (props: {
-  spring: any;
-  isNavigatingBack: boolean;
-  isNavigating: boolean;
-  setSpring: Function;
-  history: any;
-  routes: any;
-  navigateBackComplete: Function;
-  width: number;
-}) => {
-  if (props.isNavigatingBack) {
-    // props.setSpring(() => ({
-    //   to: async (next, _cancel) => {
-    //     await next({ right: -414, config: { duration: 200 } });
-    //     await next({ right: 0, config: { duration: 0 } });
-    //   }
-    // }));
-  }
-};
-
-// const animateBackwardsNavigate = (props: {
-//   spring: any;
-//   isNavigatingBack: boolean;
-//   isNavigating: boolean;
-//   setSpring: Function;
-//   history: any;
-//   routes: any;
-//   navigateBackComplete: Function;
-// }) => {
-//   if (props.history.length > 1 && props.isNavigatingBack) {
-//     console.log(props);
-//     props.setSpring(() => ({
-//       to: async (next, _cancel) => {
-//         await next({ right: 0, config: { duration: 0 } });
-//         await next({ right: -414, config: { duration: 200 } });
-//         await next({ right: 0, config: { duration: 0 } });
-//       }
-//     }));
-//   }
-// };
