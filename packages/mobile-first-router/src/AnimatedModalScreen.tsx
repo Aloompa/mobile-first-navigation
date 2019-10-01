@@ -1,7 +1,7 @@
 import * as React from 'react';
 
-import { useSpring, animated } from 'react-spring';
-
+import { useSpring } from 'react-spring';
+import { AnimatedView } from './AnimatedView';
 import { ComponentContainer } from '@aloompa/mobile-first-components';
 
 const { useEffect } = React;
@@ -36,7 +36,7 @@ export const AnimatedModalScreen = (props: {
   }, [props.isNavigatingBack]);
 
   return (
-    <animated.div
+    <AnimatedView
       style={{
         ...spring,
         position: 'absolute',
@@ -60,7 +60,7 @@ export const AnimatedModalScreen = (props: {
         })}
         {Component ? <Component {...props} route={props.route} /> : null}
       </ComponentContainer>
-    </animated.div>
+    </AnimatedView>
   );
 };
 

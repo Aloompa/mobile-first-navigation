@@ -1,6 +1,8 @@
 import * as React from 'react';
 
-import { useSpring, animated } from 'react-spring';
+import { useSpring } from 'react-spring';
+import { AnimatedView } from './AnimatedView';
+
 import { ComponentContainer } from '@aloompa/mobile-first-components';
 const config = { tension: 300, friction: 25, precision: 0.01, clamp: true };
 
@@ -25,7 +27,7 @@ export const AnimatedScreen = (props: {
   const [spring] = determineAnimationForScreenType({ isNavigating, width });
 
   return (
-    <animated.div
+    <AnimatedView
       key={props.route}
       style={{
         height: '100%',
@@ -49,7 +51,7 @@ export const AnimatedScreen = (props: {
           })}
         {Component ? <Component {...props} route={props.route} /> : null}
       </ComponentContainer>
-    </animated.div>
+    </AnimatedView>
   );
 };
 

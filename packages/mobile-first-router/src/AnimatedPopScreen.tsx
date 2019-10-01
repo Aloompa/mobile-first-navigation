@@ -1,6 +1,8 @@
 import * as React from 'react';
 
-import { useSpring, animated } from 'react-spring';
+import { useSpring } from 'react-spring';
+import { AnimatedView } from './AnimatedView';
+
 import { ComponentContainer } from '@aloompa/mobile-first-components';
 
 const { useEffect } = React;
@@ -40,7 +42,7 @@ export const AnimatedPopScreen = (props: {
   }, [props.isNavigatingBack]);
 
   return (
-    <animated.div
+    <AnimatedView
       key={props.poppedRoute}
       style={{
         ...spring,
@@ -57,7 +59,7 @@ export const AnimatedPopScreen = (props: {
       >
         {Component ? <Component {...props} route={props.route} /> : null}
       </ComponentContainer>
-    </animated.div>
+    </AnimatedView>
   );
 };
 
