@@ -6,7 +6,7 @@ import { ComponentContainer } from '@aloompa/mobile-first-components';
 
 const { useEffect } = React;
 
-const config = { tension: 200, friction: 25 };
+const config = { tension: 400, friction: 40, clamp: true };
 
 export const AnimatedModalScreen = (props: {
   renderTopNav: Function;
