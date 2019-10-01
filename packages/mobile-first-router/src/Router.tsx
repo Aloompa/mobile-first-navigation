@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo, path } from 'ramda';
+import { always, compose, defaultTo, path, prop } from 'ramda';
 
 import {
   Wrapper,
@@ -32,7 +32,11 @@ const Router = (props: any) => {
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
-  const PoppedComponent = path([poppedRoute, 'Component'], routes);
+  console.log(poppedRoute, 'HEY');
+  const poppedConfig = path([poppedRoute], routes);
+  const PoppedComponent = path(['Component'], poppedConfig);
+  const poppedRouteType = path(['mode'], poppedConfig);
+  console.log(poppedRouteType, 'TYPEEEE');
 
   return (
     <Wrapper>
@@ -57,16 +61,20 @@ const Router = (props: any) => {
               })
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
+                console.log(routeConfig, 'mode');
                 const { Component } = routeConfig;
-
+                const routeType = prop('mode', routeConfig);
                 return (
                   <View>
                     <AnimatedScreen
                       {...{
                         ...props,
                         width,
+                        height,
+                        modal: routeType === 'modal',
                         routes,
                         Component,
+                        getTitleFromCache,
                         route
                       }}
                     />
@@ -79,6 +87,7 @@ const Router = (props: any) => {
                 width,
                 poppedRoute,
                 routes,
+                modal: poppedRouteType === 'modal',
                 Component: PoppedComponent,
                 route: poppedRoute
               }}
@@ -96,17 +105,30 @@ const Router = (props: any) => {
           const routeConfigs = routes;
           const { Component } = routeConfig;
           return (
-            <AnimatedModalScreen
-              {...{
-                ...props,
-                routeConfigs,
-                height,
-                Component,
-                getTitleFromCache,
-                route,
-                renderTopNav: props.renderTopNav
-              }}
-            />
+            <View>
+              <AnimatedModalScreen
+                {...{
+                  ...props,
+                  routeConfigs,
+                  height,
+                  Component,
+                  getTitleFromCache,
+                  route,
+                  renderTopNav: props.renderTopNav
+                }}
+              />
+              <AnimatedPopScreen
+                {...{
+                  ...props,
+                  width,
+                  poppedRoute,
+                  routes,
+                  modal: poppedRouteType === 'modal',
+                  Component: PoppedComponent,
+                  route: poppedRoute
+                }}
+              />
+            </View>
           );
         })}
     </Wrapper>

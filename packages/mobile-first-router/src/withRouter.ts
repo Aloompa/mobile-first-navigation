@@ -29,6 +29,7 @@ export const mapStateToProps = (state) => ({
   navbarHidden: path(['router', 'navbarHidden'], state),
   activeTabIndex: path(['router', 'activeTab'], state),
   tabRoutes: path(['router', 'tabRoutes'], state),
+  isModal: path(['router', 'isModal'], state),
   tabBarHorizontalPadding: path(['router', 'tabBarHorizontalPadding'])
 });
 

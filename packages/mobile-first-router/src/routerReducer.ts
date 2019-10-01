@@ -60,6 +60,7 @@ const routerReducer = (config: {
     history: tabRoutes[activeTab],
     poppedRoute: { route: '' },
     activeTab,
+    isModal: false,
     tabRoutes
   };
 

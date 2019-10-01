@@ -11,38 +11,64 @@ export const AnimatedScreen = (props: {
   isNavigatingBack: boolean;
   navigateBackComplete: Function;
   isNavigating: boolean;
+  getTitleFromCache: Function;
   width: number;
+  height: number;
+  modal: boolean;
   routeConfig: any;
+  renderTopNav: Function;
+  topNavHeight: number;
 }) => {
   const Component = props.Component;
-  const [spring] =
-    props.isNavigating && !props.isNavigatingBack
-      ? useSpring(() => ({
-          to: async (next, _cancel) => {
-            await next({ right: 0, config: { duration: 140 } });
-          },
-          from: { right: -props.width }
-        }))
-      : useSpring(() => ({ right: 0, config: { duration: 140 } }));
+  const [spring] = determineAnimationForScreenType({ ...props });
+  console.log(props.topNavHeight);
   return (
     <animated.div
+      key={props.route}
       style={{
+        height: '100%',
         ...spring,
         position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        height: '100%'
+        width: '100%'
       }}
     >
       <ComponentContainer
         style={{
           backgroundColor: '#FFFFFF',
-          height: '100%',
-          bottom: 0
+          height: '100%'
         }}
       >
+        {props.modal &&
+          props.renderTopNav({
+            ...props,
+            mode: 'modal',
+            height: props.topNavHeight,
+            routeTitle: props.getTitleFromCache(props, props.route)
+          })}
         {Component ? <Component {...props} route={props.route} /> : null}
       </ComponentContainer>
     </animated.div>
   );
+};
+
+const determineAnimationForScreenType = (props: {
+  isNavigating: boolean;
+  modal: boolean;
+  width: number;
+  height: number;
+}) => {
+  if (props.isNavigating && !props.modal) {
+    return useSpring(() => ({
+      to: async (next, _cancel) => {
+        await next({ right: 0, config: { duration: 140 } });
+      },
+      from: { right: -props.width }
+    }));
+  } else {
+    return useSpring(() => ({
+      right: 0,
+      bottom: 0,
+      config: { duration: 140 }
+    }));
+  }
 };

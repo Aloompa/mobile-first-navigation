@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useSpring, animated } from 'react-spring';
 
 import { ComponentContainer } from '@aloompa/mobile-first-components';
-const { useEffect } = React;
+
 export const AnimatedModalScreen = (props: {
   renderTopNav: Function;
   topNavHeight: number;
@@ -16,16 +16,12 @@ export const AnimatedModalScreen = (props: {
 }) => {
   const Component = props.Component;
 
-  const [spring, setSpring] = useSpring(() => ({
+  const [spring] = useSpring(() => ({
     to: async (next, _cancel) => {
       await next({ bottom: 0, config: { duration: 140 } });
     },
     from: { bottom: -props.height }
   }));
-
-  useEffect(() => {
-    animateBackwardsNavigate({ ...props, spring, setSpring });
-  }, [props.isNavigatingBack]);
 
   return (
     <animated.div
@@ -54,21 +50,4 @@ export const AnimatedModalScreen = (props: {
       </ComponentContainer>
     </animated.div>
   );
-};
-
-const animateBackwardsNavigate = (props: {
-  spring: any;
-  isNavigatingBack: boolean;
-  setSpring: Function;
-  history: any;
-}) => {
-  if (props.isNavigatingBack) {
-    props.setSpring(() => ({
-      to: async (next, _cancel) => {
-        await next({ bottom: 0, config: { duration: 0 } });
-        await next({ bottom: -414, config: { duration: 140 } });
-      },
-      from: { bottom: 0 }
-    }));
-  }
 };

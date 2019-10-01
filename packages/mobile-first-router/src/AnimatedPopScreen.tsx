@@ -16,9 +16,15 @@ export const AnimatedPopScreen = (props: {
   width: number;
   routeConfig: any;
   poppedRoute: any;
+  modal: boolean;
+  height: number;
 }) => {
   const Component = props.Component;
-  const [spring, setSpring] = useSpring(() => ({ right: 0, zIndex: -100 }));
+  const [spring, setSpring] = useSpring(() => ({
+    right: 0,
+    bottom: 0,
+    zIndex: -100
+  }));
 
   useEffect(() => {
     animateBackwardsNavigate({ ...props, spring, setSpring });
@@ -26,6 +32,7 @@ export const AnimatedPopScreen = (props: {
 
   return (
     <animated.div
+      key={props.poppedRoute}
       style={{
         ...spring,
         position: 'absolute',
@@ -55,14 +62,31 @@ const animateBackwardsNavigate = (props: {
   history: any;
   routes: any;
   poppedRoute: any;
+  modal: boolean;
+  height: number;
+  width: number;
 }) => {
   if (!props.isNavigatingBack && !props.isNavigating) {
-    props.setSpring(() => ({
-      to: async (next, _cancel) => {
-        await next({ zIndex: 100, right: 0, config: { duration: 0 } });
-        await next({ right: -414, config: { duration: 100 } });
-        await next({ zIndex: -100, config: { duration: 0 } });
-      }
-    }));
+    props.modal
+      ? props.setSpring(() => ({
+          to: async (next, _cancel) => {
+            await next({ zIndex: 100, config: { duration: 0 } });
+            await next({ top: -props.height, config: { duration: 300 } });
+            await next({ zIndex: -100, config: { duration: 0 } });
+          }
+        }))
+      : props.setSpring(() => ({
+          to: async (next, _cancel) => {
+            await next({ zIndex: 100, right: 0, config: { duration: 0 } });
+            await next({ right: -props.width, config: { duration: 100 } });
+            await next({ zIndex: -100, config: { duration: 0 } });
+          }
+        }));
   }
 };
+
+// async (next, _cancel) =>  {
+//   await next({ right: 0, zIndex: 100, config: { duration: 0 } });
+//   await next({ right: 0, height: -props.height, config: { duration: 140 } });
+//   await next({ zIndex: -100, bottom: 0, config: { duration: 0 } });
+// }
