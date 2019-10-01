@@ -21,7 +21,9 @@ export const AnimatedScreen = (props: {
   topNavHeight: number;
 }) => {
   const Component = props.Component;
-  const [spring] = determineAnimationForScreenType({ ...props });
+  const { isNavigating, width } = props;
+
+  const [spring] = determineAnimationForScreenType({ isNavigating, width });
   console.log(props.topNavHeight);
   return (
     <animated.div
@@ -54,11 +56,9 @@ export const AnimatedScreen = (props: {
 
 const determineAnimationForScreenType = (props: {
   isNavigating: boolean;
-  modal: boolean;
   width: number;
-  height: number;
 }) => {
-  if (props.isNavigating && !props.modal) {
+  if (props.isNavigating) {
     return useSpring(() => ({
       to: async (next, _cancel) => {
         await next({ right: 0, config: { ...config } });

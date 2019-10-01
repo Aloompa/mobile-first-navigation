@@ -22,6 +22,8 @@ export const AnimatedModalScreen = (props: {
 }) => {
   const Component = props.Component;
 
+  const { isNavigatingBack, height } = props;
+
   const [spring, setSpring] = useSpring(() => ({
     to: async (next, _cancel) => {
       await next({ bottom: 0, config: { ...config } });
@@ -30,7 +32,7 @@ export const AnimatedModalScreen = (props: {
   }));
 
   useEffect(() => {
-    animateBackwardsNavigate({ ...props, spring, setSpring });
+    animateBackwardsNavigate({ spring, setSpring, isNavigatingBack, height });
   }, [props.isNavigatingBack]);
 
   return (
@@ -65,8 +67,7 @@ export const AnimatedModalScreen = (props: {
 const animateBackwardsNavigate = (props: {
   spring: any;
   isNavigatingBack: boolean;
-  isNavigating: boolean;
-  setSpring: Function;
+  setSpring: any;
   height: number;
 }) => {
   if (props.isNavigatingBack) {

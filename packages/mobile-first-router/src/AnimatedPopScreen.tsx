@@ -26,8 +26,17 @@ export const AnimatedPopScreen = (props: {
     zIndex: -100
   }));
 
+  const { isNavigatingBack, isNavigating, modal, width } = props;
+
   useEffect(() => {
-    animateBackwardsNavigate({ ...props, spring, setSpring });
+    animateBackwardsNavigate({
+      spring,
+      setSpring,
+      isNavigatingBack,
+      isNavigating,
+      modal,
+      width
+    });
   }, [props.isNavigatingBack]);
 
   return (
@@ -54,14 +63,10 @@ export const AnimatedPopScreen = (props: {
 
 const animateBackwardsNavigate = (props: {
   spring: any;
+  setSpring: any;
   isNavigatingBack: boolean;
   isNavigating: boolean;
-  setSpring: Function;
-  history: any;
-  routes: any;
-  poppedRoute: any;
   modal: boolean;
-  height: number;
   width: number;
 }) => {
   if (!props.isNavigatingBack && !props.isNavigating) {
