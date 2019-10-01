@@ -117,7 +117,7 @@ const Router = (props: any) => {
                   renderTopNav: props.renderTopNav
                 }}
               />
-              <AnimatedPopScreen
+              {/* <AnimatedPopScreen
                 {...{
                   ...props,
                   width,
@@ -127,7 +127,7 @@ const Router = (props: any) => {
                   Component: PoppedComponent,
                   route: poppedRoute
                 }}
-              />
+              /> */}
             </View>
           );
         })}
@@ -161,7 +161,7 @@ const pushNewRoute = (props) => {
 
 const popCurrentRoute = (props) => {
   if (props.history.length > 1 && props.isNavigatingBack) {
-    return props.navigateBackComplete(), 200;
+    return setTimeout(() => props.navigateBackComplete(), 140);
   } else {
     return;
   }

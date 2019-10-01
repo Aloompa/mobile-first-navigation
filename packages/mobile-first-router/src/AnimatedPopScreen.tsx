@@ -36,7 +36,6 @@ export const AnimatedPopScreen = (props: {
       style={{
         ...spring,
         position: 'absolute',
-        bottom: 0,
         width: '100%',
         height: '100%'
       }}
@@ -44,8 +43,7 @@ export const AnimatedPopScreen = (props: {
       <ComponentContainer
         style={{
           backgroundColor: '#FFFFFF',
-          height: '100%',
-          bottom: 0
+          height: '100%'
         }}
       >
         {Component ? <Component {...props} route={props.route} /> : null}
@@ -67,15 +65,18 @@ const animateBackwardsNavigate = (props: {
   width: number;
 }) => {
   if (!props.isNavigatingBack && !props.isNavigating) {
+    console.log(props.modal, 'PROPS.modal');
     props.modal
-      ? props.setSpring(() => ({
-          to: async (next, _cancel) => {
-            await next({ zIndex: 100, config: { duration: 0 } });
-            await next({ top: -props.height, config: { duration: 300 } });
-            await next({ zIndex: -100, config: { duration: 0 } });
-          }
-        }))
-      : props.setSpring(() => ({
+      ? null
+      : // props.setSpring(() => ({
+        //     to: async (next, _cancel) => {
+        //       await next({ bottom: 0, zIndex: 100, config: { duration: 0 } });
+        //       await next({ bottom: -props.height, config: { duration: 800 } });
+        //       await next({ bottom: 0, zIndex: -100, config: { duration: 0 } });
+        //     },
+        //     from: { zIndex: -100, bottom: 0 }
+        //   }))
+        props.setSpring(() => ({
           to: async (next, _cancel) => {
             await next({ zIndex: 100, right: 0, config: { duration: 0 } });
             await next({ right: -props.width, config: { duration: 100 } });
