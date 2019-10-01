@@ -65,7 +65,6 @@ const animateBackwardsNavigate = (props: {
   width: number;
 }) => {
   if (!props.isNavigatingBack && !props.isNavigating) {
-    console.log(props.modal, 'PROPS.modal');
     props.modal
       ? null
       : props.setSpring(() => ({

@@ -32,11 +32,9 @@ const Router = (props: any) => {
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
-  console.log(poppedRoute, 'HEY');
   const poppedConfig = path([poppedRoute], routes);
   const PoppedComponent = path(['Component'], poppedConfig);
   const poppedRouteType = path(['mode'], poppedConfig);
-  console.log(poppedRouteType, 'TYPEEEE');
 
   return (
     <Wrapper>
@@ -61,7 +59,6 @@ const Router = (props: any) => {
               })
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
-                console.log(routeConfig, 'mode');
                 const { Component } = routeConfig;
                 const routeType = prop('mode', routeConfig);
                 return (
