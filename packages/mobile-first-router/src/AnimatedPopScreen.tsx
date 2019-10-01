@@ -68,26 +68,12 @@ const animateBackwardsNavigate = (props: {
     console.log(props.modal, 'PROPS.modal');
     props.modal
       ? null
-      : // props.setSpring(() => ({
-        //     to: async (next, _cancel) => {
-        //       await next({ bottom: 0, zIndex: 100, config: { duration: 0 } });
-        //       await next({ bottom: -props.height, config: { duration: 800 } });
-        //       await next({ bottom: 0, zIndex: -100, config: { duration: 0 } });
-        //     },
-        //     from: { zIndex: -100, bottom: 0 }
-        //   }))
-        props.setSpring(() => ({
+      : props.setSpring(() => ({
           to: async (next, _cancel) => {
             await next({ zIndex: 100, right: 0, config: { duration: 0 } });
-            await next({ right: -props.width, config: { duration: 100 } });
+            await next({ right: -props.width, config: { duration: 150 } });
             await next({ zIndex: -100, config: { duration: 0 } });
           }
         }));
   }
 };
-
-// async (next, _cancel) =>  {
-//   await next({ right: 0, zIndex: 100, config: { duration: 0 } });
-//   await next({ right: 0, height: -props.height, config: { duration: 140 } });
-//   await next({ zIndex: -100, bottom: 0, config: { duration: 0 } });
-// }

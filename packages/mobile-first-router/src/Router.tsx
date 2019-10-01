@@ -117,17 +117,6 @@ const Router = (props: any) => {
                   renderTopNav: props.renderTopNav
                 }}
               />
-              {/* <AnimatedPopScreen
-                {...{
-                  ...props,
-                  width,
-                  poppedRoute,
-                  routes,
-                  modal: poppedRouteType === 'modal',
-                  Component: PoppedComponent,
-                  route: poppedRoute
-                }}
-              /> */}
             </View>
           );
         })}

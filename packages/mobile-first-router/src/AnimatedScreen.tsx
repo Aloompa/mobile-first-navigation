@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { useSpring, animated } from 'react-spring';
 import { ComponentContainer } from '@aloompa/mobile-first-components';
+const config = { tension: 300, friction: 25, precision: 0.01, clamp: true };
 
 export const AnimatedScreen = (props: {
   Component: any;
@@ -60,7 +61,7 @@ const determineAnimationForScreenType = (props: {
   if (props.isNavigating && !props.modal) {
     return useSpring(() => ({
       to: async (next, _cancel) => {
-        await next({ right: 0, config: { duration: 140 } });
+        await next({ right: 0, config: { ...config } });
       },
       from: { right: -props.width }
     }));

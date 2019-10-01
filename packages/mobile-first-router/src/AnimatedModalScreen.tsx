@@ -6,6 +6,8 @@ import { ComponentContainer } from '@aloompa/mobile-first-components';
 
 const { useEffect } = React;
 
+const config = { tension: 200, friction: 25 };
+
 export const AnimatedModalScreen = (props: {
   renderTopNav: Function;
   topNavHeight: number;
@@ -22,7 +24,7 @@ export const AnimatedModalScreen = (props: {
 
   const [spring, setSpring] = useSpring(() => ({
     to: async (next, _cancel) => {
-      await next({ bottom: 0, config: { duration: 140 } });
+      await next({ bottom: 0, config: { ...config } });
     },
     from: { bottom: -props.height }
   }));
@@ -69,9 +71,9 @@ const animateBackwardsNavigate = (props: {
 }) => {
   if (props.isNavigatingBack) {
     console.log('here');
-    props.setSpring({
+    props.setSpring(() => ({
       reverse: true,
       reset: true
-    });
+    }));
   }
 };
