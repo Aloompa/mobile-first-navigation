@@ -22,9 +22,8 @@ export const AnimatedScreen = (props: {
 }) => {
   const Component = props.Component;
   const { isNavigating, width } = props;
-
   const [spring] = determineAnimationForScreenType({ isNavigating, width });
-  console.log(props.topNavHeight);
+
   return (
     <animated.div
       key={props.route}

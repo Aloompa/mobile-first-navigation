@@ -71,7 +71,6 @@ const animateBackwardsNavigate = (props: {
   height: number;
 }) => {
   if (props.isNavigatingBack) {
-    console.log('here');
     props.setSpring(() => ({
       reverse: true,
       reset: true
