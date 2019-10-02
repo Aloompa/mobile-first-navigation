@@ -14,7 +14,7 @@ storiesOf('TabButton', module)
       title={'Browse'}
       onPress={linkTo('TabButton', 'selected')}
       iconUrl={
-        'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-browse.svg'
+        'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-browse.svg'
       }
     />
   ))
@@ -27,7 +27,7 @@ storiesOf('TabButton', module)
       iconSelectedColor={'#FF00FF'}
       title={'Browse'}
       iconUrl={
-        'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-browse.svg'
+        'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-browse.svg'
       }
     />
   ));
@@ -70,7 +70,7 @@ const tabConfigA = (nTabs) => ({
   iconWidth: 20,
   iconSelectedColor: '#000',
   iconUrl:
-    'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-browse.svg',
+    'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-browse.svg',
   onPress: linkTo(`TabBar/${nTabs} Tabs`, 'first selected'),
   title: 'Browse'
 });
@@ -81,7 +81,7 @@ const tabConfigB = (nTabs) => ({
   iconWidth: 22,
   iconSelectedColor: '#000',
   iconUrl:
-    'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-tickets.svg',
+    'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-tickets.svg',
   onPress: linkTo(`TabBar/${nTabs} Tabs`, 'second selected'),
   title: 'Tickets'
 });
@@ -120,7 +120,7 @@ const tabConfigC = (nTabs) => ({
   iconWidth: 22,
   iconSelectedColor: '#000',
   iconUrl:
-    'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-account.svg',
+    'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-account.svg',
   onPress: linkTo(`TabBar/${nTabs} Tabs`, 'third selected'),
   title: 'Profile'
 });
