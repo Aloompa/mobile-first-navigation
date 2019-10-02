@@ -27,11 +27,11 @@ const Router = (props: any) => {
   const { width, height } = getWidthAndHeight(props);
 
   useEffect(() => {
-    pushNewRoute({ ...props, routeConfigs });
+    pushNewRoute({ ...props });
   }, [props.history.length]);
 
   useEffect(() => {
-    popCurrentRoute({ ...props, routeConfigs });
+    popCurrentRoute({ ...props });
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
