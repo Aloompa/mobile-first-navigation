@@ -1,4 +1,3 @@
-// import * as React from 'react';
 import Home from './routes/Home';
 import Modal from './routes/Modal';
 import Page2 from './routes/Page2';
