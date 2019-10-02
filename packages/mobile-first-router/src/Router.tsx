@@ -22,16 +22,16 @@ import { getTitle, getTitleFromCache } from './util/getTitle';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
-  const [routes] = useState(initializeRoutes(props.routes));
+  const [routeConfigs] = useState(initializeRoutes(props.routes));
 
   const { width, height } = getWidthAndHeight(props);
 
   useEffect(() => {
-    pushNewRoute({ ...props, routes });
+    pushNewRoute({ ...props, routeConfigs });
   }, [props.history.length]);
 
   useEffect(() => {
-    popCurrentRoute({ ...props, routes });
+    popCurrentRoute({ ...props, routeConfigs });
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
@@ -54,11 +54,11 @@ const Router = (props: any) => {
           <ContentArea>
             {props.history
               .filter((route) => {
-                const routeConfig = routes[route.route];
+                const routeConfig = routeConfigs[route.route];
                 return routeConfig.mode !== 'modal';
               })
               .map((route, _index) => {
-                const routeConfig = routes[route.route];
+                const routeConfig = routeConfigs[route.route];
                 const { Component } = routeConfig;
                 return (
                   <View>
@@ -79,19 +79,17 @@ const Router = (props: any) => {
       />
       {props.history
         .filter((route) => {
-          const routeConfig = routes[route.route];
+          const routeConfig = routeConfigs[route.route];
           return routeConfig.mode === 'modal';
         })
         .map((route, _key) => {
-          const routeConfig = routes[route.route];
-          const routeConfigs = routes;
+          const routeConfig = routeConfigs[route.route];
           const { Component } = routeConfig;
           return (
             <View>
               <AnimatedModalScreen
                 {...{
                   ...props,
-                  routeConfigs,
                   height,
                   Component,
                   getTitleFromCache,
@@ -107,7 +105,6 @@ const Router = (props: any) => {
 };
 
 const initializeRoutes = (routes: Array<MFNavigationRoute>) => {
-  console.log(routes, 'ROUTES');
   const routesWithComponents = Object.keys(routes).reduce((prev, key) => {
     const suppliedConfig = routes[key] || {};
 
@@ -121,7 +118,6 @@ const initializeRoutes = (routes: Array<MFNavigationRoute>) => {
       [key]: routeConfig
     };
   }, {}) as Array<MFNavigationRouteComponent>;
-  console.log(routesWithComponents);
   return routesWithComponents;
 };
 

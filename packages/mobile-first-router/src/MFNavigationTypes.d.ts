@@ -9,6 +9,13 @@ export interface MFNavigationRoute {
   mode?: string;
 }
 
+export interface MFNavigationRouteComponent {
+  route: React.ReactNode;
+  Component: React.ReactNode;
+  getTitle: Function;
+  mode?: string;
+}
+
 export interface MFNavigationHistoryRoute {
   route: string;
 }
