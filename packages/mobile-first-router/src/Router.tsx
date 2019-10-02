@@ -10,7 +10,11 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
-import { MFNavigationConfig } from './MFNavigationTypes';
+import {
+  MFNavigationConfig,
+  MFNavigationRoute,
+  MFNavigationRouteComponent
+} from './MFNavigationTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
@@ -102,8 +106,9 @@ const Router = (props: any) => {
   );
 };
 
-const initializeRoutes = (routes) => {
-  return Object.keys(routes).reduce((prev, key) => {
+const initializeRoutes = (routes: Array<MFNavigationRoute>) => {
+  console.log(routes, 'ROUTES');
+  const routesWithComponents = Object.keys(routes).reduce((prev, key) => {
     const suppliedConfig = routes[key] || {};
 
     const routeConfig = {
@@ -115,7 +120,9 @@ const initializeRoutes = (routes) => {
       ...prev,
       [key]: routeConfig
     };
-  }, {});
+  }, {}) as Array<MFNavigationRouteComponent>;
+  console.log(routesWithComponents);
+  return routesWithComponents;
 };
 
 const pushNewRoute = (props) => {
