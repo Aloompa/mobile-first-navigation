@@ -26,3 +26,5 @@ dist
 dist/
 **/*/dist/
 **/*/lib/
+**/*/package-lock.json
+yarn.lock
