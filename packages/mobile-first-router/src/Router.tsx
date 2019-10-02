@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { always, compose, defaultTo } from 'ramda';
+import { Provider } from 'react-redux';
 
 import {
   Wrapper,
@@ -15,6 +16,7 @@ import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
+import createStore from './store';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
@@ -181,4 +183,15 @@ const createRoutes = (config: MFNavigationConfig) => {
   );
 };
 
-export default createRoutes;
+export const createStoreAndRoutes = (config: MFNavigationConfig) => {
+  const Routes = createRoutes(config);
+  console.log(config);
+  const store = createStore(config);
+  return (props) => (
+    <Provider store={store}>
+      <Routes {...props}>{props.children}</Routes>
+    </Provider>
+  );
+};
+
+export default createStoreAndRoutes;
