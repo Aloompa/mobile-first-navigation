@@ -8,6 +8,11 @@ export interface MFNRoute {
   getTitle: Function;
   mode?: string;
 }
+
+export interface MFNHistoryRoute {
+  route: string;
+}
+
 export interface MFNConfig {
   initialRoute?: string;
   tabs?: Array<MFNTab>;
