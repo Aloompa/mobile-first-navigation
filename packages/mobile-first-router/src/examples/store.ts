@@ -2,12 +2,11 @@ import { combineReducers } from 'redux';
 import { createStore } from 'redux';
 import queryStringAdapter from '../adapters/queryStringAdapter';
 import { routerReducer } from '../index';
+import { routeConfig } from './Routes';
 
 const combinedReducers = combineReducers({
   router: routerReducer({
-    activeTab: 1,
-    initialTabRoutes: ['Home', 'Page2', 'Page3'],
-    initialRoute: 'Home',
+    routeConfig,
     adapter: queryStringAdapter
   })
 });
