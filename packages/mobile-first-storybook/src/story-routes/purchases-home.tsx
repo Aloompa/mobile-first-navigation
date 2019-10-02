@@ -23,7 +23,7 @@ const items = (() => {
 })();
 
 export const PurchasesHome = ({ setRoute }) => (
-  <Container backgroundColor={'#7d7'}>
+  <Container backgroundColor={'#9d9'}>
     <Title>Categories Purchased</Title>
     {Object.keys(items).map((category) => (
       <SimpleButton
@@ -34,7 +34,7 @@ export const PurchasesHome = ({ setRoute }) => (
             navigationTitle: 'Purchases',
             params: {
               category,
-              backgroundColor: '#7f7',
+              backgroundColor: '#9f9',
               items: items[category]
             }
           })
