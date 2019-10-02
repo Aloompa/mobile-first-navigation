@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useSpring } from 'react-spring';
 import { AnimatedView } from './AnimatedView';
 import { ComponentContainer } from '@aloompa/mobile-first-components';
+import { MFNavigationHistoryRoute } from './MFNavigationTypes';
 
 const { useEffect } = React;
 
@@ -12,13 +13,10 @@ export const AnimatedModalScreen = (props: {
   renderTopNav: Function;
   topNavHeight: number;
   getTitleFromCache: Function;
-  route: any;
+  route: MFNavigationHistoryRoute;
   Component: any;
   height: number;
-  width: number;
   isNavigatingBack: boolean;
-  isNavigating: boolean;
-  history: any;
 }) => {
   const Component = props.Component;
 

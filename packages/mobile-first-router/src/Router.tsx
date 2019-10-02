@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo, prop } from 'ramda';
+import { always, compose, defaultTo } from 'ramda';
 
 import {
   Wrapper,
@@ -10,7 +10,7 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
-import { MFNConfig } from './MFNTypes';
+import { MFNavigationConfig } from './MFNavigationTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
@@ -44,7 +44,7 @@ const Router = (props: any) => {
         activeTabIndex={props.activeTabIndex}
         setActiveTab={props.setActiveTab}
         bottomTab={true}
-        viewHeightReduction={102}
+        viewHeightReduction={props.tabRoutes.length > 1 ? 102 : 50}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
         tabViews={props.tabRoutes.map(() => (
           <ContentArea>
@@ -56,18 +56,13 @@ const Router = (props: any) => {
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                const routeType = prop('mode', routeConfig);
                 return (
                   <View>
                     <AnimatedScreen
                       {...{
                         ...props,
                         width,
-                        height,
-                        modal: routeType === 'modal',
-                        routes,
                         Component,
-                        getTitleFromCache,
                         poppedRoute,
                         route
                       }}
@@ -141,7 +136,7 @@ const popCurrentRoute = (props) => {
 
 const renderTopNav = always(null);
 
-const fillEmptyTitles = (config: MFNConfig) =>
+const fillEmptyTitles = (config: MFNavigationConfig) =>
   defaultTo(
     config,
     Object.keys(config.routes).reduce(
@@ -171,8 +166,9 @@ const fillEmptyTitles = (config: MFNConfig) =>
     )
   );
 
-const createRoutes = (config: MFNConfig) => {
+const createRoutes = (config: MFNavigationConfig) => {
   const configWithTitles = fillEmptyTitles(config);
+
   return compose(withRouter)((props) =>
     Router({
       ...props,
