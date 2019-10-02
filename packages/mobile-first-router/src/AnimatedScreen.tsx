@@ -9,19 +9,12 @@ const { useEffect } = React;
 export const AnimatedScreen = (props: {
   Component: any;
   route: any;
-  routes: Array<any>;
   history: any;
   isNavigatingBack: boolean;
   navigateBackComplete: Function;
   isNavigating: boolean;
-  getTitleFromCache: Function;
   width: number;
-  height: number;
   poppedRoute: string;
-  modal: boolean;
-  routeConfig: any;
-  renderTopNav: Function;
-  topNavHeight: number;
   routeToPop: string;
 }) => {
   const Component = props.Component;
@@ -59,13 +52,6 @@ export const AnimatedScreen = (props: {
           height: '100%'
         }}
       >
-        {props.modal &&
-          props.renderTopNav({
-            ...props,
-            mode: 'modal',
-            height: props.topNavHeight,
-            routeTitle: props.getTitleFromCache(props, props.route)
-          })}
         {Component ? <Component {...props} route={props.route} /> : null}
       </ComponentContainer>
     </AnimatedView>

@@ -15,10 +15,7 @@ export const AnimatedModalScreen = (props: {
   route: any;
   Component: any;
   height: number;
-  width: number;
   isNavigatingBack: boolean;
-  isNavigating: boolean;
-  history: any;
 }) => {
   const Component = props.Component;
 

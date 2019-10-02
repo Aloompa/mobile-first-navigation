@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo, prop } from 'ramda';
+import { always, compose, defaultTo } from 'ramda';
 
 import {
   Wrapper,
@@ -56,18 +56,13 @@ const Router = (props: any) => {
               .map((route, _index) => {
                 const routeConfig = routes[route.route];
                 const { Component } = routeConfig;
-                const routeType = prop('mode', routeConfig);
                 return (
                   <View>
                     <AnimatedScreen
                       {...{
                         ...props,
                         width,
-                        height,
-                        modal: routeType === 'modal',
-                        routes,
                         Component,
-                        getTitleFromCache,
                         poppedRoute,
                         route
                       }}
