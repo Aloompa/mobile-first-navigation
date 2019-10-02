@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { View } from '..';
 
 const SvgIcon = (props: {
   color: string;
@@ -6,7 +7,7 @@ const SvgIcon = (props: {
   width: number;
   url: string;
 }) => (
-  <div
+  <View
     style={{
       height: props.height,
       width: props.width,
