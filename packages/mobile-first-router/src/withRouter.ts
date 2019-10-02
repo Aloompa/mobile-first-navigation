@@ -25,6 +25,7 @@ export const mapStateToProps = (state) => ({
   isNavigatingBack: path(['router', 'isNavigatingBack'], state),
   isNavigating: path(['router', 'isNavigating'], state),
   poppedRoute: path(['router', 'poppedRoute'], state),
+  routeToPop: path(['router', 'routeToPop'], state),
   titleCache: path(['router', 'titleCache'], state),
   navbarHidden: path(['router', 'navbarHidden'], state),
   activeTabIndex: path(['router', 'activeTab'], state),

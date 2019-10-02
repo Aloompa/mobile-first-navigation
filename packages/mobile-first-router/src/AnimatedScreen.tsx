@@ -5,7 +5,7 @@ import { AnimatedView } from './AnimatedView';
 
 import { ComponentContainer } from '@aloompa/mobile-first-components';
 const config = { tension: 300, friction: 25, precision: 0.01, clamp: true };
-
+const { useEffect } = React;
 export const AnimatedScreen = (props: {
   Component: any;
   route: any;
@@ -17,18 +17,35 @@ export const AnimatedScreen = (props: {
   getTitleFromCache: Function;
   width: number;
   height: number;
+  poppedRoute: string;
   modal: boolean;
   routeConfig: any;
   renderTopNav: Function;
   topNavHeight: number;
+  routeToPop: string;
 }) => {
   const Component = props.Component;
-  const { isNavigating, width } = props;
-  const [spring] = determineAnimationForScreenType({ isNavigating, width });
+  const { isNavigating, width, isNavigatingBack, route, routeToPop } = props;
+  const [spring, setSpring] = determineAnimationForScreenType({
+    isNavigating,
+    width
+  });
+  const lastRoute = props.history[props.history.length - 1].route;
+  useEffect(() => {
+    animateBackwardsNavigate({
+      spring,
+      setSpring,
+      isNavigatingBack,
+      width,
+      lastRoute,
+      route: route.route,
+      routeToPop
+    });
+  }, [props.isNavigatingBack]);
 
   return (
     <AnimatedView
-      key={props.route}
+      key={props.poppedRoute || props.route}
       style={{
         height: '100%',
         ...spring,
@@ -71,6 +88,23 @@ const determineAnimationForScreenType = (props: {
       right: 0,
       bottom: 0,
       config: { duration: 140 }
+    }));
+  }
+};
+
+const animateBackwardsNavigate = (props: {
+  spring: any;
+  isNavigatingBack: boolean;
+  setSpring: any;
+  width: number;
+  lastRoute: string;
+  route: string;
+  routeToPop: string;
+}) => {
+  if (props.isNavigatingBack && props.lastRoute === props.route) {
+    props.setSpring(() => ({
+      reverse: true,
+      reset: true
     }));
   }
 };
