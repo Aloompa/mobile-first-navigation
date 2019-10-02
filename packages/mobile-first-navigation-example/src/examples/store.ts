@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { createStore } from 'redux';
 import queryStringAdapter from '../adapters/queryStringAdapter';
-import { routerReducer } from '@aloompa/mobile-first-router';
+import { routerReducer } from '@aloompa/mobile-first-router/lib';
 
 const combinedReducers = combineReducers({
   router: routerReducer({
