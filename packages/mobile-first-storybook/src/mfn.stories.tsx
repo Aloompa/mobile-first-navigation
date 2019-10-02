@@ -103,7 +103,6 @@ const combinedReducers = combineReducers({
     activeTab: 0,
     initialTabRoutes: ['BrowseHome', 'PurchasesHome', 'AccountHome'],
     initialRoute: 'BrowseHome'
-    //adapter: queryStringAdapter
   })
 });
 
