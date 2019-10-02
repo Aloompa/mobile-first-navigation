@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo, path, prop } from 'ramda';
+import { always, compose, defaultTo, prop } from 'ramda';
 
 import {
   Wrapper,
@@ -12,7 +12,7 @@ import {
 import withRouter from './withRouter';
 import { MFNConfig } from './MFNTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
-import { AnimatedPopScreen } from './AnimatedPopScreen';
+// import { AnimatedPopScreen } from './AnimatedPopScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
@@ -32,9 +32,9 @@ const Router = (props: any) => {
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
-  const poppedConfig = path([poppedRoute], routes);
-  const PoppedComponent = path(['Component'], poppedConfig);
-  const poppedRouteType = path(['mode'], poppedConfig);
+  // const poppedConfig = path([poppedRoute], routes);
+  // const PoppedComponent = path(['Component'], poppedConfig);
+  // const poppedRouteType = path(['mode'], poppedConfig);
 
   return (
     <Wrapper>
@@ -72,23 +72,13 @@ const Router = (props: any) => {
                         routes,
                         Component,
                         getTitleFromCache,
+                        poppedRoute,
                         route
                       }}
                     />
                   </View>
                 );
               })}
-            <AnimatedPopScreen
-              {...{
-                ...props,
-                width,
-                poppedRoute,
-                routes,
-                modal: poppedRouteType === 'modal',
-                Component: PoppedComponent,
-                route: poppedRoute
-              }}
-            />
           </ContentArea>
         ))}
       />
