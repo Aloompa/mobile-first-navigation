@@ -42,18 +42,21 @@ const routerReducer = (config: {
     setRoute: Function;
   };
 }) => {
-  const tabRoutes = defaultTo([], path(['routeConfig', 'tabs'], config)).map(
-    (tab) => [{ route: tab.initial }]
-  );
+  const initialRoute = {
+    route: path(['routeConfig', 'initialRoute'], config)
+  };
+  const tabs = defaultTo([], path(['routeConfig', 'tabs'], config));
+  const tabRoutes =
+    tabs.length > 0
+      ? tabs.map((tab) => [{ route: tab.initial }])
+      : [[initialRoute]];
+
   const activeTab = defaultTo(
     0,
     path(['routeConfig', 'initialActiveTab'], config)
   );
-  const initialRoute = {
-    route: path(['routeConfig', 'initialRoute'], config)
-  };
 
-  const history = tabRoutes.length > 0 ? tabRoutes[activeTab] : [initialRoute];
+  const history = tabRoutes[activeTab];
 
   const initialState = {
     navbarHidden: false,

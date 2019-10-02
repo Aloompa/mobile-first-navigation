@@ -9,9 +9,9 @@ const TabRouter = (props: {
   tabViews: any[];
   viewHeightReduction: number;
 }) => {
-  if (props.tabViews.length === 1) {
-    return props.tabViews[0];
-  }
+  // if (props.tabViews.length === 1) {
+  //   return props.tabViews[0];
+  // }
 
   const tabBar = (
     <View

@@ -44,7 +44,7 @@ const Router = (props: any) => {
         activeTabIndex={props.activeTabIndex}
         setActiveTab={props.setActiveTab}
         bottomTab={true}
-        viewHeightReduction={102}
+        viewHeightReduction={props.tabRoutes.length > 1 ? 102 : 50}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
         tabViews={props.tabRoutes.map(() => (
           <ContentArea>
