@@ -168,6 +168,7 @@ const fillEmptyTitles = (config: MFNConfig) =>
 
 const createRoutes = (config: MFNConfig) => {
   const configWithTitles = fillEmptyTitles(config);
+
   return compose(withRouter)((props) =>
     Router({
       ...props,

@@ -9,7 +9,9 @@ export interface MFNRoute {
   mode?: string;
 }
 export interface MFNConfig {
+  initialRoute?: string;
   tabs?: Array<MFNTab>;
+  initialActiveTab?: number;
   routes: Record<string, MFNRoute>;
   renderTopNav: React.ReactNode;
   topNavHeight?: number;

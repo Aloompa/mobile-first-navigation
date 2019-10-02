@@ -1,6 +1,7 @@
 import { createActions, handleActions } from 'redux-actions';
 
-import { last } from 'ramda';
+import { last, defaultTo, path } from 'ramda';
+import { MFNConfig } from './MFNTypes';
 
 const SET_ROUTE = 'SET_ROUTE';
 const NAVIGATE_COMPLETE = 'NAVIGATE_COMPLETE';
@@ -34,22 +35,25 @@ export const {
 );
 
 const routerReducer = (config: {
-  activeTab?: number;
   initialTabRoutes?: string[];
-  initialRoute: string;
+  routeConfig: MFNConfig;
   adapter?: {
     getRoute: Function;
     setRoute: Function;
   };
 }) => {
+  const tabRoutes = defaultTo([], path(['routeConfig', 'tabs'], config)).map(
+    (tab) => [{ route: tab.initial }]
+  );
+  const activeTab = defaultTo(
+    0,
+    path(['routeConfig', 'initialActiveTab'], config)
+  );
   const initialRoute = {
-    route: config.initialRoute
+    route: path(['routeConfig', 'initialRoute'], config)
   };
 
-  const activeTab = config.activeTab || 0;
-  const tabRoutes = config.initialTabRoutes
-    ? config.initialTabRoutes.map((route) => [{ route }])
-    : [[initialRoute]];
+  const history = tabRoutes.length > 0 ? tabRoutes[activeTab] : [initialRoute];
 
   const initialState = {
     navbarHidden: false,
@@ -58,7 +62,7 @@ const routerReducer = (config: {
     isNavigatingBack: false,
     titleCache: {},
     routeToPop: '',
-    history: tabRoutes[activeTab],
+    history,
     poppedRoute: { route: '' },
     activeTab,
     isModal: false,
