@@ -2,15 +2,15 @@ import * as React from 'react';
 
 import { useSpring } from 'react-spring';
 import { AnimatedView } from './AnimatedView';
-import { MFNHistoryRoute } from './MFNTypes';
+import { MFNavigationHistoryRoute } from './MFNavigationTypes';
 
 import { ComponentContainer } from '@aloompa/mobile-first-components';
 const config = { tension: 300, friction: 25, precision: 0.01, clamp: true };
 const { useEffect } = React;
 export const AnimatedScreen = (props: {
   Component: any;
-  route: MFNHistoryRoute;
-  history: Array<MFNHistoryRoute>;
+  route: MFNavigationHistoryRoute;
+  history: Array<MFNavigationHistoryRoute>;
   isNavigatingBack: boolean;
   navigateBackComplete: Function;
   isNavigating: boolean;

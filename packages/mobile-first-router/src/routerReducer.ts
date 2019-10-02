@@ -1,7 +1,11 @@
 import { createActions, handleActions } from 'redux-actions';
 
 import { last, defaultTo, path } from 'ramda';
-import { MFNConfig, MFNHistoryRoute, MFNTab } from './MFNTypes';
+import {
+  MFNavigationConfig,
+  MFNavigationHistoryRoute,
+  MFNavigationTab
+} from './MFNavigationTypes';
 
 const SET_ROUTE = 'SET_ROUTE';
 const NAVIGATE_COMPLETE = 'NAVIGATE_COMPLETE';
@@ -36,22 +40,22 @@ export const {
 
 const routerReducer = (config: {
   initialTabRoutes?: string[];
-  routeConfig: MFNConfig;
+  routeConfig: MFNavigationConfig;
   adapter?: {
     getRoute: Function;
     setRoute: Function;
   };
 }) => {
-  const initialRoute: MFNHistoryRoute = {
+  const initialRoute: MFNavigationHistoryRoute = {
     route: path(['routeConfig', 'initialRoute'], config)
   };
-  const tabs: Array<MFNTab> = defaultTo(
+  const tabs: Array<MFNavigationTab> = defaultTo(
     [],
     path(['routeConfig', 'tabs'], config)
   );
-  const tabRoutes: Array<Array<MFNHistoryRoute>> =
+  const tabRoutes: Array<Array<MFNavigationHistoryRoute>> =
     tabs.length > 0
-      ? tabs.map((tab: MFNTab) => [{ route: tab.initial }])
+      ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
       : [[initialRoute]];
 
   const activeTab = defaultTo(
@@ -59,7 +63,7 @@ const routerReducer = (config: {
     path(['routeConfig', 'initialActiveTab'], config)
   );
 
-  const history: Array<MFNHistoryRoute> = tabRoutes[activeTab];
+  const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
 
   const initialState = {
     navbarHidden: false,

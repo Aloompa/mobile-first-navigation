@@ -10,7 +10,7 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
-import { MFNConfig } from './MFNTypes';
+import { MFNavigationConfig } from './MFNavigationTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
@@ -136,7 +136,7 @@ const popCurrentRoute = (props) => {
 
 const renderTopNav = always(null);
 
-const fillEmptyTitles = (config: MFNConfig) =>
+const fillEmptyTitles = (config: MFNavigationConfig) =>
   defaultTo(
     config,
     Object.keys(config.routes).reduce(
@@ -166,7 +166,7 @@ const fillEmptyTitles = (config: MFNConfig) =>
     )
   );
 
-const createRoutes = (config: MFNConfig) => {
+const createRoutes = (config: MFNavigationConfig) => {
   const configWithTitles = fillEmptyTitles(config);
 
   return compose(withRouter)((props) =>

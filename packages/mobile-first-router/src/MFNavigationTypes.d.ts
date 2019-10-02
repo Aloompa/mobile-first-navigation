@@ -1,23 +1,23 @@
-export interface MFNTab {
+export interface MFNavigationTab {
   button: (isSelected: boolean, onPress: Function) => React.ReactNode;
   initial: string;
 }
 
-export interface MFNRoute {
+export interface MFNavigationRoute {
   route: React.ReactNode;
   getTitle: Function;
   mode?: string;
 }
 
-export interface MFNHistoryRoute {
+export interface MFNavigationHistoryRoute {
   route: string;
 }
 
-export interface MFNConfig {
+export interface MFNavigationConfig {
   initialRoute?: string;
-  tabs?: Array<MFNTab>;
+  tabs?: Array<MFNavigationTab>;
   initialActiveTab?: number;
-  routes: Record<string, MFNRoute>;
+  routes: Record<string, MFNavigationRoute>;
   renderTopNav: React.ReactNode;
   topNavHeight?: number;
   width?: number;
