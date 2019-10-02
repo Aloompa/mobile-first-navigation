@@ -33,12 +33,6 @@ module.exports = function(wallaby) {
       window.requestAnimationFrame = () => {
         throw new Error('requestAnimationFrame is not supported in Node');
       };
-
-      wallaby.testFramework.configure({
-        moduleNameMapper: {
-          '^react-native$': 'react-native-web'
-        }
-      });
     },
 
     compilers: {

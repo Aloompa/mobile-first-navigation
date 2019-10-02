@@ -1,13 +1,12 @@
 import * as React from 'react';
-
-import { Text, TouchableOpacity, View } from 'react-native';
-import { compose, withHandlers } from 'recompose';
+import { Text, Button, View } from '@aloompa/mobile-first-components';
 
 const Home = (props) => (
   <View
     style={{
       display: 'flex',
       flex: 1,
+      height: '100%',
       flexDirection: 'column'
     }}
   >
@@ -36,22 +35,31 @@ const Home = (props) => (
         justifyContent: 'center'
       }}
     >
-      <TouchableOpacity onPress={props.nextPage}>
+      <Button
+        style={{
+          height: 50,
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
+        onClick={(e) => props.nextPage(e)}
+      >
         <View>
           <Text>Page 2</Text>
         </View>
-      </TouchableOpacity>
+      </Button>
     </View>
   </View>
 );
 
-export default compose(
-  withHandlers({
-    nextPage: (props) => (_e) => {
+export default (props) =>
+  Home({
+    ...props,
+    nextPage: (e) => {
+      e.preventDefault();
       props.setRoute({
         route: 'Page2',
         params: {}
       });
     }
-  })
-)(Home);
+  });

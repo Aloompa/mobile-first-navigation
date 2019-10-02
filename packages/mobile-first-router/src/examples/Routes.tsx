@@ -8,7 +8,9 @@ import { always } from 'ramda';
 import { createRoutes } from '../index';
 import { TabButton, TopNav } from '@aloompa/mobile-first-components';
 
-const Routes = createRoutes({
+export const routeConfig = {
+  initialActiveTab: 1,
+  initialRoute: 'Home',
   tabs: [
     {
       button: (isSelected: boolean, onPress: Function) => (
@@ -65,7 +67,7 @@ const Routes = createRoutes({
   routes: {
     Home: {
       route: Home,
-      getTitle: always('Home')
+      getTitle: always('')
     },
     Page2: {
       route: Page2,
@@ -86,6 +88,8 @@ const Routes = createRoutes({
     }
   },
   renderTopNav: TopNav
-});
+};
+
+const Routes = createRoutes(routeConfig);
 
 export default Routes;

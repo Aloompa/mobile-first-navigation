@@ -7,10 +7,6 @@ module.exports = {
 
   testEnvironment: 'jsdom',
 
-  moduleNameMapper: {
-    '^react-native$': 'react-native-web'
-  },
-
   moduleFileExtensions: ['js', 'jsx', 'json', 'ts', 'tsx'],
 
   transform: {

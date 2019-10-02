@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { View } from './Primitives';
 
 const TabRouter = (props: {
   activeTabIndex: number;
@@ -9,10 +9,6 @@ const TabRouter = (props: {
   tabViews: any[];
   viewHeightReduction: number;
 }) => {
-  if (props.tabViews.length === 1) {
-    return props.tabViews[0];
-  }
-
   const tabBar = (
     <View
       style={{
