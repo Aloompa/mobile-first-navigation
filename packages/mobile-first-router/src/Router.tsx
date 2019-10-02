@@ -12,7 +12,6 @@ import {
 import withRouter from './withRouter';
 import { MFNConfig } from './MFNTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
-// import { AnimatedPopScreen } from './AnimatedPopScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
@@ -32,9 +31,6 @@ const Router = (props: any) => {
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
-  // const poppedConfig = path([poppedRoute], routes);
-  // const PoppedComponent = path(['Component'], poppedConfig);
-  // const poppedRouteType = path(['mode'], poppedConfig);
 
   return (
     <Wrapper>

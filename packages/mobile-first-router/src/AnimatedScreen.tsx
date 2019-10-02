@@ -22,9 +22,10 @@ export const AnimatedScreen = (props: {
   routeConfig: any;
   renderTopNav: Function;
   topNavHeight: number;
+  routeToPop: string;
 }) => {
   const Component = props.Component;
-  const { isNavigating, width, isNavigatingBack, route } = props;
+  const { isNavigating, width, isNavigatingBack, route, routeToPop } = props;
   const [spring, setSpring] = determineAnimationForScreenType({
     isNavigating,
     width
@@ -37,7 +38,8 @@ export const AnimatedScreen = (props: {
       isNavigatingBack,
       width,
       lastRoute,
-      route: route.route
+      route: route.route,
+      routeToPop
     });
   }, [props.isNavigatingBack]);
 
@@ -97,6 +99,7 @@ const animateBackwardsNavigate = (props: {
   width: number;
   lastRoute: string;
   route: string;
+  routeToPop: string;
 }) => {
   if (props.isNavigatingBack && props.lastRoute === props.route) {
     props.setSpring(() => ({
