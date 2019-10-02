@@ -1,57 +1,66 @@
 import * as React from 'react';
 
 import { Text, Button, View } from '@aloompa/mobile-first-components';
-
-const Page2b = (props) => (
-  <View
-    style={{
-      display: 'flex',
-      flex: 1,
-      flexDirection: 'column',
-      height: '100%'
-    }}
-  >
+const { useState } = React;
+const Page2b = (props) => {
+  const [text, setText] = useState('test');
+  return (
     <View
       style={{
+        display: 'flex',
         flex: 1,
-        backgroundColor: '#272727',
-        padding: 12
+        flexDirection: 'column',
+        height: '100%'
       }}
     >
-      <Text
+      <View
         style={{
-          color: '#FFFFFF'
+          flex: 1,
+          backgroundColor: '#272727',
+          padding: 12
         }}
       >
-        Page 2B
-      </Text>
-    </View>
-    <View
-      style={{
-        height: '50px',
-        width: '100%',
-        backgroundColor: '#BBB',
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <Button
+        <Text
+          style={{
+            color: '#FFFFFF'
+          }}
+        >
+          Page 2B
+        </Text>
+
+        <input
+          type='text'
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+        />
+      </View>
+      <View
         style={{
-          height: 50,
+          height: '50px',
           width: '100%',
+          backgroundColor: '#BBB',
+          flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center'
         }}
-        onClick={(e) => props.nextPage(e)}
       >
-        <View>
-          <Text>Page 3</Text>
-        </View>
-      </Button>
+        <Button
+          style={{
+            height: 50,
+            width: '100%',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+          onClick={(e) => props.nextPage(e)}
+        >
+          <View>
+            <Text>Page 3</Text>
+          </View>
+        </Button>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default (props) =>
   Page2b({
