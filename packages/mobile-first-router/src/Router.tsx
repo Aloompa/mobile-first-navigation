@@ -15,9 +15,10 @@ import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
-const { useState, useEffect } = React;
 
 const Router = (props: any) => {
+  const { useState, useEffect } = React;
+
   const [routes] = useState(initializeRoutes(props.routes));
 
   const { width, height } = getWidthAndHeight(props);
