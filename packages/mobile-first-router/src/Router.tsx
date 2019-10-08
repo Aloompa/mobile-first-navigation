@@ -10,7 +10,11 @@ import {
 } from '@aloompa/mobile-first-components';
 
 import withRouter from './withRouter';
-import { MFNavigationConfig } from './MFNavigationTypes';
+import {
+  MFNavigationConfig,
+  MFNavigationRoute,
+  MFNavigationRouteComponent
+} from './MFNavigationTypes';
 import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
@@ -18,16 +22,16 @@ import { getTitle, getTitleFromCache } from './util/getTitle';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
-  const [routes] = useState(initializeRoutes(props.routes));
+  const [routeConfigs] = useState(initializeRoutes(props.routes));
 
   const { width, height } = getWidthAndHeight(props);
 
   useEffect(() => {
-    pushNewRoute({ ...props, routes });
+    pushNewRoute({ ...props });
   }, [props.history.length]);
 
   useEffect(() => {
-    popCurrentRoute({ ...props, routes });
+    popCurrentRoute({ ...props });
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
@@ -50,11 +54,11 @@ const Router = (props: any) => {
           <ContentArea>
             {props.history
               .filter((route) => {
-                const routeConfig = routes[route.route];
+                const routeConfig = routeConfigs[route.route];
                 return routeConfig.mode !== 'modal';
               })
               .map((route, _index) => {
-                const routeConfig = routes[route.route];
+                const routeConfig = routeConfigs[route.route];
                 const { Component } = routeConfig;
                 return (
                   <View>
@@ -75,19 +79,17 @@ const Router = (props: any) => {
       />
       {props.history
         .filter((route) => {
-          const routeConfig = routes[route.route];
+          const routeConfig = routeConfigs[route.route];
           return routeConfig.mode === 'modal';
         })
         .map((route, _key) => {
-          const routeConfig = routes[route.route];
-          const routeConfigs = routes;
+          const routeConfig = routeConfigs[route.route];
           const { Component } = routeConfig;
           return (
             <View>
               <AnimatedModalScreen
                 {...{
                   ...props,
-                  routeConfigs,
                   height,
                   Component,
                   getTitleFromCache,
@@ -102,8 +104,8 @@ const Router = (props: any) => {
   );
 };
 
-const initializeRoutes = (routes) => {
-  return Object.keys(routes).reduce((prev, key) => {
+const initializeRoutes = (routes: Array<MFNavigationRoute>) => {
+  const routesWithComponents = Object.keys(routes).reduce((prev, key) => {
     const suppliedConfig = routes[key] || {};
 
     const routeConfig = {
@@ -115,7 +117,8 @@ const initializeRoutes = (routes) => {
       ...prev,
       [key]: routeConfig
     };
-  }, {});
+  }, {}) as Array<MFNavigationRouteComponent>;
+  return routesWithComponents;
 };
 
 const pushNewRoute = (props) => {
