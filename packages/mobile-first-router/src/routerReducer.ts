@@ -46,7 +46,6 @@ const routerReducer: Function = (config: {
     setRoute: Function;
   };
 }) => {
-  console.log(config, 'HEy');
   const initialRoute: MFNavigationHistoryRoute = {
     route: path(['routeConfig', 'initialRoute'], config)
   };

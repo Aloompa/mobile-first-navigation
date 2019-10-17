@@ -185,7 +185,6 @@ const createRoutes = (config: MFNavigationConfig) => {
 
 export const createStoreAndRoutes = (config: MFNavigationConfig) => {
   const Routes = createRoutes(config);
-  console.log(config);
   const store = createStore(config);
   return (props) => (
     <Provider store={store}>
