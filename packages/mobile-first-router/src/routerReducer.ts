@@ -44,6 +44,8 @@ const routerReducer: Function = (config: {
   adapter?: {
     getRoute: Function;
     setRoute: Function;
+    getQueryString: Function;
+    getUrlState: Function;
   };
 }) => {
   const initialRoute: MFNavigationHistoryRoute = {
@@ -57,10 +59,10 @@ const routerReducer: Function = (config: {
     tabs.length > 0
       ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
       : [[initialRoute]];
-
+  const queryInitialTab = getInitialTabQuery(config, initialRoute);
   const activeTab = defaultTo(
     0,
-    path(['routeConfig', 'initialActiveTab'], config)
+    queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
   );
 
   const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
@@ -200,3 +202,13 @@ const routerReducer: Function = (config: {
 };
 
 export default routerReducer;
+
+function getInitialTabQuery(config, initialRoute) {
+  if (!config.adapter) {
+    return false;
+  }
+
+  const urlState = config.adapter.getUrlState(initialRoute);
+  const queryString = config.adapter.getQueryString(urlState);
+  return parseInt(queryString.tab) || false;
+}
