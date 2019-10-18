@@ -6,7 +6,7 @@ export const CategoryView = ({ route, setRoute }) => (
     <Title>{route.params.category}</Title>
     {route.params.items.map((item) => (
       <SimpleButton
-        name={item}
+        name={`Item #${item.split('-')[2]}`}
         onPress={() =>
           setRoute({
             route: 'ItemView',

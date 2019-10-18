@@ -11,7 +11,9 @@ import {
   PurchasesHome
 } from './story-routes';
 
-const Router = createRoutes({
+const routeConfig = {
+  initialActiveTab: 0,
+  initialRoute: 'BrowseHome',
   tabs: [
     {
       button: (isSelected: boolean, onPress: Function) => (
@@ -93,17 +95,17 @@ const Router = createRoutes({
   },
   renderTopNav: TopNav,
   topNavHeight: 52
-});
+};
+
+const Router = createRoutes(routeConfig);
 
 import { combineReducers } from 'redux';
 import { createStore } from 'redux';
 
 const combinedReducers = combineReducers({
   router: routerReducer({
-    activeTab: 0,
-    initialTabRoutes: ['BrowseHome', 'PurchasesHome', 'AccountHome'],
+    routeConfig,
     initialRoute: 'BrowseHome'
-    //adapter: queryStringAdapter
   })
 });
 
