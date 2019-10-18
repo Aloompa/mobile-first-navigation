@@ -2,7 +2,7 @@
   "name": "@aloompa/mobile-first-router",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
     "test": "NODE_ENV=dev node node_modules/jest/bin/jest.js",
     "build": "node_modules/.bin/tsc",

@@ -23,7 +23,7 @@ export const routeConfig = {
           iconSelectedColor={'#FF00FF'}
           title={'Browse'}
           iconUrl={
-            'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-browse.svg'
+            'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-browse.svg'
           }
         />
       ),
@@ -40,7 +40,7 @@ export const routeConfig = {
           iconSelectedColor={'#FF00FF'}
           title={'Home 2'}
           iconUrl={
-            'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-tickets.svg'
+            'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-tickets.svg'
           }
         />
       ),
@@ -57,7 +57,7 @@ export const routeConfig = {
           iconSelectedColor={'#FF00FF'}
           title={'Home 3'}
           iconUrl={
-            'https://s3.amazonaws.com/assets.aloompa.com/TestFolder/reservations-tab-icon-account.svg'
+            'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-account.svg'
           }
         />
       ),
