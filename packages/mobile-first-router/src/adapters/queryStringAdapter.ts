@@ -77,7 +77,9 @@ const getRoute = (initialRoute) => {
 
 const queryStringAdapter = {
   setRoute,
-  getRoute
+  getQueryString,
+  getRoute,
+  getUrlState
 };
 
 export default queryStringAdapter;

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { storiesOf } from '@storybook/react';
 import { TabButton, TopNav } from '@aloompa/mobile-first-components';
-import { createRoutes, routerReducer } from '@aloompa/mobile-first-router';
+import { createRoutes } from '@aloompa/mobile-first-router';
 import {
   AccountHome,
   BrowseHome,
@@ -99,16 +99,4 @@ const routeConfig = {
 
 const Router = createRoutes(routeConfig);
 
-import { combineReducers } from 'redux';
-import { createStore } from 'redux';
-
-const combinedReducers = combineReducers({
-  router: routerReducer({
-    routeConfig,
-    initialRoute: 'BrowseHome'
-  })
-});
-
-const store = createStore(combinedReducers);
-
-storiesOf('Router', module).add('default', () => <Router store={store} />);
+storiesOf('Router', module).add('default', () => <Router />);
