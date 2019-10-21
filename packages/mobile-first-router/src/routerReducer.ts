@@ -192,8 +192,6 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
   );
 };
 
-export default routerReducer;
-
 const getInitialTabQuery = (
   config: MFNavigationReducerConfig,
   initialRoute: MFNavigationHistoryRoute
@@ -206,3 +204,5 @@ const getInitialTabQuery = (
   const queryString = config.adapter.getQueryString(urlState);
   return parseInt(queryString.tab) || false;
 };
+
+export default routerReducer;
