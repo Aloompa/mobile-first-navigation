@@ -25,7 +25,6 @@ import Modal from './routes/Modal';
 import Page2 from './routes/Page2';
 import Page2b from './routes/Page2b';
 import Page3 from './routes/Page3';
-import { always } from 'ramda';
 import { createRoutes } from '../index';
 import { TopNav } from '@aloompa/mobile-first-components';
 
