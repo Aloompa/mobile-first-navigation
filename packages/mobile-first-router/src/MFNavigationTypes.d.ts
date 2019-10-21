@@ -37,7 +37,7 @@ export interface MFNavigationReducerConfig {
   adapter?: {
     getRoute: Function;
     setRoute: Function;
-    getQueryString: Function;
-    getUrlState: Function;
+    getTab: Function;
+    setTab: Function;
   };
 }

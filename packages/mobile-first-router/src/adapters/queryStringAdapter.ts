@@ -9,13 +9,14 @@ const getQueryString = compose(
   tail
 );
 
-const getUrlState = ({ route, params }) => {
+const getUrlState = ({ route, tab, params }) => {
   const queryString = {
     ...getQueryString(path(['document', 'location', 'search'], global)),
     route,
+    tab,
     params: urlencode(params)
   };
-
+  console.log('qStr', queryString);
   if (queryString.route === 'Home') {
     delete queryString.route;
   }
@@ -75,11 +76,29 @@ const getRoute = (initialRoute) => {
   ];
 };
 
+const getTab = (initialTab: number) => {
+  const queryString = getQueryString(
+    path(['document', 'location', 'search'], global)
+  );
+
+  if (!queryString.tab || queryString.tab === `${initialTab}`) {
+    return initialTab;
+  }
+
+  return parseInt(queryString.tab) || initialTab;
+};
+
+const setTab = (action) => {
+  try {
+    window.history.replaceState(null, 'Tab', getUrlState(action));
+  } catch (_e) {}
+};
+
 const queryStringAdapter = {
-  setRoute,
-  getQueryString,
   getRoute,
-  getUrlState
+  setRoute,
+  getTab,
+  setTab
 };
 
 export default queryStringAdapter;
