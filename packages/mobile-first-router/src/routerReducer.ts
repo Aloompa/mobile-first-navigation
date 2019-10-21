@@ -48,38 +48,7 @@ const routerReducer: Function = (config: {
     getUrlState: Function;
   };
 }) => {
-  const initialRoute: MFNavigationHistoryRoute = {
-    route: path(['routeConfig', 'initialRoute'], config)
-  };
-  const tabs: Array<MFNavigationTab> = defaultTo(
-    [],
-    path(['routeConfig', 'tabs'], config)
-  );
-  const tabRoutes: Array<Array<MFNavigationHistoryRoute>> =
-    tabs.length > 0
-      ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
-      : [[initialRoute]];
-  const queryInitialTab = getInitialTabQuery(config, initialRoute);
-  const activeTab = defaultTo(
-    0,
-    queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
-  );
-
-  const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
-
-  const initialState = {
-    navbarHidden: false,
-    isNavigating: false,
-    destinations: [],
-    isNavigatingBack: false,
-    titleCache: {},
-    routeToPop: '',
-    history,
-    poppedRoute: { route: '' },
-    activeTab,
-    isModal: false,
-    tabRoutes
-  };
+  const initialState = buildInitialState(config);
 
   return handleActions(
     {
@@ -203,7 +172,42 @@ const routerReducer: Function = (config: {
 
 export default routerReducer;
 
-function getInitialTabQuery(config, initialRoute) {
+export const buildInitialState = (config) => {
+  const initialRoute: MFNavigationHistoryRoute = {
+    route: path(['routeConfig', 'initialRoute'], config)
+  };
+  const tabs: Array<MFNavigationTab> = defaultTo(
+    [],
+    path(['routeConfig', 'tabs'], config)
+  );
+  const tabRoutes: Array<Array<MFNavigationHistoryRoute>> =
+    tabs.length > 0
+      ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
+      : [[initialRoute]];
+  const queryInitialTab = getInitialTabQuery(config, initialRoute);
+  const activeTab = defaultTo(
+    0,
+    queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
+  );
+
+  const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
+
+  return {
+    navbarHidden: false,
+    isNavigating: false,
+    destinations: [],
+    isNavigatingBack: false,
+    titleCache: {},
+    routeToPop: '',
+    history,
+    poppedRoute: { route: '' },
+    activeTab,
+    isModal: false,
+    tabRoutes
+  };
+};
+
+const getInitialTabQuery = (config, initialRoute) => {
   if (!config.adapter) {
     return false;
   }
@@ -211,4 +215,4 @@ function getInitialTabQuery(config, initialRoute) {
   const urlState = config.adapter.getUrlState(initialRoute);
   const queryString = config.adapter.getQueryString(urlState);
   return parseInt(queryString.tab) || false;
-}
+};
