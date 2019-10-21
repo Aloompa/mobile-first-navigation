@@ -2,7 +2,6 @@ import { createActions, handleActions } from 'redux-actions';
 
 import { last, defaultTo, path } from 'ramda';
 import {
-  MFNavigationConfig,
   MFNavigationHistoryRoute,
   MFNavigationTab,
   MFNavigationReducerConfig
