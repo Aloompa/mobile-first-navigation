@@ -2,7 +2,6 @@ import { createActions, handleActions } from 'redux-actions';
 
 import { last, defaultTo, path } from 'ramda';
 import {
-  MFNavigationConfig,
   MFNavigationHistoryRoute,
   MFNavigationTab,
   MFNavigationReducerConfig
@@ -125,6 +124,7 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
       [RESET_NAVIGATION]: (state) => ({
         ...state,
         history: [state.history[0], last(state.history)],
+        routeToPop: last(state.history),
         tabRoutes: state.tabRoutes.map((route, index) =>
           index === state.activeTab ? [route[0], last(route)] : route
         ),
@@ -193,9 +193,7 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
   );
 };
 
-export default routerReducer;
-
-export const buildInitialState = (config) => {
+export const buildInitialState = (config: MFNavigationReducerConfig) => {
   const initialRoute: MFNavigationHistoryRoute = {
     route: path(['routeConfig', 'initialRoute'], config)
   };
@@ -242,3 +240,5 @@ const getInitialTabQuery = (
   const queryString = config.adapter.getQueryString(urlState);
   return parseInt(queryString.tab) || false;
 };
+
+export default routerReducer;
