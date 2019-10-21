@@ -39,38 +39,7 @@ export const {
 );
 
 const routerReducer: Function = (config: MFNavigationReducerConfig) => {
-  const initialRoute: MFNavigationHistoryRoute = {
-    route: path(['routeConfig', 'initialRoute'], config)
-  };
-  const tabs: Array<MFNavigationTab> = defaultTo(
-    [],
-    path(['routeConfig', 'tabs'], config)
-  );
-  const tabRoutes: Array<Array<MFNavigationHistoryRoute>> =
-    tabs.length > 0
-      ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
-      : [[initialRoute]];
-  const queryInitialTab = getInitialTabQuery(config, initialRoute);
-  const activeTab = defaultTo(
-    0,
-    queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
-  );
-
-  const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
-
-  const initialState = {
-    navbarHidden: false,
-    isNavigating: false,
-    destinations: [],
-    isNavigatingBack: false,
-    titleCache: {},
-    routeToPop: '',
-    history,
-    poppedRoute: { route: '' },
-    activeTab,
-    isModal: false,
-    tabRoutes
-  };
+  const initialState = buildInitialState(config);
 
   return handleActions(
     {
@@ -86,7 +55,10 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
         const history = [...state.history, payload];
         const tabRoute = [...state.tabRoutes[state.activeTab], payload];
         if (config.adapter) {
-          config.adapter.setRoute(payload);
+          config.adapter.setRoute({
+            route: payload.route,
+            tab: state.activeTab || 0
+          });
         }
 
         return {
@@ -182,6 +154,13 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           return state;
         }
 
+        if (config.adapter) {
+          config.adapter.setTab({
+            route: state.history[state.history.length - 1].route,
+            tab: payload
+          });
+        }
+
         return {
           ...state,
           activeTab: payload,
@@ -205,7 +184,9 @@ export const buildInitialState = (config: MFNavigationReducerConfig) => {
     tabs.length > 0
       ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
       : [[initialRoute]];
-  const queryInitialTab = getInitialTabQuery(config, initialRoute);
+  const queryInitialTab =
+    config.adapter &&
+    config.adapter.getTab(config.routeConfig.initialActiveTab);
   const activeTab = defaultTo(
     0,
     queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
@@ -226,19 +207,6 @@ export const buildInitialState = (config: MFNavigationReducerConfig) => {
     isModal: false,
     tabRoutes
   };
-};
-
-const getInitialTabQuery = (
-  config: MFNavigationReducerConfig,
-  initialRoute: MFNavigationHistoryRoute
-) => {
-  if (!config.adapter) {
-    return false;
-  }
-
-  const urlState = config.adapter.getUrlState(initialRoute);
-  const queryString = config.adapter.getQueryString(urlState);
-  return parseInt(queryString.tab) || false;
 };
 
 export default routerReducer;
