@@ -4,7 +4,8 @@ import { last, defaultTo, path } from 'ramda';
 import {
   MFNavigationConfig,
   MFNavigationHistoryRoute,
-  MFNavigationTab
+  MFNavigationTab,
+  MFNavigationReducerConfig
 } from './MFNavigationTypes';
 
 const SET_ROUTE = 'SET_ROUTE';
@@ -38,16 +39,7 @@ export const {
   SET_ACTIVE_TAB
 );
 
-const routerReducer: Function = (config: {
-  initialTabRoutes?: string[];
-  routeConfig: MFNavigationConfig;
-  adapter?: {
-    getRoute: Function;
-    setRoute: Function;
-    getQueryString: Function;
-    getUrlState: Function;
-  };
-}) => {
+const routerReducer: Function = (config: MFNavigationReducerConfig) => {
   const initialRoute: MFNavigationHistoryRoute = {
     route: path(['routeConfig', 'initialRoute'], config)
   };
@@ -203,7 +195,10 @@ const routerReducer: Function = (config: {
 
 export default routerReducer;
 
-function getInitialTabQuery(config, initialRoute) {
+const getInitialTabQuery = (
+  config: MFNavigationReducerConfig,
+  initialRoute: MFNavigationHistoryRoute
+) => {
   if (!config.adapter) {
     return false;
   }
@@ -211,4 +206,4 @@ function getInitialTabQuery(config, initialRoute) {
   const urlState = config.adapter.getUrlState(initialRoute);
   const queryString = config.adapter.getQueryString(urlState);
   return parseInt(queryString.tab) || false;
-}
+};
