@@ -4,7 +4,8 @@ import { last, defaultTo, path } from 'ramda';
 import {
   MFNavigationConfig,
   MFNavigationHistoryRoute,
-  MFNavigationTab
+  MFNavigationTab,
+  MFNavigationReducerConfig
 } from './MFNavigationTypes';
 
 const SET_ROUTE = 'SET_ROUTE';
@@ -38,17 +39,39 @@ export const {
   SET_ACTIVE_TAB
 );
 
-const routerReducer: Function = (config: {
-  initialTabRoutes?: string[];
-  routeConfig: MFNavigationConfig;
-  adapter?: {
-    getRoute: Function;
-    setRoute: Function;
-    getQueryString: Function;
-    getUrlState: Function;
+const routerReducer: Function = (config: MFNavigationReducerConfig) => {
+  const initialRoute: MFNavigationHistoryRoute = {
+    route: path(['routeConfig', 'initialRoute'], config)
   };
-}) => {
-  const initialState = buildInitialState(config);
+  const tabs: Array<MFNavigationTab> = defaultTo(
+    [],
+    path(['routeConfig', 'tabs'], config)
+  );
+  const tabRoutes: Array<Array<MFNavigationHistoryRoute>> =
+    tabs.length > 0
+      ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
+      : [[initialRoute]];
+  const queryInitialTab = getInitialTabQuery(config, initialRoute);
+  const activeTab = defaultTo(
+    0,
+    queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
+  );
+
+  const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
+
+  const initialState = {
+    navbarHidden: false,
+    isNavigating: false,
+    destinations: [],
+    isNavigatingBack: false,
+    titleCache: {},
+    routeToPop: '',
+    history,
+    poppedRoute: { route: '' },
+    activeTab,
+    isModal: false,
+    tabRoutes
+  };
 
   return handleActions(
     {
@@ -207,7 +230,10 @@ export const buildInitialState = (config) => {
   };
 };
 
-const getInitialTabQuery = (config, initialRoute) => {
+const getInitialTabQuery = (
+  config: MFNavigationReducerConfig,
+  initialRoute: MFNavigationHistoryRoute
+) => {
   if (!config.adapter) {
     return false;
   }
