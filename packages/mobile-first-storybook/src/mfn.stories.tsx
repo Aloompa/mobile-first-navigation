@@ -1,16 +1,19 @@
 import * as React from 'react';
-import Home from './routes/Home';
-import Modal from './routes/Modal';
-import Page2 from './routes/Page2';
-import Page2b from './routes/Page2b';
-import Page3 from './routes/Page3';
-import { always } from 'ramda';
-import { createRoutes } from '../index';
+import { storiesOf } from '@storybook/react';
 import { TabButton, TopNav } from '@aloompa/mobile-first-components';
+import { createRoutes } from '@aloompa/mobile-first-router';
+import {
+  AccountHome,
+  BrowseHome,
+  CategoryView,
+  ItemDetails,
+  ItemView,
+  PurchasesHome
+} from './story-routes';
 
-export const routeConfig = {
-  initialActiveTab: 1,
-  initialRoute: 'Home',
+const routeConfig = {
+  initialActiveTab: 0,
+  initialRoute: 'BrowseHome',
   tabs: [
     {
       button: (isSelected: boolean, onPress: Function) => (
@@ -20,14 +23,14 @@ export const routeConfig = {
           iconUnselectedColor={'#ccc'}
           iconHeight={18}
           iconWidth={20}
-          iconSelectedColor={'#FF00FF'}
+          iconSelectedColor={'#000'}
           title={'Browse'}
           iconUrl={
             'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-browse.svg'
           }
         />
       ),
-      initial: 'Home'
+      initial: 'BrowseHome'
     },
     {
       button: (isSelected: boolean, onPress: Function) => (
@@ -37,14 +40,14 @@ export const routeConfig = {
           iconUnselectedColor={'#ccc'}
           iconHeight={18}
           iconWidth={22}
-          iconSelectedColor={'#FF00FF'}
-          title={'Home 2'}
+          iconSelectedColor={'#000'}
+          title={'Purchases'}
           iconUrl={
             'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-tickets.svg'
           }
         />
       ),
-      initial: 'Page2'
+      initial: 'PurchasesHome'
     },
     {
       button: (isSelected: boolean, onPress: Function) => (
@@ -54,42 +57,46 @@ export const routeConfig = {
           iconUnselectedColor={'#ccc'}
           iconHeight={22}
           iconWidth={22}
-          iconSelectedColor={'#FF00FF'}
-          title={'Home 3'}
+          iconSelectedColor={'#000'}
+          title={'Account'}
           iconUrl={
             'https://aloompa-assets.imgix.net/TestFolder/reservations-tab-icon-account.svg'
           }
         />
       ),
-      initial: 'Page3'
+      initial: 'AccountHome'
     }
   ],
   routes: {
-    Home: {
-      route: Home,
-      getTitle: always('')
+    BrowseHome: {
+      route: BrowseHome,
+      getTitle: () => 'Browse'
     },
-    Page2: {
-      route: Page2,
-      getTitle: always('Page 2')
+    CategoryView: {
+      route: CategoryView,
+      getTitle: () => 'Browse'
     },
-    Page2b: {
-      route: Page2b,
-      getTitle: always('Page 2B')
+    ItemView: {
+      route: ItemView,
+      getTitle: () => 'Item'
     },
-    Page3: {
-      route: Page3,
-      getTitle: always('Page 3 Home')
-    },
-    Modal: {
-      route: Modal,
-      getTitle: always('Modal'),
+    ItemDetails: {
+      route: ItemDetails,
       mode: 'modal'
+    },
+    PurchasesHome: {
+      route: PurchasesHome,
+      getTitle: () => 'Purchases'
+    },
+    AccountHome: {
+      route: AccountHome,
+      getTitle: () => 'Account'
     }
   },
-  renderTopNav: TopNav
+  renderTopNav: TopNav,
+  topNavHeight: 52
 };
 
-const Routes = createRoutes(routeConfig);
+const Router = createRoutes(routeConfig);
 
-export default Routes;
+storiesOf('Router', module).add('default', () => <Router />);

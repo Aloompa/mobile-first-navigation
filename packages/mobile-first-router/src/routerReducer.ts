@@ -38,7 +38,7 @@ export const {
   SET_ACTIVE_TAB
 );
 
-const routerReducer = (config: {
+const routerReducer: Function = (config: {
   initialTabRoutes?: string[];
   routeConfig: MFNavigationConfig;
   adapter?: {
