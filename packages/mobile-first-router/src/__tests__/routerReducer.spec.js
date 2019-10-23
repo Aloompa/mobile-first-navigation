@@ -25,8 +25,7 @@ describe('The router reducer', () => {
   const reducer = routerReducer(routeConfig);
 
   it('Should add a route stack to history and set navigating to true', () => {
-    const store = mockStore();
-    store.dispatch(
+    const store = mockStoreAndDispatch(
       setRoute({
         route: 'Page2'
       })
@@ -42,8 +41,7 @@ describe('The router reducer', () => {
   });
 
   it('Should set navigating to false', () => {
-    const store = mockStore();
-    store.dispatch(navigateComplete());
+    const store = mockStoreAndDispatch(navigateComplete());
 
     const currentState = { ...navigatingState };
     expect(currentState.isNavigating).toBe(true);
@@ -56,8 +54,7 @@ describe('The router reducer', () => {
   });
 
   it('Should reset navigation', () => {
-    const store = mockStore();
-    store.dispatch(resetNavigation());
+    const store = mockStoreAndDispatch(resetNavigation());
 
     const currentState = { ...navigatedState };
     expect(currentState.isNavigatingBack).toBe(false);
@@ -72,8 +69,7 @@ describe('The router reducer', () => {
   });
 
   it('Should set a route to be popped', () => {
-    const store = mockStore();
-    store.dispatch(navigateBack());
+    const store = mockStoreAndDispatch(navigateBack());
 
     const currentState = { ...navigatedState };
     expect(currentState.isNavigatingBack).toBe(false);
@@ -85,8 +81,7 @@ describe('The router reducer', () => {
   });
 
   it('Should end navigating back', () => {
-    const store = mockStore();
-    store.dispatch(navigateBackComplete());
+    const store = mockStoreAndDispatch(navigateBackComplete());
 
     const currentState = { ...navigatingBackState };
     expect(currentState.isNavigatingBack).toBe(true);
@@ -109,8 +104,7 @@ describe('The router reducer', () => {
   });
 
   it('Should set title cache', () => {
-    const store = mockStore();
-    store.dispatch(
+    const store = mockStoreAndDispatch(
       setTitleCache({
         title: 'Cache'
       })
@@ -125,8 +119,7 @@ describe('The router reducer', () => {
   });
 
   it('Should hide the navbar', () => {
-    const store = mockStore();
-    store.dispatch(setNavbarHidden(true));
+    const store = mockStoreAndDispatch(setNavbarHidden(true));
 
     const currentState = { ...initialState };
     expect(currentState.navbarHidden).toBe(false);
@@ -136,8 +129,7 @@ describe('The router reducer', () => {
   });
 
   it('Should show the navbar', () => {
-    const store = mockStore();
-    store.dispatch(setNavbarHidden(false));
+    const store = mockStoreAndDispatch(setNavbarHidden(false));
 
     const currentState = { ...navbarHiddenState };
     expect(currentState.navbarHidden).toBe(true);
@@ -147,8 +139,7 @@ describe('The router reducer', () => {
   });
 
   it(`Should changes tabs, setting the history to the new tab's history`, () => {
-    const store = mockStore();
-    store.dispatch(setActiveTab(1));
+    const store = mockStoreAndDispatch(setActiveTab(1));
 
     const currentState = { ...activeNavigatedTabState };
     expect(currentState.activeTab).toBe(0);
@@ -160,8 +151,7 @@ describe('The router reducer', () => {
   });
 
   it('Should not allow tab changing during navigation', () => {
-    const store = mockStore();
-    store.dispatch(setActiveTab(1));
+    const store = mockStoreAndDispatch(setActiveTab(1));
 
     const currentState = { ...activeNavigatedTabState, isNavigating: true };
     expect(currentState.activeTab).toBe(0);
@@ -172,6 +162,13 @@ describe('The router reducer', () => {
     expect(updatedState.activeTab).toBe(0);
   });
 });
+
+const mockStoreAndDispatch = (action) => {
+  const store = mockStore();
+  store.dispatch(action);
+
+  return store;
+};
 
 const updateState = (reducer, currentState, store) =>
   reducer(currentState, store.getActions()[0]);
