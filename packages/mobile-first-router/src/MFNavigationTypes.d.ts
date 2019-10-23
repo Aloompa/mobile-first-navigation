@@ -30,3 +30,14 @@ export interface MFNavigationConfig {
   width?: number;
   height?: number;
 }
+
+export interface MFNavigationReducerConfig {
+  initialTabRoutes?: string[];
+  routeConfig: MFNavigationConfig;
+  adapter?: {
+    getRoute: Function;
+    setRoute: Function;
+    getTab: Function;
+    setTab: Function;
+  };
+}

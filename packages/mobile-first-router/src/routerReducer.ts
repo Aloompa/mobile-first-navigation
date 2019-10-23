@@ -2,9 +2,9 @@ import { createActions, handleActions } from 'redux-actions';
 
 import { last, defaultTo, path } from 'ramda';
 import {
-  MFNavigationConfig,
   MFNavigationHistoryRoute,
-  MFNavigationTab
+  MFNavigationTab,
+  MFNavigationReducerConfig
 } from './MFNavigationTypes';
 
 const SET_ROUTE = 'SET_ROUTE';
@@ -38,14 +38,7 @@ export const {
   SET_ACTIVE_TAB
 );
 
-const routerReducer: Function = (config: {
-  initialTabRoutes?: string[];
-  routeConfig: MFNavigationConfig;
-  adapter?: {
-    getRoute: Function;
-    setRoute: Function;
-  };
-}) => {
+const routerReducer: Function = (config: MFNavigationReducerConfig) => {
   const initialRoute: MFNavigationHistoryRoute = {
     route: path(['routeConfig', 'initialRoute'], config)
   };
@@ -57,10 +50,12 @@ const routerReducer: Function = (config: {
     tabs.length > 0
       ? tabs.map((tab: MFNavigationTab) => [{ route: tab.initial }])
       : [[initialRoute]];
-
+  const queryInitialTab =
+    config.adapter &&
+    config.adapter.getTab(config.routeConfig.initialActiveTab);
   const activeTab = defaultTo(
     0,
-    path(['routeConfig', 'initialActiveTab'], config)
+    queryInitialTab || path(['routeConfig', 'initialActiveTab'], config)
   );
 
   const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
@@ -93,7 +88,10 @@ const routerReducer: Function = (config: {
         const history = [...state.history, payload];
         const tabRoute = [...state.tabRoutes[state.activeTab], payload];
         if (config.adapter) {
-          config.adapter.setRoute(payload);
+          config.adapter.setRoute({
+            route: payload.route,
+            tab: state.activeTab || 0
+          });
         }
 
         return {
@@ -186,6 +184,13 @@ const routerReducer: Function = (config: {
       [SET_ACTIVE_TAB]: (state, { payload }) => {
         if (state.isNavigating || state.isNavigatingBack) {
           return state;
+        }
+
+        if (config.adapter) {
+          config.adapter.setTab({
+            route: state.history[state.history.length - 1].route,
+            tab: payload
+          });
         }
 
         return {
