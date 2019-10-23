@@ -16,7 +16,7 @@ const getUrlState = ({ route, tab, params }) => {
     tab,
     params: urlencode(params)
   };
-  console.log('qStr', queryString);
+
   if (queryString.route === 'Home') {
     delete queryString.route;
   }
