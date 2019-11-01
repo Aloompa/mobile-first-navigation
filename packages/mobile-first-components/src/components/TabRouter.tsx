@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View } from './Primitives';
 
 const TabRouter = (props: {
+  hideTabBar: boolean;
   activeTabIndex: number;
   setActiveTab: any;
   bottomTab: boolean;
@@ -15,7 +16,8 @@ const TabRouter = (props: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        height: 52
+        height: 52,
+        [`border${props.bottomTab ? 'Top' : 'Bottom'}`]: '1px solid #BBBBBB'
       }}
     >
       {props.tabButtons.map((button, index) =>
@@ -24,15 +26,18 @@ const TabRouter = (props: {
     </View>
   );
 
+  const viewHeightReduction =
+    props.viewHeightReduction - (props.hideTabBar ? 52 : 0);
   const tabView = (
-    <View style={{ height: `Calc(100vh - ${props.viewHeightReduction}px` }}>
+    <View style={{ height: `Calc(100vh - ${viewHeightReduction}px` }}>
       {props.tabViews[props.activeTabIndex]}
     </View>
   );
 
-  const view = [tabBar, tabView];
+  const components = [tabBar, tabView];
+  const screen = props.bottomTab ? components.reverse() : components;
 
-  return <View>{props.bottomTab ? view.reverse() : view}</View>;
+  return <View>{props.hideTabBar ? tabView : screen}</View>;
 };
 
 export default TabRouter;

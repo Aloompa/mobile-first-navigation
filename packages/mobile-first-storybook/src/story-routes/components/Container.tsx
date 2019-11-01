@@ -7,7 +7,7 @@ export const Container = ({ backgroundColor, children }) => (
       paddingLeft: 18,
       paddingRight: 18,
       maxHeight: 'calc(100vh - 52px)',
-      minHeight: 'calc(100vh - 102px)',
+      minHeight: '100%',
       overflowY: 'scroll'
     }}
   >

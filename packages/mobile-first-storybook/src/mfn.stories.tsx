@@ -78,7 +78,8 @@ const routeConfig = {
     },
     ItemView: {
       route: ItemView,
-      getTitle: () => 'Item'
+      getTitle: () => 'Item',
+      hideTabBar: true
     },
     ItemDetails: {
       route: ItemDetails,
