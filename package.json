@@ -7,8 +7,8 @@
     "storybook": "npm run storybook --prefix ./packages/mobile-first-storybook",
     "build": "lerna run build && lerna bootstrap",
     "test": "lerna run test",
-    "example": "npm run start --prefix ./packages/mobile-first-router",
-    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf packages/*/package-lock.json && rm -rf packages/*/yarn.lock && rm -f yarn.lock && rm -f package-lock.json && yarn && yarn build"
+    "example": "npm run start --prefix ./packages/mobile-first-navigation-example",
+    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf packages/*/package-lock.json && rm -rf packages/*/yarn.lock && rm -f yarn.lock && rm -f package-lock.json"
   },
   "devDependencies": {
     "lerna": "^3.13.1",
