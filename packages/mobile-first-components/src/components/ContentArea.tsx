@@ -6,7 +6,7 @@ const ContentArea = (props) => (
   <View
     style={{
       flex: 1,
-      height: '100%',
+      minHeight: '100%',
       position: 'relative'
     }}
   >

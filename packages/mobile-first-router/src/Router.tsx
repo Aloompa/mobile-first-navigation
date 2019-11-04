@@ -37,6 +37,8 @@ const Router = (props: any) => {
   }, [props.isNavigatingBack]);
 
   const poppedRoute = props.poppedRoute.route;
+  const currentRouteId = props.route.route;
+  const currentRouteConfig = routeConfigs[currentRouteId];
 
   return (
     <Wrapper>
@@ -47,9 +49,10 @@ const Router = (props: any) => {
         routeTitle: getTitle(props)
       })}
       <TabRouter
+        hideTabBar={currentRouteConfig.hideTabBar}
         activeTabIndex={props.activeTabIndex}
         setActiveTab={props.setActiveTab}
-        bottomTab={true}
+        bottomTab={!props.topTab}
         viewHeightReduction={props.tabRoutes.length > 1 ? 102 : 50}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
         tabViews={props.tabRoutes.map(() => (

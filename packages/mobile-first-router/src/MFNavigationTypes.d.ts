@@ -14,6 +14,7 @@ export interface MFNavigationRouteComponent {
   Component: React.ReactNode;
   getTitle: Function;
   mode?: string;
+  hideTabBar?: boolean;
 }
 
 export interface MFNavigationHistoryRoute {
@@ -21,6 +22,7 @@ export interface MFNavigationHistoryRoute {
 }
 
 export interface MFNavigationConfig {
+  topTab?: boolean;
   initialRoute?: string;
   tabs?: Array<MFNavigationTab>;
   initialActiveTab?: number;
@@ -29,4 +31,15 @@ export interface MFNavigationConfig {
   topNavHeight?: number;
   width?: number;
   height?: number;
+}
+
+export interface MFNavigationReducerConfig {
+  initialTabRoutes?: string[];
+  routeConfig: MFNavigationConfig;
+  adapter?: {
+    getRoute: Function;
+    setRoute: Function;
+    getTab: Function;
+    setTab: Function;
+  };
 }
