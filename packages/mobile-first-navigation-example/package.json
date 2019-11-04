@@ -38,6 +38,9 @@
     "lib": "lib",
     "test": "__tests__"
   },
+  "resolutions": {
+    "react": "16.9.0"
+  },
   "files": [
     "lib"
   ],
