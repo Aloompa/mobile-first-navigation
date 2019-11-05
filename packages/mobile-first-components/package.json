@@ -1,6 +1,6 @@
 {
   "name": "@aloompa/mobile-first-components",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "> TODO: description",
   "author": "johno <johno@aloompa.com>",
   "homepage": "https://github.com/Aloompa/mobile-first-navigation#readme",
@@ -27,6 +27,13 @@
   },
   "bugs": {
     "url": "https://github.com/Aloompa/mobile-first-navigation/issues"
+  },
+  "peerDependencies": {
+    "ramda": "*",
+    "react": "^16.8",
+    "react-redux": "*",
+    "redux": "*",
+    "redux-actions": "*"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
