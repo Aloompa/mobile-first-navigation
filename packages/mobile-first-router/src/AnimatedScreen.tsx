@@ -90,8 +90,10 @@ const animateBackwardsNavigate = (props: {
 }) => {
   if (props.isNavigatingBack && props.lastRoute === props.route) {
     props.setSpring(() => ({
-      reverse: true,
-      reset: true
+      to: async (next, _cancel) => {
+        await next({ right: -props.width, config: { ...config } });
+      },
+      from: { right: 0 }
     }));
   }
 };
