@@ -14,8 +14,8 @@
     "server": "node ./server"
   },
   "dependencies": {
-    "@aloompa/mobile-first-components": "0.0.1",
-    "@aloompa/mobile-first-router": "0.0.1"
+    "@aloompa/mobile-first-components": "0.0.3",
+    "@aloompa/mobile-first-router": "0.0.3"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
