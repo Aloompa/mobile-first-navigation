@@ -28,6 +28,13 @@
   "bugs": {
     "url": "https://github.com/Aloompa/mobile-first-navigation/issues"
   },
+  "peerDependencies": {
+    "ramda": "*",
+    "react": "*",
+    "react-redux": "*",
+    "redux": "*",
+    "redux-actions": "*"
+  },
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "express": "^4.16.4",
