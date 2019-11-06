@@ -163,6 +163,7 @@ export const buildInitialState = (config: MFNavigationReducerConfig) => {
     routeToPop: '',
     history,
     poppedRoute: { route: '' },
+    route: { route: '' },
     activeTab,
     isModal: false,
     tabRoutes

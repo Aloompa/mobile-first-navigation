@@ -183,10 +183,21 @@ const createRoutes = (config: MFNavigationConfig) => {
     const { reducer, initialState } = routerReducer(config);
     const actions = Object.keys(reducer);
     const [state, dispatch] = React.useReducer(reducer, initialState);
+    console.log(state, ':::STATE');
     const newProps = {
       ...state,
       ...createActions(actions, dispatch)
     };
+    console.log(
+      props,
+      newProps,
+      {
+        topNavHeight: defaultTo(50, configWithTitles.topNavHeight),
+        renderTopNav,
+        ...configWithTitles
+      },
+      'PROPS'
+    );
     return Router({
       ...props,
       ...newProps,
