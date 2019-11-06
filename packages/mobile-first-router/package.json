@@ -1,6 +1,6 @@
 {
   "name": "@aloompa/mobile-first-router",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -25,8 +25,15 @@
   },
   "homepage": "https://github.com/Aloompa/mobile-first-navigation#readme",
   "dependencies": {
-    "@aloompa/mobile-first-components": "0.0.1",
+    "@aloompa/mobile-first-components": "0.0.3",
     "react-spring": "^8.0.27"
+  },
+  "peerDependencies": {
+    "ramda": "*",
+    "react": "^16.8",
+    "react-redux": "*",
+    "redux": "*",
+    "redux-actions": "*"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",

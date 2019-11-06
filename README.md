@@ -1,6 +1,5 @@
 # Mobile First Navigation Monorepo
 
-
 A navigational router with an emphasis on being Mobile and Developer friendly 📱
 
 ## Packages
@@ -157,7 +156,7 @@ export const routeConfig = {
 
 const Routes = createRoutes(routeConfig);
 
-export default Routes; 
+export default Routes;
 ```
 
 ```App.jsx
@@ -175,6 +174,16 @@ export default App;
 #### install
 
 `npm i @aloompa/mobile-first-components`
+
+### Developing locally
+
+`yarn run build`
+
+`yarn run example`
+
+### Publish
+
+`yarn run release`
 
 ### Mobile First Storybook
 
