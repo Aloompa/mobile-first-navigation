@@ -181,6 +181,10 @@ export default App;
 
 `yarn run example`
 
+### Publish
+
+`yarn run release`
+
 ### Mobile First Storybook
 
 #### live storybook demo and documentation
