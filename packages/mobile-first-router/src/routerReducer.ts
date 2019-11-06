@@ -1,5 +1,3 @@
-import { createActions, handleActions } from 'redux-actions';
-
 import { last, defaultTo, path } from 'ramda';
 import {
   MFNavigationHistoryRoute,
@@ -7,43 +5,12 @@ import {
   MFNavigationReducerConfig
 } from './MFNavigationTypes';
 
-const SET_ROUTE = 'SET_ROUTE';
-const NAVIGATE_COMPLETE = 'NAVIGATE_COMPLETE';
-const NAVIGATE_BACK = 'NAVIGATE_BACK';
-const NAVIGATE_BACK_COMPLETE = 'NAVIGATE_BACK_COMPLETE';
-const SET_TITLE_CACHE = 'SET_TITLE_CACHE';
-const RESET_NAVIGATION = 'RESET_NAVIGATION';
-const SET_NAVBAR_HIDDEN = 'SET_NAVBAR_HIDDEN';
-const SET_ACTIVE_TAB = 'SET_ACTIVE_TAB';
-
-export const {
-  setRoute,
-  navigateComplete,
-  navigateBack,
-  navigateBackComplete,
-  setTitleCache,
-  resetNavigation,
-  setNavbarHidden,
-  setActiveTab,
-  routeActiveTab
-} = createActions(
-  {},
-  SET_ROUTE,
-  NAVIGATE_COMPLETE,
-  NAVIGATE_BACK,
-  NAVIGATE_BACK_COMPLETE,
-  SET_TITLE_CACHE,
-  RESET_NAVIGATION,
-  SET_NAVBAR_HIDDEN,
-  SET_ACTIVE_TAB
-);
-
 const routerReducer: Function = (config: MFNavigationReducerConfig) => {
   const initialState = buildInitialState(config);
-
-  return handleActions(
-    {
-      [SET_ROUTE]: (state, { payload }) => {
+  const reducer = (state, action) => {
+    const { payload } = action;
+    return {
+      setRoute: () => {
         if (state.isNavigating) {
           return state.destinations.find(
             ({ route }) => route == payload.route
@@ -71,8 +38,7 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           )
         };
       },
-
-      [NAVIGATE_COMPLETE]: (state) => {
+      navigateComplete: () => {
         const newDestinations = state.destinations.slice(1);
         if (state.destinations.length > 1 && config.adapter) {
           config.adapter.setRoute(newDestinations[0]);
@@ -92,8 +58,7 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           destinations: newDestinations
         };
       },
-
-      [RESET_NAVIGATION]: (state) => ({
+      resetNavigation: () => ({
         ...state,
         history: [state.history[0], last(state.history)],
         routeToPop: last(state.history),
@@ -102,14 +67,12 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
         ),
         isNavigatingBack: true
       }),
-
-      [NAVIGATE_BACK]: (state) => ({
+      navigateBack: () => ({
         ...state,
         routeToPop: state.history[state.history.length - 1],
         isNavigatingBack: true
       }),
-
-      [NAVIGATE_BACK_COMPLETE]: (state) => {
+      navigateBackComplete: () => {
         const history = [...state.tabRoutes[state.activeTab]];
 
         const poppedRoute = history.pop();
@@ -135,21 +98,18 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           tabRoutes: updatedTabRoutes
         };
       },
-
-      [SET_TITLE_CACHE]: (state, { payload }) => ({
+      setTitleCache: () => ({
         ...state,
         titleCache: {
           ...state.titleCache,
           ...payload
         }
       }),
-
-      [SET_NAVBAR_HIDDEN]: (state, { payload }) => ({
+      setNavbarHidden: () => ({
         ...state,
         navbarHidden: payload
       }),
-
-      [SET_ACTIVE_TAB]: (state, { payload }) => {
+      setActiveTab: () => {
         if (state.isNavigating || state.isNavigatingBack) {
           return state;
         }
@@ -167,9 +127,9 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           history: state.tabRoutes[payload]
         };
       }
-    },
-    initialState
-  );
+    }[action.type];
+  };
+  return { reducer, initialState };
 };
 
 export const buildInitialState = (config: MFNavigationReducerConfig) => {

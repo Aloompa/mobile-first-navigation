@@ -1,56 +1,20 @@
-import { compose, last, path } from 'ramda';
-import {
-  navigateBack,
-  navigateBackComplete,
-  navigateComplete,
-  resetNavigation,
-  setNavbarHidden,
-  setRoute,
-  setTitleCache,
-  setActiveTab
-} from './routerReducer';
+import routerReducer from './routerReducer';
+import { useReducer } from 'react';
+import { MFNavigationConfig } from './MFNavigationTypes';
 
-import bindActionCreators from './util/bindActionCreators';
-import { connect } from 'react-redux';
+const createActions = (actions: Array<string>, dispatch: Function) =>
+  actions.reduce((prev, curr) => {
+    return { ...prev, curr: (payload) => dispatch({ type: curr, payload }) };
+  }, {});
 
-const historyPath = path(['router', 'history']);
-const currentPath = compose(
-  last,
-  historyPath
-);
-
-export const mapStateToProps = (state, props) => {
+const withRouter = (config: MFNavigationConfig) => {
+  const { reducer, initialState } = routerReducer(config);
+  const actions = Object.keys(reducer);
+  const [state, dispatch] = useReducer(reducer, initialState);
   return {
-    ...props,
-    history: historyPath(state),
-    route: currentPath(state),
-    isNavigatingBack: path(['router', 'isNavigatingBack'], state),
-    isNavigating: path(['router', 'isNavigating'], state),
-    poppedRoute: path(['router', 'poppedRoute'], state),
-    routeToPop: path(['router', 'routeToPop'], state),
-    titleCache: path(['router', 'titleCache'], state),
-    navbarHidden: path(['router', 'navbarHidden'], state),
-    activeTabIndex: path(['router', 'activeTab'], state),
-    tabRoutes: path(['router', 'tabRoutes'], state),
-    isModal: path(['router', 'isModal'], state),
-    tabBarHorizontalPadding: path(['router', 'tabBarHorizontalPadding'])
+    ...state,
+    ...createActions(actions, dispatch)
   };
 };
-
-export const mapDispatchToProps = bindActionCreators({
-  resetNavigation,
-  navigateComplete,
-  setRoute,
-  navigateBack,
-  navigateBackComplete,
-  setTitleCache,
-  setNavbarHidden,
-  setActiveTab
-});
-
-const withRouter = connect(
-  mapStateToProps,
-  mapDispatchToProps
-);
 
 export default withRouter;
