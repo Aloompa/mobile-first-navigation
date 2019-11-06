@@ -7,9 +7,10 @@
   "license": "ISC",
   "main": "lib/mobile-first-storybook.js",
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "echo \"no tests in storybook\" && exit 0",
     "build": "tsc",
     "watch": "tsc --watch",
+    "release": "echo \"do not publish example\" && exit 0",
     "storybook": "start-storybook -p 3000"
   },
   "directories": {

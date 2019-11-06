@@ -7,10 +7,10 @@
   "license": "ISC",
   "main": "lib/mobile-first-navigation-example.js",
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1",
+    "test": "echo \"no tests for example\" && exit 0",
     "build": "node_modules/.bin/tsc",
     "watch": "node_modules/.bin/tsc --watch",
-    "release": "npm publish",
+    "release": "echo \"do not publish example\" && exit 0",
     "server": "node ./server"
   },
   "dependencies": {
