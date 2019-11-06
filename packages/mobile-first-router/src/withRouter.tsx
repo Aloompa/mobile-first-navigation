@@ -1,5 +1,6 @@
+import * as React from 'react';
 import routerReducer from './routerReducer';
-import { useReducer } from 'react';
+const { useReducer } = React;
 import { MFNavigationConfig } from './MFNavigationTypes';
 
 const createActions = (actions: Array<string>, dispatch: Function) =>
