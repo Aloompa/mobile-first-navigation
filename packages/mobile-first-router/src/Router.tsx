@@ -178,9 +178,10 @@ const createActions = (actions: Array<string>, dispatch: Function) =>
   }, {});
 
 const createRoutes = (config: MFNavigationConfig) => {
+  const { reducer, initialState } = routerReducer(config);
+
   return (props) => {
     const configWithTitles = fillEmptyTitles(config);
-    const { reducer, initialState } = routerReducer(config);
     const actions = Object.keys(reducer);
     const [state, dispatch] = React.useReducer(reducer, initialState);
     console.log(state, ':::STATE');
