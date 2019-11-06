@@ -20,7 +20,6 @@ const currentPath = compose(
 );
 
 export const mapStateToProps = (state, props) => {
-  console.log(props, 'PROPS IN MAP STATE');
   return {
     ...props,
     history: historyPath(state),
