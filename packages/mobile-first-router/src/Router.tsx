@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo } from 'ramda';
+import { always, defaultTo } from 'ramda';
 
 import {
   Wrapper,
@@ -9,7 +9,6 @@ import {
   View
 } from '@aloompa/mobile-first-components';
 
-import withRouter from './withRouter';
 import {
   MFNavigationConfig,
   MFNavigationRoute,
@@ -19,6 +18,7 @@ import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
+import { routerReducer } from '.';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
@@ -172,19 +172,31 @@ const fillEmptyTitles = (config: MFNavigationConfig) =>
     )
   );
 
-const createRoutes = (config: MFNavigationConfig) => {
-  const configWithTitles = fillEmptyTitles(config);
+const createActions = (actions: Array<string>, dispatch: Function) =>
+  actions.reduce((prev, curr) => {
+    return { ...prev, curr: (payload) => dispatch({ type: curr, payload }) };
+  }, {});
 
-  return compose(withRouter(config))((props) =>
-    Router({
+const createRoutes = (config: MFNavigationConfig) => {
+  return (props) => {
+    const configWithTitles = fillEmptyTitles(config);
+    const { reducer, initialState } = routerReducer(config);
+    const actions = Object.keys(reducer);
+    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const newProps = {
+      ...state,
+      ...createActions(actions, dispatch)
+    };
+    return Router({
       ...props,
+      ...newProps,
       ...{
         topNavHeight: defaultTo(50, configWithTitles.topNavHeight),
         renderTopNav,
         ...configWithTitles
       }
-    })
-  );
+    });
+  };
 };
 
 export const createStoreAndRoutes = (config: MFNavigationConfig) => {
