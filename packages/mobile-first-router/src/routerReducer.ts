@@ -33,6 +33,7 @@ export const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           isNavigating: true,
           history,
           destinations: [...state.destinations, payload],
+          route: last(history),
           tabRoutes: state.tabRoutes.map((route, index) =>
             index === state.activeTab ? tabRoute : route
           )
@@ -125,7 +126,8 @@ export const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           ...state,
           activeTab: payload,
           activeTabIndex: payload,
-          history: [state.tabRoutes[payload][0]]
+          history: [state.tabRoutes[payload][0]],
+          route: state.tabRoutes[payload][0]
         };
       }
     }[action.type]();
