@@ -91,12 +91,15 @@ export const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           config.adapter.setRoute(currentRoute);
         }
 
+        const newHistory = history.slice();
+
         return {
           ...state,
           poppedRoute,
           isNavigatingBack: false,
-          history: history.slice(),
-          tabRoutes: updatedTabRoutes
+          history: newHistory,
+          tabRoutes: updatedTabRoutes,
+          route: last(newHistory)
         };
       },
       setTitleCache: () => ({

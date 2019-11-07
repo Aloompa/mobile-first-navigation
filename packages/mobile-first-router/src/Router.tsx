@@ -57,18 +57,18 @@ const Router = (props: any) => {
         bottomTab={!props.topTab}
         viewHeightReduction={props.tabRoutes.length > 1 ? 102 : 50}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
-        tabViews={props.tabRoutes.map(() => (
-          <ContentArea>
+        tabViews={props.tabRoutes.map((_, key) => (
+          <ContentArea key={key}>
             {props.history
               .filter((route) => {
                 const routeConfig = routeConfigs[route.route];
                 return routeConfig.mode !== 'modal';
               })
-              .map((route, _index) => {
+              .map((route, key) => {
                 const routeConfig = routeConfigs[route.route];
                 const { Component } = routeConfig;
                 return (
-                  <View>
+                  <View key={key}>
                     <AnimatedScreen
                       {...{
                         ...props,
@@ -89,11 +89,11 @@ const Router = (props: any) => {
           const routeConfig = routeConfigs[route.route];
           return routeConfig.mode === 'modal';
         })
-        .map((route, _key) => {
+        .map((route, key) => {
           const routeConfig = routeConfigs[route.route];
           const { Component } = routeConfig;
           return (
-            <View>
+            <View key={key}>
               <AnimatedModalScreen
                 {...{
                   ...props,

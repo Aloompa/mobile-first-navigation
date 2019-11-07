@@ -4,9 +4,10 @@ import { SimpleButton, Container, Title } from './components';
 export const BrowseHome = ({ setRoute }) => (
   <Container backgroundColor={'#d99'}>
     <Title>Categories</Title>
-    {['Land', 'Sea', 'Sky'].map((category) => (
+    {['Land', 'Sea', 'Sky'].map((category, key) => (
       <SimpleButton
         name={category}
+        key={key}
         onPress={() =>
           setRoute({
             route: 'CategoryView',
