@@ -124,10 +124,11 @@ const routerReducer: Function = (config: MFNavigationReducerConfig) => {
         return {
           ...state,
           activeTab: payload,
+          activeTabIndex: payload,
           history: state.tabRoutes[payload]
         };
       }
-    }[action.type];
+    }[action.type]();
   };
   return { reducer, initialState };
 };
@@ -155,6 +156,10 @@ export const buildInitialState = (config: MFNavigationReducerConfig) => {
   const history: Array<MFNavigationHistoryRoute> = tabRoutes[activeTab];
 
   return {
+    initialActiveTab: activeTab,
+    initialRoute: config.routeConfig.initialRoute,
+    renderTopNav: config.routeConfig.renderTopNav,
+    routes: config.routeConfig.routes,
     navbarHidden: false,
     isNavigating: false,
     destinations: [],
@@ -172,3 +177,22 @@ export const buildInitialState = (config: MFNavigationReducerConfig) => {
 };
 
 export default routerReducer;
+
+const createActionsObj = (actions: Array<string>, dispatch: Function) =>
+  actions.reduce((prev, curr) => {
+    return { ...prev, [curr]: (payload) => dispatch({ type: curr, payload }) };
+  }, {});
+
+const actionTypes = [
+  'setRoute',
+  'navigateComplete',
+  'resetNavigation',
+  'navigateBack',
+  'navigateBackComplete',
+  'setTitleCache',
+  'setNavbarHidden',
+  'setActiveTab'
+];
+
+export const createActions = (dispatch: Function) =>
+  createActionsObj(actionTypes, dispatch);

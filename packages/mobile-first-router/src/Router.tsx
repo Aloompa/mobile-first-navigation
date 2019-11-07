@@ -19,11 +19,11 @@ import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
 import { routerReducer } from '.';
+import { createActions as createReducerActions } from './routerReducer';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
   const [routeConfigs] = useState(initializeRoutes(props.routes));
-
   const { width, height } = getWidthAndHeight(props);
 
   useEffect(() => {
@@ -172,36 +172,20 @@ const fillEmptyTitles = (config: MFNavigationConfig) =>
     )
   );
 
-const createActions = (actions: Array<string>, dispatch: Function) =>
-  actions.reduce((prev, curr) => {
-    return { ...prev, curr: (payload) => dispatch({ type: curr, payload }) };
-  }, {});
-
 const createRoutes = (config: MFNavigationConfig) => {
-  const { reducer, initialState } = routerReducer(config);
+  const configWithTitles = fillEmptyTitles(config);
+  const { reducer, initialState } = routerReducer({
+    routeConfig: configWithTitles
+  });
 
   return (props) => {
-    const configWithTitles = fillEmptyTitles(config);
-    const actions = Object.keys(reducer);
     const [state, dispatch] = React.useReducer(reducer, initialState);
-    console.log(state, ':::STATE');
-    const newProps = {
-      ...state,
-      ...createActions(actions, dispatch)
-    };
-    console.log(
-      props,
-      newProps,
-      {
-        topNavHeight: defaultTo(50, configWithTitles.topNavHeight),
-        renderTopNav,
-        ...configWithTitles
-      },
-      'PROPS'
-    );
+    const reducerActions = createReducerActions(dispatch);
+
     return Router({
+      ...reducerActions,
+      ...state,
       ...props,
-      ...newProps,
       ...{
         topNavHeight: defaultTo(50, configWithTitles.topNavHeight),
         renderTopNav,
@@ -213,7 +197,9 @@ const createRoutes = (config: MFNavigationConfig) => {
 
 export const createStoreAndRoutes = (config: MFNavigationConfig) => {
   const Routes = createRoutes(config);
-  return (props) => <Routes {...props}>{props.children}</Routes>;
+  return (props) => {
+    return <Routes {...props} />;
+  };
 };
 
 export default createStoreAndRoutes;
