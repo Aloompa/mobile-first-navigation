@@ -5,7 +5,7 @@ import {
   MFNavigationReducerConfig
 } from './MFNavigationTypes';
 
-const routerReducer: Function = (config: MFNavigationReducerConfig) => {
+export const routerReducer: Function = (config: MFNavigationReducerConfig) => {
   const initialState = buildInitialState(config);
   const reducer = (state, action) => {
     const { payload } = action;
@@ -175,8 +175,6 @@ export const buildInitialState = (config: MFNavigationReducerConfig) => {
     activeTabIndex: activeTab
   };
 };
-
-export default routerReducer;
 
 const createActionsObj = (actions: Array<string>, dispatch: Function) =>
   actions.reduce((prev, curr) => {

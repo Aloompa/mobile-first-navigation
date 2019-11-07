@@ -18,8 +18,10 @@ import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
-import { routerReducer } from '.';
-import { createActions as createReducerActions } from './routerReducer';
+import {
+  createActions as createReducerActions,
+  routerReducer
+} from './routerReducer';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
