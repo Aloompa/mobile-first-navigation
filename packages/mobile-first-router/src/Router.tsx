@@ -9,6 +9,8 @@ import {
   View
 } from '@aloompa/mobile-first-components';
 
+import queryStringAdapter from './adapters/queryStringAdapter';
+
 import {
   MFNavigationConfig,
   MFNavigationRoute,
@@ -177,7 +179,8 @@ const fillEmptyTitles = (config: MFNavigationConfig) =>
 const createRoutes = (config: MFNavigationConfig) => {
   const configWithTitles = fillEmptyTitles(config);
   const { reducer, initialState } = routerReducer({
-    routeConfig: configWithTitles
+    routeConfig: configWithTitles,
+    adapter: queryStringAdapter
   });
 
   return (props) => {
