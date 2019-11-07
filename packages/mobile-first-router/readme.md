@@ -1,29 +1,9 @@
 ## Mobile First Router
 
-### Create Route Redux Store
-
-```
-import { combineReducers } from 'redux';
-import { createStore } from 'redux';
-import queryStringAdapter from '@aloompa/mobile-first-router/lib/adapters/queryStringAdapter';
-import { routerReducer } from '@aloompa/mobile-first-router/lib';
-
-const combinedReducers = combineReducers({
-    router: routerReducer({
-        initialRoute: 'Home',
-        adapter: queryStringAdapter
-    })
-});
-
-const store = createStore(combinedReducers);
-
-export default store;
-```
-
 ### Define your routes
 
 ```
-import { createRoutes, withRouter } from '@aloompa/mobile-first-router/lib';
+import { createRoutes } from '@aloompa/mobile-first-router/lib';
 
 const Routes = createRoutes({
     routes: {
@@ -45,7 +25,7 @@ const Routes = createRoutes({
     renderTopNav: NavComponent
 });
 
-export default withRouter(Routes);
+export default Routes;
 ```
 
 ### Tab controller
