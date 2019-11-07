@@ -116,7 +116,7 @@ export const routerReducer: Function = (config: MFNavigationReducerConfig) => {
 
         if (config.adapter) {
           config.adapter.setTab({
-            route: state.history[state.history.length - 1].route,
+            route: state.tabRoutes[payload][0].route,
             tab: payload
           });
         }
@@ -125,7 +125,7 @@ export const routerReducer: Function = (config: MFNavigationReducerConfig) => {
           ...state,
           activeTab: payload,
           activeTabIndex: payload,
-          history: state.tabRoutes[payload]
+          history: [state.tabRoutes[payload][0]]
         };
       }
     }[action.type]();
