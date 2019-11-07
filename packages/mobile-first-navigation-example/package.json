@@ -14,7 +14,7 @@
     "server": "node ./server"
   },
   "dependencies": {
-    "@aloompa/mobile-first-components": "0.0.4",
+    "@aloompa/mobile-first-components": "0.0.6",
     "@aloompa/mobile-first-router": "0.0.6"
   },
   "devDependencies": {
