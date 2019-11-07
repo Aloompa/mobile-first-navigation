@@ -1,7 +1,6 @@
 import * as React from 'react';
 
-import { always, compose, defaultTo } from 'ramda';
-import { Provider } from 'react-redux';
+import { always, defaultTo } from 'ramda';
 
 import {
   Wrapper,
@@ -10,7 +9,8 @@ import {
   View
 } from '@aloompa/mobile-first-components';
 
-import withRouter from './withRouter';
+import queryStringAdapter from './adapters/queryStringAdapter';
+
 import {
   MFNavigationConfig,
   MFNavigationRoute,
@@ -20,12 +20,14 @@ import { AnimatedModalScreen } from './AnimatedModalScreen';
 import { AnimatedScreen } from './AnimatedScreen';
 import { getWidthAndHeight } from './util/getWidthAndHeight';
 import { getTitle, getTitleFromCache } from './util/getTitle';
-import createStore from './store';
+import {
+  createActions as createReducerActions,
+  routerReducer
+} from './routerReducer';
 const { useState, useEffect } = React;
 
 const Router = (props: any) => {
   const [routeConfigs] = useState(initializeRoutes(props.routes));
-
   const { width, height } = getWidthAndHeight(props);
 
   useEffect(() => {
@@ -176,27 +178,33 @@ const fillEmptyTitles = (config: MFNavigationConfig) =>
 
 const createRoutes = (config: MFNavigationConfig) => {
   const configWithTitles = fillEmptyTitles(config);
+  const { reducer, initialState } = routerReducer({
+    routeConfig: configWithTitles,
+    adapter: queryStringAdapter
+  });
 
-  return compose(withRouter)((props) =>
-    Router({
+  return (props) => {
+    const [state, dispatch] = React.useReducer(reducer, initialState);
+    const reducerActions = createReducerActions(dispatch);
+
+    return Router({
+      ...reducerActions,
+      ...state,
       ...props,
       ...{
         topNavHeight: defaultTo(50, configWithTitles.topNavHeight),
         renderTopNav,
         ...configWithTitles
       }
-    })
-  );
+    });
+  };
 };
 
 export const createStoreAndRoutes = (config: MFNavigationConfig) => {
   const Routes = createRoutes(config);
-  const store = createStore(config);
-  return (props) => (
-    <Provider store={store}>
-      <Routes {...props}>{props.children}</Routes>
-    </Provider>
-  );
+  return (props) => {
+    return <Routes {...props} />;
+  };
 };
 
 export default createStoreAndRoutes;

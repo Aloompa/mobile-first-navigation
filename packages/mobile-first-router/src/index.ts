@@ -1,5 +1,4 @@
 import createRoutes from './Router';
-import routerReducer from './routerReducer';
-import withRouter from './withRouter';
+import { routerReducer } from './routerReducer';
 
-export { routerReducer, withRouter, createRoutes };
+export { routerReducer, createRoutes };

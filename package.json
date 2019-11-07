@@ -7,6 +7,7 @@
     "storybook": "npm run storybook --prefix ./packages/mobile-first-storybook",
     "build": "lerna bootstrap --hoist && lerna run build",
     "test": "lerna run test",
+    "watch": "lerna run watch",
     "release": "lerna run release",
     "example": "npm run start --prefix ./packages/mobile-first-navigation-example",
     "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf packages/*/package-lock.json && rm -rf packages/*/yarn.lock && rm -f yarn.lock && rm -f package-lock.json"
