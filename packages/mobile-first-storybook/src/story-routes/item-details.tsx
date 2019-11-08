@@ -15,6 +15,7 @@ export const ItemDetails = ({ navigateBack, route }) => (
         <Title>Item Details</Title>
         {route.params.item.split('-Item-').map((detail, index) => (
           <div
+            key={index}
             style={{
               fontFamily: 'Inter-Regular',
               fontSize: 16,
