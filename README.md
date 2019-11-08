@@ -195,4 +195,4 @@ For now:
 
 `yarn run build`
 
-`yarn run storybook
+`yarn run storybook`
