@@ -25,9 +25,10 @@ const items = (() => {
 export const PurchasesHome = ({ setRoute }) => (
   <Container backgroundColor={'#9d9'}>
     <Title>Categories Purchased</Title>
-    {Object.keys(items).map((category) => (
+    {Object.keys(items).map((category, key) => (
       <SimpleButton
         name={category}
+        key={key}
         onPress={() =>
           setRoute({
             route: 'CategoryView',

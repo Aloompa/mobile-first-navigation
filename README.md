@@ -190,3 +190,9 @@ export default App;
 #### live storybook demo and documentation
 
 Coming soon...
+
+For now:
+
+`yarn run build`
+
+`yarn run storybook`
