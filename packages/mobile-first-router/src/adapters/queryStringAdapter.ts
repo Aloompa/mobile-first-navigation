@@ -2,7 +2,7 @@ import { compose, fromPairs, map, path, split, tail } from 'ramda';
 
 declare let global: any;
 
-const getQueryString = compose(
+export const getQueryString = compose(
   fromPairs,
   map(split('=')),
   split('&'),
