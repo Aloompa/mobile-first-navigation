@@ -9,6 +9,7 @@ const TabRouter = (props: {
   tabButtons: any[];
   tabViews: any[];
   viewHeightReduction: number;
+  isIOS: boolean;
 }) => {
   const tabBar = (
     <View
@@ -32,7 +33,8 @@ const TabRouter = (props: {
   );
 
   const viewHeightReduction =
-    props.viewHeightReduction - (props.hideTabBar ? 52 : 0);
+    props.viewHeightReduction -
+    (props.hideTabBar ? (props.isIOS ? 63 : 52) : 0);
   const tabView = (
     <View
       style={{ height: `Calc(100vh - ${viewHeightReduction}px` }}

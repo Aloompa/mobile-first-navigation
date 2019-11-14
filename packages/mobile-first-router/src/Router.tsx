@@ -49,6 +49,7 @@ const Router = (props: any) => {
   const { deviceType, isNative } = pick(['deviceType', 'isNative'], queryState);
 
   const isIOS = isNative === 'true' && deviceType === 'ios';
+  const { navbarHidden } = props;
 
   return (
     <Wrapper>
@@ -63,8 +64,15 @@ const Router = (props: any) => {
         activeTabIndex={props.activeTabIndex}
         setActiveTab={props.setActiveTab}
         bottomTab={!props.topTab}
+        isIOS={isIOS}
         viewHeightReduction={
-          props.tabRoutes.length > 1 ? (isIOS ? 225 : 102) : 50
+          props.tabRoutes.length > 1
+            ? isIOS
+              ? navbarHidden
+                ? 85
+                : 135
+              : 102
+            : 50
         }
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
         tabViews={props.tabRoutes.map((_, key) => (
