@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@aloompa/mobile-first-components": "0.0.9",
-    "@aloompa/mobile-first-router": "0.0.9"
+    "@aloompa/mobile-first-router": "0.0.10"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
