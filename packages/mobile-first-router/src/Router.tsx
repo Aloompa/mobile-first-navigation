@@ -28,6 +28,36 @@ import {
 } from './routerReducer';
 const { useState, useEffect } = React;
 
+const calcViewHeightReduction = ({
+  navbarHidden,
+  tabRoutes,
+  isIOS,
+  isAndroid
+}: {
+  navbarHidden: boolean;
+  tabRoutes: Array<any>;
+  isIOS: boolean;
+  isAndroid: boolean;
+}) => {
+  if (tabRoutes.length > 1) {
+    if (isIOS && navbarHidden) {
+      return 85;
+    } else if (isIOS) {
+      return 135;
+    }
+
+    if (isAndroid && navbarHidden) {
+      return 108;
+    } else if (isAndroid) {
+      return 158;
+    }
+
+    return 102;
+  } else {
+    return 50;
+  }
+};
+
 const Router = (props: any) => {
   const [routeConfigs] = useState(initializeRoutes(props.routes));
   const { width, height } = getWidthAndHeight(props);
@@ -43,13 +73,13 @@ const Router = (props: any) => {
   const poppedRoute = props.poppedRoute.route;
   const currentRouteId = props.route.route;
   const currentRouteConfig = routeConfigs[currentRouteId];
+
   const queryState = getQueryString(
     path(['document', 'location', 'search'], global)
   );
   const { deviceType, isNative } = pick(['deviceType', 'isNative'], queryState);
-
   const isIOS = isNative === 'true' && deviceType === 'ios';
-  const { navbarHidden } = props;
+  const isAndroid = isNative == 'true' && deviceType === 'android';
 
   return (
     <Wrapper>
@@ -65,15 +95,11 @@ const Router = (props: any) => {
         setActiveTab={props.setActiveTab}
         bottomTab={!props.topTab}
         isIOS={isIOS}
-        viewHeightReduction={
-          props.tabRoutes.length > 1
-            ? isIOS
-              ? navbarHidden
-                ? 85
-                : 135
-              : 102
-            : 50
-        }
+        viewHeightReduction={calcViewHeightReduction({
+          ...props,
+          isIOS,
+          isAndroid
+        })}
         tabButtons={props.tabs ? props.tabs.map((tab) => tab.button) : []}
         tabViews={props.tabRoutes.map((_, key) => (
           <ContentArea key={key}>
