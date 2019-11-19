@@ -39,19 +39,6 @@ const Home = (props) => (
         style={{
           height: 50,
           width: '100%',
-          alignItems: 'flex-start',
-          justifyContent: 'center'
-        }}
-        onClick={(_e) => props.setNavbarHidden(!props.navbarHidden)}
-      >
-        <View>
-          <Text>Hide Nav Bar</Text>
-        </View>
-      </Button>
-      <Button
-        style={{
-          height: 50,
-          width: '100%',
           alignItems: 'center',
           justifyContent: 'center'
         }}

@@ -67,8 +67,7 @@ export const routeConfig = {
   routes: {
     Home: {
       route: Home,
-      getTitle: always(''),
-      hideNavbar: true
+      getTitle: always('')
     },
     Page2: {
       route: Page2,
