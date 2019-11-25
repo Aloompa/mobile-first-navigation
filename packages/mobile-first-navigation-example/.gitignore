@@ -1,0 +1,4 @@
+native/node_modules
+web/node_modules
+*/lib/*
+*/lib

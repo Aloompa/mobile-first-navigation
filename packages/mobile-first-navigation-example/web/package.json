@@ -37,9 +37,6 @@
   "peerDependencies": {
     "ramda": "*",
     "react": "^16.8",
-    "react-redux": "*",
-    "redux": "*",
-    "redux-actions": "*",
     "@aloompa/mobile-first-components": "*"
   },
   "directories": {

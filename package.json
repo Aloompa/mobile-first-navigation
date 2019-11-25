@@ -9,8 +9,8 @@
     "test": "lerna run test",
     "watch": "lerna run watch",
     "release": "lerna run release",
-    "example": "npm run start --prefix ./packages/mobile-first-navigation-example",
-    "clean": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf packages/*/package-lock.json && rm -rf packages/*/yarn.lock && rm -f yarn.lock && rm -f package-lock.json"
+    "example:web": "npm run start --prefix ./packages/mobile-first-navigation-example/web",
+    "clean": "rm -rf node_modules && rm -rf packages/*/*/node_modules && rm -rf packages/*/*/package-lock.json && rm -rf packages/*/*/yarn.lock && rm -f yarn.lock && rm -f package-lock.json"
   },
   "devDependencies": {
     "lerna": "^3.13.1",
