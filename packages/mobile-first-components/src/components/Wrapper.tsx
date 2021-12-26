@@ -10,7 +10,8 @@ const Wrapper = (props) => (
       height: '100%',
       width: '101%',
       left: '-1px',
-      right: '-1px'
+      right: '-1px',
+      border: '2px solid red'
     }}
   >
     {props.children}

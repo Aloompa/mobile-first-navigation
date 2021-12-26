@@ -35,11 +35,9 @@ const TabRouter = (props: {
   const viewHeightReduction =
     props.viewHeightReduction -
     (props.hideTabBar ? (props.isIOS ? 63 : 52) : 0);
+  console.log(viewHeightReduction);
   const tabView = (
-    <View
-      style={{ height: `Calc(100vh - ${viewHeightReduction}px` }}
-      key={'tab-view'}
-    >
+    <View style={{ height: `550px` }} key={'tab-view'}>
       {props.tabViews[props.activeTabIndex]}
     </View>
   );

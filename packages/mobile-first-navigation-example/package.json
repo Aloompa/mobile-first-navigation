@@ -14,8 +14,8 @@
     "server": "node ./server"
   },
   "dependencies": {
-    "@aloompa/mobile-first-components": "0.0.12",
-    "@aloompa/mobile-first-router": "0.0.12"
+    "@aloompa/mobile-first-components": "0.0.16",
+    "@aloompa/mobile-first-router": "0.0.16"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",
@@ -50,7 +50,7 @@
     "lib"
   ],
   "publishConfig": {
-    "registry": "http://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
