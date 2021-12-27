@@ -57,7 +57,7 @@ const calcViewHeightReduction = ({
     return 50;
   }
 };
-console.log(calcViewHeightReduction, 'This is calcViewHeightReduction');
+console.log(calcViewHeightReduction, 'This is');
 const Router = (props: any) => {
   const [routeConfigs] = useState(initializeRoutes(props.routes));
   const { width, height } = getWidthAndHeight(props);
